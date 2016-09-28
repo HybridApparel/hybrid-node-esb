@@ -287,8 +287,8 @@ artGunRouter.post('/shipments/update', function(req,res) {
   console.log("req body is: " + req.body);
   console.log("total req is: " + req);
   console.log("sig is: " + req.body.signature);
-  console.log("data is " + req.body.data);
-  console.log(authArtGunReq());
+  console.log("data is " + req.body.data.xid);
+  console.log(authArtGunReq(req.body));
 
 
 
@@ -297,7 +297,7 @@ artGunRouter.post('/shipments/update', function(req,res) {
     var orderPrimaryKey = "";
     
     Order.findOne({
-      where: {OrderID: req.body.xid} })
+      where: {OrderID: req.body.data.xid} })
     .then(function(order){
       orderReceiptID = order.EndpointResponseID;
       orderPrimaryKey = order.id;
