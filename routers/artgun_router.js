@@ -292,13 +292,14 @@ artGunRouter.post('/shipments/update', function(req,res) {
   authArtGunReq(req.body);
 
 
-
+  if (authArtGunReq(req.body) == true) {
+    
     var resJSON = {};
     var orderReceiptID = "";
     var orderPrimaryKey = "";
     
     Order.findOne({
-      where: {OrderID: req.body.data.xid} })
+      where: {OrderID: JSON.parse(req.body.data).xid} })
     .then(function(order){
       orderReceiptID = order.EndpointResponseID;
       orderPrimaryKey = order.id;
@@ -317,6 +318,7 @@ artGunRouter.post('/shipments/update', function(req,res) {
         res.status(200).send(resJSON);
       });
     });  
+  };
 });
 
 
