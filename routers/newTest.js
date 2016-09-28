@@ -410,5 +410,65 @@
     ]           
   }           
   ]           
-}         
+};
+
+
+// parses shopify webhook JSON and creates new ArtGun order object
+// var shopifyWebhookParser = function(webhookJSON){
+//   var artGunJSON = {};
+//   var totalQuantity = 0;
+//   for (var i=0; i<webhookJSON.line_items.length; i++) {
+//     var lineItem           = {};
+//     var lineItems          = [];
+//     var lineItemAttribute  = {};
+//     var lineItemAttributes = [];
+//     if (webhookJSON.line_items[i].sku.indexOf("POD") != -1) {
+//       totalQuantity = totalQuantity + parseInt(webhookJSON.line_items[i].quantity);
+//       lineItem.name = webhookJSON.line_items[i].title;
+//       lineItem.sku                = webhookJSON.line_items[i].sku;
+//       lineItem.quantity           = parseInt(webhookJSON.line_items[i].quantity);
+//       lineItem.unit_amount        = parseInt(webhookJSON.line_items[i].price);
+//       lineItem.subtotal_amount    = (lineItem.quantity * lineItem.unit_amount);
+//       lineItem.necklabel_binid    = "";
+//       lineItem.hangtag_binid      = "";
+//       lineItemAttribute.type      = "DigitalPrint";
+//       lineItemAttribute.location  = "CF";
+//       lineItemAttribute.thumbnail = webhookJSON.line_items[i].properties[0].value;
+//       lineItemAttribute.preview   = webhookJSON.line_items[i].properties[0].value;
+//       lineItemAttribute.file_url  = webhookJSON.line_items[i].properties[0].value;
+//       lineItemAttribute.file_extension = "png";
+//       lineItemAttributes.push(lineItemAttribute);
+//       lineItem.attributes = lineItemAttributes;
+//       lineItems.push(lineItem);
+//     };
+//   };
+//   artGunJSON.type = "order";
+//   artGunJSON.time = webhookJSON.created_at;
+//   artGunJSON.method = "create";
+//   artGunJSON.mode = "debug";
+//   artGunJSON.status = "In Production";
+//   artGunJSON.status_code = "6";
+//   artGunJSON.xid = webhookJSON.name;
+//   artGunJSON.notes = webhookJSON.note;
+//   artGunJSON.shiplabel_url = "";
+//   artGunJSON.pack_url = "";
+//   artGunJSON.giftnote_comment = null;
+//   artGunJSON.shipping_carrier = null;
+//   artGunJSON.shipping_priority = webhookJSON.shipping_lines[0].title;
+//   artGunJSON.shipping_account = null;
+//   artGunJSON.shipping_name = webhookJSON.shipping_address.first_name + " " + webhookJSON.shipping_address.last_name;
+//   artGunJSON.shipping_address1 = webhookJSON.shipping_address.address1;
+//   artGunJSON.shipping_address2 = webhookJSON.shipping_address.address2;
+//   artGunJSON.shipping_city = webhookJSON.shipping_address.city;
+//   artGunJSON.shipping_state = webhookJSON.shipping_address.province;
+//   artGunJSON.shipping_country = webhookJSON.shipping_address.country;
+//   artGunJSON.shipping_zipcode = webhookJSON.shipping_address.zip;
+//   artGunJSON.shipping_phone = webhookJSON.shipping_address.phone;
+//   artGunJSON.shipping_email = webhookJSON.email;
+//   artGunJSON.items_quantity = totalQuantity;
+//   artGunJSON.items_amount = webhookJSON.subtotal_price;
+//   artGunJSON.items_tax = webhookJSON.total_tax;
+//   artGunJSON.items = lineItems;
+//   return artGunJSON;
+// };         
 
