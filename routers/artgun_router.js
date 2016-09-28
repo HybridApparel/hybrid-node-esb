@@ -1,6 +1,5 @@
 var express       = require('express');
 var artGunRouter  = express.Router();
-var shopifyAPI    = require('shopify-node-api');
 var request       = require('request');
 var sha1          = require('js-sha1');
 var models        = require('../models');
@@ -287,7 +286,8 @@ artGunRouter.post('/orders/new', function(req, res) {
 artGunRouter.post('/shipments/update', function(req,res) {
   console.log("req body is: " + req.body);
   console.log("total req is: " + req);
-  console.log("sig might be: " + req.body.signature);
+  console.log("sig is: " + req.body.signature);
+  console.log("data is " + req.body.data);
 
 
   // if (authArtGunReq() === true) {
