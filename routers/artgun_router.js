@@ -288,34 +288,34 @@ artGunRouter.post('/shipments/update', function(req,res) {
   console.log("total req is: " + req);
   console.log("sig is: " + req.body.signature);
   console.log("data is " + req.body.data);
+  console.log(authArtGunReq());
 
 
-  // if (authArtGunReq() === true) {
-  //   var resJSON = {};
-  //   var orderReceiptID = "";
-  //   var orderPrimaryKey = "";
+
+    var resJSON = {};
+    var orderReceiptID = "";
+    var orderPrimaryKey = "";
     
-  //   Order.findOne({
-  //     where: {OrderID: req.body.xid} })
-  //   .then(function(order){
-  //     orderReceiptID = order.EndpointResponseID;
-  //     orderPrimaryKey = order.id;
-  //     console.log('heres the order receipt id... ' + orderReceiptID);
-  //     Shipment.create({
-  //       order_id: orderPrimaryKey,
-  //       status: req.body.status,
-  //       tracking_number: req.body.tracking_number,
-  //       body: req.body
-  //     }).then(function(shipment) {
-  //       resJSON.res = "success";
-  //       resJSON.time = shipment.createdAt;
-  //       resJSON.xid = req.body.xid;
-  //       resJSON.receipt_id = orderReceiptID;
-  //       console.log('shipment req reeceived and persisted' + resJSON);
-  //       res.status(200).send(resJSON);
-  //     });
-  //   });  
-  // };
+    Order.findOne({
+      where: {OrderID: req.body.xid} })
+    .then(function(order){
+      orderReceiptID = order.EndpointResponseID;
+      orderPrimaryKey = order.id;
+      console.log('heres the order receipt id... ' + orderReceiptID);
+      Shipment.create({
+        order_id: orderPrimaryKey,
+        status: req.body.status,
+        tracking_number: req.body.tracking_number,
+        body: req.body
+      }).then(function(shipment) {
+        resJSON.res = "success";
+        resJSON.time = shipment.createdAt;
+        resJSON.xid = req.body.xid;
+        resJSON.receipt_id = orderReceiptID;
+        console.log('shipment req reeceived and persisted' + resJSON);
+        res.status(200).send(resJSON);
+      });
+    });  
 });
 
 
