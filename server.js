@@ -14,7 +14,6 @@ if (process.env.NODE_ENV !== "test") {
   app.use( logger('dev') );
 };
 
-require('dotenv').config();
 
 app.use( bodyParser.urlencoded({ extended: false }) );
 app.use( bodyParser.json() );

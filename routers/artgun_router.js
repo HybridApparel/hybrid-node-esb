@@ -1,4 +1,3 @@
-require('dotenv').load();
 var express       = require('express');
 var artGunRouter  = express.Router();
 var shopifyAPI    = require('shopify-node-api');
