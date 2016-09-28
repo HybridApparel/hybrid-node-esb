@@ -10,129 +10,7 @@ var artGunKey     = process.env.ARTGUN_KEY;
 var artGunSecret  = process.env.ARTGUN_SECRET;
 
 
-// parses shopify webhook JSON and creates new ArtGun order object
-// var shopifyWebhookParser = function(webhookJSON){
-//   var artGunJSON = {};
-//   var totalQuantity = 0;
-//   for (var i=0; i<webhookJSON.line_items.length; i++) {
-//     var lineItem           = {};
-//     var lineItems          = [];
-//     var lineItemAttribute  = {};
-//     var lineItemAttributes = [];
-//     if (webhookJSON.line_items[i].sku.indexOf("POD") != -1) {
-//       totalQuantity = totalQuantity + parseInt(webhookJSON.line_items[i].quantity);
-//       lineItem.name = webhookJSON.line_items[i].title;
-//       lineItem.sku                = webhookJSON.line_items[i].sku;
-//       lineItem.quantity           = parseInt(webhookJSON.line_items[i].quantity);
-//       lineItem.unit_amount        = parseInt(webhookJSON.line_items[i].price);
-//       lineItem.subtotal_amount    = (lineItem.quantity * lineItem.unit_amount);
-//       lineItem.necklabel_binid    = "";
-//       lineItem.hangtag_binid      = "";
-//       lineItemAttribute.type      = "DigitalPrint";
-//       lineItemAttribute.location  = "CF";
-//       lineItemAttribute.thumbnail = webhookJSON.line_items[i].properties[0].value;
-//       lineItemAttribute.preview   = webhookJSON.line_items[i].properties[0].value;
-//       lineItemAttribute.file_url  = webhookJSON.line_items[i].properties[0].value;
-//       lineItemAttribute.file_extension = "png";
-//       lineItemAttributes.push(lineItemAttribute);
-//       lineItem.attributes = lineItemAttributes;
-//       lineItems.push(lineItem);
-//     };
-//   };
-//   artGunJSON.type = "order";
-//   artGunJSON.time = webhookJSON.created_at;
-//   artGunJSON.method = "create";
-//   artGunJSON.mode = "debug";
-//   artGunJSON.status = "In Production";
-//   artGunJSON.status_code = "6";
-//   artGunJSON.xid = webhookJSON.name;
-//   artGunJSON.notes = webhookJSON.note;
-//   artGunJSON.shiplabel_url = "";
-//   artGunJSON.pack_url = "";
-//   artGunJSON.giftnote_comment = null;
-//   artGunJSON.shipping_carrier = null;
-//   artGunJSON.shipping_priority = webhookJSON.shipping_lines[0].title;
-//   artGunJSON.shipping_account = null;
-//   artGunJSON.shipping_name = webhookJSON.shipping_address.first_name + " " + webhookJSON.shipping_address.last_name;
-//   artGunJSON.shipping_address1 = webhookJSON.shipping_address.address1;
-//   artGunJSON.shipping_address2 = webhookJSON.shipping_address.address2;
-//   artGunJSON.shipping_city = webhookJSON.shipping_address.city;
-//   artGunJSON.shipping_state = webhookJSON.shipping_address.province;
-//   artGunJSON.shipping_country = webhookJSON.shipping_address.country;
-//   artGunJSON.shipping_zipcode = webhookJSON.shipping_address.zip;
-//   artGunJSON.shipping_phone = webhookJSON.shipping_address.phone;
-//   artGunJSON.shipping_email = webhookJSON.email;
-//   artGunJSON.items_quantity = totalQuantity;
-//   artGunJSON.items_amount = webhookJSON.subtotal_price;
-//   artGunJSON.items_tax = webhookJSON.total_tax;
-//   artGunJSON.items = lineItems;
-//   return artGunJSON;
-// };
 
-// test order JSON for ArtGun
-
-var hybridTestOrder = {         
-  "type": "ORDER",
-  "time": "Mon, 05 Sep 2016 11:48:13 ­0600",
-  "method": "create",
-  "mode": "debug",
-  "status": "In Production",
-  "status_code": "6",
-  "xid": "TEST0004",
-  "notes": "Hybrid Order Test",
-  "shiplabel_url": "",
-  "pack_url": "",
-  "giftnote_comment": "",
-  "shipping_carrier": "MI",
-  "shipping_priority": "4272",
-  "shipping_account": "",
-  "shipping_name": "Avery Ma",
-  "shipping_address1": "5757 Plaza Dr",
-  "shipping_address2": "Ste 250",
-  "shipping_city": "Cypress",
-  "shipping_state": "CA",
-  "shipping_country": "US",
-  "shipping_zipcode": "90630",
-  "shipping_phone": "7142432538",
-  "shipping_email": "ama@hybridapparel.com",
-  "items_quantity": "1",
-  "items_amount": "",
-  "items_tax": "",
-  "items": [{
-    "name": "Test Art ",          
-    "sku": "10290403",           
-    "quantity": "1",    
-    "unit_amount": "",            
-    "subtotal_amount": "",     
-    "necklabel_binid": "",       
-    "hangtag_binid": "",         
-    "attributes": [      
-    {           
-      "type": "DigitalPrint",
-      "location": "CF",
-      "thumbnail": "https://cdn.shopify.com/s/files/1/1377/6091/files/DNY-2913_ART.png?17912944270534919095",
-      "preview": "https://cdn.shopify.com/s/files/1/1377/6091/files/DNY-2913_ART.png?17912944270534919095",
-      "file_url": "https://cdn.shopify.com/s/files/1/1377/6091/files/DNY-2913_ART.png?17912944270534919095",
-      "file_extension": "png"
-    }
-    ]           
-  }           
-  ]           
-};
-
-// create native order JSON to test SHA1 hash against one ArtGun provided
-
-// var hybridBasicTestOrderObject = {"type":"ORDER"}; 
-
-// creates signature used in ArtGun API calls
-
-// var artGunSig = function (orderObject) {
-//   sha1(artGunSecret + "7611759cca374078933a55a2f3c836bf" + JSON.stringify(orderObject));
-// }
-
-// concatenates the ArtGun Key, order JSON, and computed ArtGun signature
-
-// var artGunPostBody = "Key=7611759cca374078933a55a2f3c836bf" + "&data=" + JSON.stringify(hybridTestOrder) + "&signature=" + artGunSig;
 
 // takes order JSON as an input, and makes POST call to ArtGun API to create new order
 
@@ -279,7 +157,7 @@ artGunRouter.post('/orders/new', function(req, res) {
   var artGunPostBody = "Key=" + artGunKey + "&data=" + JSON.stringify(orderReqBody) + "&signature=" + artGunSig;
   newArtGunPostReq(artGunPostBody);
   console.log('end of post route...');
-  res.status(200).send('sending end of post route...');
+  res.status(200).send('order received and will be processed');
 });
 
 // POST route for ArtGun shipment updates
@@ -293,7 +171,7 @@ artGunRouter.post('/shipments/update', function(req,res) {
 
 
   if (authArtGunReq(req.body) == true) {
-    
+
     var resJSON = {};
     var orderReceiptID = "";
     var orderPrimaryKey = "";
