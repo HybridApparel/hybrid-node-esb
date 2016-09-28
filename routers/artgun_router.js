@@ -166,7 +166,7 @@ var authArtGunReq = function (artGunShipReq) {
 
 var persistNewOrder = function (newOrderJSON) {
   Order.create({
-    OrderID: newOrderJSON.OrderID,
+    OrderID: newOrderJSON.orderJSON.xid,
     isProcessed: false,
     Body: newOrderJSON.orderJSON
   }).then(function(newOrderRecord) {
@@ -199,7 +199,7 @@ var persistArtGunResError = function(artGunRes) {
   Order.findOne({
     where: {OrderID: artGunRes.xid}
   }).then(function (order) {
-    console.log('artgun res to db is ...  ' + artGunRes);
+    console.log('artgun res to db plus found order is ...  ' + artGunRes + order);
     order.update({
       EndpointResponseID: artGunRes.receipt_id,
       EndpointResponseBody: artGunRes,
