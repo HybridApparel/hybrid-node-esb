@@ -157,6 +157,7 @@ var authArtGunReq = function (artGunShipReq) {
     console.log('request not accepted - invalid credentials and signature');
     return false;
   } else if (hashedSig == artGunShipReq.signature) {
+    console.log('valid creds');
     return true;
   };
 };
@@ -287,8 +288,8 @@ artGunRouter.post('/shipments/update', function(req,res) {
   console.log("req body is: " + req.body);
   console.log("total req is: " + req);
   console.log("sig is: " + req.body.signature);
-  console.log("data is " + req.body.data.xid);
-  console.log(authArtGunReq(req.body));
+  console.log("data is " + JSON.parse(req.body.data).xid);
+  authArtGunReq(req.body);
 
 
 
