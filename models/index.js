@@ -14,9 +14,9 @@ if (config.use_env_variable) {
   var sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
-if (process.env.HEROKU_POSTGRESQL_PURPLE_URL) {
+if (process.env.DATABASE_URL) {
     // the application is executed on Heroku ... use the postgres database
-    sequelize = new Sequelize(process.env.HEROKU_POSTGRESQL_PURPLE_URL, {
+    sequelize = new Sequelize(process.env.DATABASE_URL, {
       dialect:  'postgres',
       protocol: 'postgres',
       logging:  true //false
