@@ -2,6 +2,7 @@ var express       = require('express');
 var artGunRouter  = express.Router();
 var request       = require('request');
 var sha1          = require('js-sha1');
+var validator     = require('validator');
 var models        = require('../models');
 var Order         = models.orders;
 var Shipment      = models.shipments;
@@ -9,21 +10,12 @@ var Shipment      = models.shipments;
 var artGunKey     = process.env.ARTGUN_KEY;
 var artGunSecret  = process.env.ARTGUN_SECRET;
 
+// adds some basic validation on incoming new order POSTs
 
-// takes order JSON as an input, and makes POST call to ArtGun API to create new order
-
-var artgunPostReq = function(orderDataJSON) {
-  request.post(
-    'http://75.119.176.75/artgunservicetest/OrderService.svc/PlaceOrder',
-    { 'content-type': 'text/plain', body: orderDataJSON },
-    function (error, response, body) {
-        var artGunRes = JSON.stringify(response);
-        if ( !error && response.statusCode == 200 ) {
-            console.log('new post call worked -- ' + artGunRes);
-        };
-    }
-  );
+var validateOrderJSON = function (rawOrderJSON) {
+  
 };
+
 
 // verifies shipment notification from ArtGun with SHA1 hashed sum of shared secret, key, and data object
 
