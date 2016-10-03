@@ -163,6 +163,7 @@ artGunRouter.post('/orders/new', function(req, res) {
 // POST route for ArtGun shipment updates
 
 artGunRouter.post('/shipments/update', function(req,res) {
+  console.log(req.body);
   authArtGunReq(req.body);
   if (authArtGunReq(req.body) == true) {
     var resJSON = {};
