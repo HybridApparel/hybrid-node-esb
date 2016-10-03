@@ -1,4 +1,4 @@
-var express       = require('express');
+ var express       = require('express');
 var artGunRouter  = express.Router();
 var request       = require('request');
 var sha1          = require('js-sha1');
@@ -168,14 +168,10 @@ artGunRouter.post('/shipments/update', function(req,res) {
   console.log("sig is: " + req.body.signature);
   console.log("data is " + JSON.parse(req.body.data).xid);
   authArtGunReq(req.body);
-
-
   if (authArtGunReq(req.body) == true) {
-
     var resJSON = {};
     var orderReceiptID = "";
-    var orderPrimaryKey = "";
-    
+    var orderPrimaryKey = "";    
     Order.findOne({
       where: {OrderID: JSON.parse(req.body.data).xid} })
     .then(function(order){
@@ -198,7 +194,6 @@ artGunRouter.post('/shipments/update', function(req,res) {
     });  
   };
 });
-
 
 
 module.exports = artGunRouter;
