@@ -33,7 +33,12 @@ var authArtGunReq = function (artGunShipReq) {
   var hashedSig = sha1(artGunSecret + artGunKey + artGunShipReq.data);
   if (hashedSig !== artGunShipReq.signature) {
     console.log('request not accepted - invalid credentials and signature');
-    return false;
+    var errorRes = {
+      "error": "403 - authentication failed, invalid signature - request not received",
+      "code": "1",
+      "message": "signature does not match sha1(secret + key + data)"
+    };
+    return resJSON;
   } else if (hashedSig == artGunShipReq.signature) {
     console.log('valid creds');
     return true;
@@ -163,10 +168,9 @@ artGunRouter.post('/orders/new', function(req, res) {
 // POST route for ArtGun shipment updates
 
 artGunRouter.post('/shipments/update', function(req,res) {
-  console.log(req.body);
+  var resJSON = {};
   authArtGunReq(req.body);
   if (authArtGunReq(req.body) == true) {
-    var resJSON = {};
     var orderReceiptID = "";
     var orderPrimaryKey = "";    
     Order.findOne({
