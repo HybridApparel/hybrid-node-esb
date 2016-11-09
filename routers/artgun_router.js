@@ -161,25 +161,22 @@ artGunRouter.get('/orders/new', function(req, res) {
   res.status(200).send( "get req working" );
 });
 
-// POST route to create a new order to send to ArtGun
+// POST route to create a new order to send to ArtGun; calls authHybridReq to authorize, then persistNewOrder
+// to persist the order data, then calls newArtGunPostReq to send the order data to ArtGun
 
 artGunRouter.post('/orders/new', function(req, res) {
   var orderReqBody = req.body.orderJSON;
-  persistNewOrder(req.body);
-  var artGunSig = sha1(artGunSecret + artGunKey + JSON.stringify(orderReqBody));
-  var artGunPostBody = "Key=" + artGunKey + "&data=" + JSON.stringify(orderReqBody) + "&signature=" + artGunSig;
-  newArtGunPostReq(artGunPostBody);
-  console.log('end of post route...');
-  res.status(200).send('order received and will be processed');
-});
-
-artGunRouter.post('/orders/newTest', function(req, res) {
+  authHybridReq(req.body);
   if (authHybridReq(req.body) == true) {
     console.log("hybrid sig verified");
-    res.status(200).send("sig verified");
+    persistNewOrder(req.body);
+    var artGunSig = sha1(artGunSecret + artGunKey + JSON.stringify(orderReqBody));
+    var artGunPostBody = "Key=" + artGunKey + "&data=" + JSON.stringify(orderReqBody) + "&signature=" + artGunSig;
+    newArtGunPostReq(artGunPostBody);
+    res.status(200).send('order received and will be processed');
   } else if (authHybridReq(req.body) != true) {
-    console.log("invalid sig");
-    res.send("invalid sig");
+    console.log("invalid signature");
+    res.status(403).send("invalid signature");
   };
 });
 
