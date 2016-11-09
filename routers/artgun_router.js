@@ -25,7 +25,7 @@ var authArtGunReq = function (artGunShipReq) {
       "code": "1",
       "message": "signature does not match sha1(secret + key + data)"
     };
-    return resJSON;
+    return errorRes;
   } else if (hashedSig == artGunShipReq.signature) {
     console.log('valid creds');
     return true;
@@ -38,12 +38,12 @@ var authHybridReq = function (hybridOrderReq) {
   var hybridSig = sha1(hybridSecret + hybridOrderReq.key + JSON.stringify(hybridOrderReq.orderJSON) );
   if (hybridSig !== hybridOrderReq.signature) {
     console.log('request not accepted - invalid credentials and signature');
-    var errorRes = {
+    var hybridErrorRes = {
       "error": "403 - authentication failed, invalid signature - request not received",
       "code": "1",
       "message": "signature does not match"
     };
-    return hybridResJSON;
+    return hybridErrorRes;
   } else if (hybridSig == hybridOrderReq.signature) {
     console.log('valid creds');
     return true;
