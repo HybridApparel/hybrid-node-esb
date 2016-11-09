@@ -35,7 +35,11 @@ var authArtGunReq = function (artGunShipReq) {
 // verifies new order requests from Hybrid
 
 var authHybridReq = function (hybridOrderReq) {
-  var hybridSig = sha1(hybridSecret + hybridOrderReq.key + JSON.stringify(hybridOrderReq.orderJSON) );
+  var hybridSig = sha1(hybridSecret + hybridKey + JSON.stringify(hybridOrderReq.orderJSON) );
+  console.log("key is " + hybridKey);
+  console.log("secret is " + hybridSecret);
+  console.log("req sig is " + hybridOrderReq.signature);
+  console.log("computed sig is " + hybridSig);
   if (hybridSig !== hybridOrderReq.signature) {
     console.log('request not accepted - invalid credentials and signature');
     var hybridErrorRes = {
