@@ -1,4 +1,4 @@
- var express       = require('express');
+var express       = require('express');
 var artGunRouter  = express.Router();
 var request       = require('request');
 var sha1          = require('js-sha1');
@@ -8,6 +8,8 @@ var Shipment      = models.shipments;
 
 var artGunKey     = process.env.ARTGUN_KEY;
 var artGunSecret  = process.env.ARTGUN_SECRET;
+var hybridKey     = process.env.HYBRID_KEY;
+var hybridSecret  = process.env.HYBRID_SECRET;
 
 
 
@@ -20,7 +22,9 @@ var artgunPostReq = function(orderDataJSON) {
     { 'content-type': 'text/plain', body: orderDataJSON },
     function (error, response, body) {
         var artGunRes = JSON.stringify(response);
-        if ( !error && response.statusCode == 200 ) {
+        if (error || artGunRes.) {
+
+        } else if ( !error && response.statusCode == 200 ) {
             console.log('new post call worked -- ' + artGunRes);
         };
     }
@@ -40,6 +44,24 @@ var authArtGunReq = function (artGunShipReq) {
     };
     return resJSON;
   } else if (hashedSig == artGunShipReq.signature) {
+    console.log('valid creds');
+    return true;
+  };
+};
+
+// verifies new order requests from Hybrid
+
+var authHybridReq = function (hybridOrderReq) {
+  var hybridSig = sha1(hybridSecret + hybridOrderReq.key + JSON.stringify(hybridOrderReq.orderJSON) );
+  if (hybridSig !== hybridOrderReq.signature) {
+    console.log('request not accepted - invalid credentials and signature');
+    var errorRes = {
+      "error": "403 - authentication failed, invalid signature - request not received",
+      "code": "1",
+      "message": "signature does not match"
+    };
+    return hybridResJSON;
+  } else if (hybridSig == hybridOrderReq.signature) {
     console.log('valid creds');
     return true;
   };
@@ -114,7 +136,6 @@ var newArtGunPostReq = function (orderDataJSON) {
       persistArtGunResError(artGunResBody);
       console.log('error processing order to ArtGun - please check ArtGun error... ' + JSON.stringify(artGunResBody));
     };
-    console.log('heres the response...' + JSON.stringify(artGunResBody));
   });
 };
 
@@ -163,6 +184,16 @@ artGunRouter.post('/orders/new', function(req, res) {
   newArtGunPostReq(artGunPostBody);
   console.log('end of post route...');
   res.status(200).send('order received and will be processed');
+});
+
+artGunRouter.post('/orders/newTest', function(req, res) {
+  if (authHybridReq(req.body) == true) {
+    console.log("hybrid sig verified");
+    res.status(200).send("sig verified");
+  } else if (authHybridReq(req.body) != true) {
+    console.log("invalid sig");
+    res.send("invalid sig");
+  };
 });
 
 // POST route for ArtGun shipment updates

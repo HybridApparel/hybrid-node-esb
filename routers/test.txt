@@ -1,0 +1,76 @@
+{ 
+  {
+   "type": "ORDER",
+   "time": "Fri, 09 Dec 2011 11:48:13 ­0800",
+   "method": "create",
+   "mode": "auto",
+   "status": "In Production",
+   "status_code": "6",
+   "xid": "12345678",
+   "notes": "Special Instructions",
+   "shiplabel_url": "https://partner.com/ship?id=12345678",
+   "pack_url": "https://partner.com/receipt?id=12345678",
+  
+   "giftnote_comment": "comment",
+   "shipping_carrier": "DHL",
+   "shipping_priority": "GROUND",
+   "shipping_account": "AG12345678",
+   "shipping_name": "ArtGun",
+   "shipping_address1": "16085 nw 52nd ave",
+   "shipping_address2": "Apt 100",
+   "shipping_city": "Miami Lakes",
+   "shipping_state": "FL",
+   "shipping_country": "US",
+   "shipping_zipcode": "33014",
+   "shipping_phone": "3059081777",
+   "shipping_email": "support@ArtGunmiami.com",
+   "billing_name": "ArtGun",
+   "billing_address1": "16085 nw 52nd ave",
+   "billing_address2": "Apt 100",
+   "billing_city": "Miami Lakes",
+   "billing_state": "FL",
+   "billing_country": "US",
+   "billing_zipcode": "33014",
+   "billing_phone": "3059081777",
+   "billing_email": "support@ArtGunmiami.com",
+   "items_quantity": "1",
+   "items_amount": "8.00",
+   "items_tax": "8.00",
+   "items": [
+   {
+     "name": "Blue Sky",
+     "sku": "10220201",
+     "quantity": "1",
+     "unit_amount": "8.00",
+     "subtotal_amount": "8.00",
+     "necklabel_binid": "156",
+     "hangtag_binid": "13",
+     "attributes": [
+     {
+       "type": "DigitalPrint",
+       "location": "CF",
+       "thumbnail": "http://partner.com/thumbnail.jpg",
+       "preview": "http://partner.com/preview.jpg",
+       "file_url": "https://partner.com/printimage",
+       "file_extension": "png",
+       "file_size": "330778",
+       "file_hash": "4c9ab9c2de80beecb1180d49",
+       "width" : "6",
+       "height": "8"
+     },
+     {
+       "type": "HeatTransfer",
+       "location": "FNL",
+       "thumbnail": "http://partner.com/thumbnail.jpg",
+       "preview": "http://partner.com/preview.jpg"
+     },
+     {
+       "type": "HangTag",
+       "location": "FN",
+       "thumbnail": "http://partner.com/thumbnail.jpg",
+       "preview": "http://partner.com/preview.jpg"
+     }
+     ]
+   }
+   ]
+ } 

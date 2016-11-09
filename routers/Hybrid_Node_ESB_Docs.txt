@@ -1,0 +1,592 @@
+
+New Order Requests
+
+The requesting system will make a HTTP POST request to the following API endpoint with new order information.
+
+https://tranquil-fortress-90513.herokuapp.com/artGun/orders/new/
+
+The body of the request will be in raw text containing an object with several key value pairs. First is a JSON object with the New Order information paired with a key of "orderJSON".  The two other required key value pairs are "key" which is the Hybrid API key, along with "signature" which is computed with the formula: 
+
+sha1( API Secret + API Key + JSON.stringify(orderJSON) ).  
+
+Please find a sample request below, followed by definitions and notes on the fields.
+
+
+
+Sample New Order request:
+
+
+POST /artGun/orders/new/ HTTP/1.1
+Host: tranquil-fortress-90513.herokuapp.com
+Content-Type: application/json
+Cache-Control: no-cache
+
+
+{
+  "orderJSON":{         
+    "type": "ORDER",
+    "time": "Fri, 30 Sep 2016 11:48:13 ­0600",
+    "method": "create",
+    "mode": "auto",
+    "status": "In Production",
+    "status_code": "6",
+    "xid": "ABC123",
+    "notes": "Hybrid Order Test",
+    "shiplabel_url": "",
+    "pack_url": "",
+    "giftnote_comment": "",
+    "shipping_carrier": "MI",
+    "shipping_priority": "4272",
+    "shipping_account": "",
+    "shipping_name": "Joe Foo",
+    "shipping_address1": "123 Main Street",
+    "shipping_address2": "Apt 3",
+    "shipping_city": "Anytown",
+    "shipping_state": "NY",
+    "shipping_country": "US",
+    "shipping_zipcode": "11221",
+    "shipping_phone": "8471231234",
+    "shipping_email": "joe.foo@bar.com",
+    "items_quantity": "1",
+    "items_amount": "0",
+    "items_tax": "0",
+    "items": [{
+      "name": "Bacon",          
+      "sku": "10290403",           
+      "quantity": "1",    
+      "unit_amount": "",            
+      "subtotal_amount": "",     
+      "necklabel_binid": "",       
+      "hangtag_binid": "",         
+      "attributes": [      
+      {           
+        "type": "DigitalPrint",
+        "location": "CF",
+        "thumbnail": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_THUMB_WRD-8479.png?13376761505423016394",
+        "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_WRD-8479.png?13376761505423016394",
+        "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/WRD-8479_FPO-01.png?13376761505423016394",
+        "file_extension": "png"
+      },
+      {           
+        "type": "DigitalPrint",
+        "location": "FB",
+        "thumbnail": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_THUMB_WRD-8479.png?13376761505423016394",
+        "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_WRD-8479.png?13376761505423016394",
+        "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/WRD-8479_FPO-01.png?13376761505423016394",
+        "file_extension": "png"
+      },
+      {
+       "type": "HangTag",
+       "location": "FN",
+       "thumbnail": "http://partner.com/thumbnail.jpg",
+       "preview": "http://partner.com/preview.jpg"
+     }
+     ]           
+   }]           
+ },
+ "OrderID":"ABC123",
+ "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
+ "signature": "6f3f69a136ea02c91c703df69060e898b9d4bc15"
+}
+
+
+orderJSON: the JSON object containing the new order information
+
+key: the Hybrid ESP Api Key
+
+signature: the request's authentication signature computed by: sha1( API Secret + API Key + JSON.stringify(orderJSON) )
+
+Order Attributes
+
+type: Always ‘order’ for a new order request; required
+
+time: the time you want associated with the new order request; required
+
+method: always ‘create’ for a new order request; required
+
+mode: production/test flag: auto: represents a production order that will be fulfilled and shipped; debug: represents a test order that will not be fulfilled or shipped; used for testing purposes; required
+
+status: Always ‘In Production’ for a new order request; required
+
+status_code: Always ‘6’ for a new order request; required
+
+xid: the unique order id representing your customer order; required
+
+notes: any notes you want to associated with the order
+
+shiplabel_url: If you are generating your own shipping labels for each order, then specify a URL to your shipping label. Otherwise, leave as an empty string or do not send this property.
+
+pack_url: If you are generating your own packing slips for each order, then specify a URL to your packing list. Otherwise, leave as an empty string or do not send this property.
+
+giftnote_comment: Gift note text that you want to appear on the order packing list. Max length 128 characters.
+
+shipping_carrier: The shipping carrier that will be used to ship the order; ArtGun will provide the values to use for this property based on the shipping methods you want to use; ArtGun provided "MI" to be used. Required.
+
+shipping_priority: The shipping method that will be used to ship the order; ArtGun will provide the carrier code to use based on the shipping methods you want to use; ArtGun provided "4272".  Required.
+
+shipping_account: The account # of the shipping account that the shipment will be billed to; only used when ArtGun should bill shipments to a 3rd party account.
+
+shipping_name: Ship to address contact name. Required. Max length 40 characters.
+
+shipping_address1: ship to address line 1. Required. Max length 40 characters.
+
+shipping_address2: ship to address line 2. Required. Max length 40 characters.
+
+shipping_city: ship to address city. Required. Max length 40 characters.
+
+shipping_state: ship to address state/province/region; certain countries require a 2-character code, please refer to Appendix – State Codes for a list of those countries; for all other countries, either leave blank or specify a name. Required.
+
+shipping_country: ship to address country code; see Appendix - Country Codes for a list of the allowed country codes. Required.
+
+shipping_zipcode: ship to address zip code/postal code. Required for domestic shipments.
+
+shipping_phone: phone number associated with ship to address; if this is not available for your orders, then either provide your customer service number (preferred), or ‘000-000-0000’. Required. Max length 15 characters.
+
+shipping_email: email address associated with ship to address; must be a properly formatted email address. Max length 65 characters.
+
+billing_name: bill to address contact name. Max length 40 characters.
+
+billing_address1: bill to address line 1. Max length 40 characters.
+
+billing_address2: bill to address line 2. Max length 40 characters.
+
+billing_city: bill to address city. Max length 40 characters.
+
+billing_state: bill to address state/province/region; for US, Canada, and Australia, the state code abbreviation should be used (see Appendix – State Codes); for other countries, use a name.
+
+billing_country: bill to address country code; see Appendix - Country Codes for a list of the allowed country codes
+
+billing_zipcode: bill to address zip code/postal code. Max lenght 10 characters.
+
+billing_phone: phone number associated with bill to address; must contain digits only, no special characters. Max length 15 characters.
+
+billing_email: email address associated with bill to address; must be a properly formatted email address. Max length 65 characters
+
+items_quantity: the total number of line items on this order.
+
+items_amount: the total retail price of all line items on this order
+
+items_tax: the total item tax of all items on this order
+
+Items - an array of items
+
+name: the description of the product that you want us to associate with the SKU value you provided. Required. Max length 65 characters.
+
+sku: the product SKU; ArtGun will provide this value for each SKU you have enabled in ArtGun inventory. Required.
+
+quantity: the quantity of this SKU/design combination to ship. Required.
+
+unit_amount: the unit price you invoice your customer for this item.
+
+subtotal_amount: the total line item price you invoice your customer for this item (quantity x unit_amount).
+
+necklabel_binid: the warehouse bin ID location of the neck label to use for this sku/design; required only in cases where different neck labels can be applied to the same SKU/design.
+
+hangtag_binid: the warehouse bin ID location of the neck label to use for this sku/design; required only in cases where different neck labels can be applied to the same SKU/design.
+
+Attributes – an array of Item attributes
+
+type: The type of design or additional feature applied to garment. Required.
+     • "DigitalPrint" – a printed design that will go on the front/back of a garment
+     • "HeatTransfer" - a neck label
+     • "HangTag" - a hang tag
+
+location: Location of design element on garment. Required.
+     • For type="DigitalPrint", must be either:
+          o "CF" – image will be printed on the front of the garment (Center Front)
+          o "FB” - image will be printed on the back of the garment (Full Back)
+     • For type="HeatTransfer", must be "FNL"
+     • For type="HangTag", must be: "FN"
+
+thumbnail: URL of the thumbnail image associated with the design/neck label/hangtag. Required
+
+preview: URL of the preview image associated with the design/neck label/hangtag. Required.
+
+file_url: URL of the print image associated with the design. Required.
+
+file_extension: file extension of image file - either "jpg" or "png". Required.
+
+
+
+Appendix - Country Codes
+Code Province
+
+AF Afghanistan
+AL Albania
+DZ Algeria
+AS American Samoa AD Andorra
+AO Angola
+AI Anguilla
+AG Antigua and Barbuda
+AR Argentina
+AM Armenia
+AW Aruba
+AU Australia
+AT Austria
+AZ Azerbaijan
+AP Azores
+BS Bahamas
+BH Bahrain
+BD Bangladesh
+BB Barbados
+BY Belarus
+BE Belgium
+BZ Belize
+BJ Benin
+BM Bermuda
+BT Bhutan
+BO Bolivia
+BL Bonaire
+BA Bosnia and Herzegovina
+BW Botswana
+BV Bouvet Island
+BR Brazil
+IO British Indian Ocean Territory BN Brunei Darussalam
+BG Bulgaria
+BF Burkina Faso
+BI Burundi
+KH Cambodia
+CM Cameroon
+CA Canada
+IC Canary Islands
+CV Cape Verde
+KY Cayman Islands
+CF Central African Republic TD Chad
+CL Chile
+CN China
+CX Christmas Island
+CC Cocos (Keeling) Islands
+CO Colombia
+KM Comoros
+CD Congo (Democratic Republic of) CK Cook Islands
+CR Costa Rica
+CI Cote D’Ivoire (Ivory Coast)
+HR Croatia (Hrvatska)
+CU Cuba
+CB Curacao
+CY Cyprus
+CZ Czech Republic
+DK Denmark
+DJ Djibouti
+DM Dominica
+DO Dominican Republic
+TP East Timor
+EC Ecuador
+EG Egypt
+SV El Salvador
+EN England
+GQ Equatorial Guinea
+ER Eritrea
+EE Estonia
+ET Ethiopia
+FO Faeroe Islands
+FK Falkland Islands (Malvinas) FJ Fiji
+FI Finland
+FR France
+GF French Guiana
+PF French Polynesia
+TF French Sothern Territories GA Gabon
+GM Gambia
+GE Georgia
+DE Germany
+GH Ghana
+GI Gibraltar
+GB Great Britain (UK) UK Great Britain (UK) GR Greece
+GL Greenland
+GD Grenada
+GP Guadeloupe
+GU Guam
+GT Guatemala
+GG Guernsey
+GN Guinea
+GW Guinea-Bissau
+GY Guyana
+HT Haiti
+HM Heard Island and McDonald Islands
+HN Honduras
+HK Hong Kong HU Hungary
+IS Iceland
+IN India
+ID Indonesia IQ Iraq
+IE Ireland
+IL Israel
+IT Italy
+JM Jamaica
+JP Japan
+JE Jersey
+JO Jordan
+KZ Kazakhstan
+KE Kenya
+KI Kiribati
+KO Kosrae KW Kuwait
+KG Kyrgyzstan LA Laos
+LV Latvia
+LB Lebanon
+LS Lesotho
+LR Liberia
+LY Libya
+LI Liechtenstein
+LT Lithuania
+LU Luxembourg
+MO Macau
+MK Macedonia
+MG Madagaskar ME Madeira
+MW Malawi
+MY Malaysia
+MV Maldives
+ML Mali
+MT Malta
+MH Marshall Islands
+MQ Martinique
+MR Mauritania
+MU Mauritius
+YT Mayotte
+MX Mexico
+FM Micronesia MD Moldova
+MC Monaco
+MN Mongolia ME Montenegro MS Montserrat MA Morocco
+MZ Mozambique MM Myanmar NA Namibia
+NR Nauru
+NP Nepal
+NL Netherlands
+AN Netherlands Antilles
+NT Neutral Zone
+NC New Caledonia
+NZ New Zealand (Aotearoa) NI Nicaragua
+NE Niger
+NG Nigeria
+NU Niue
+NF Norfolk Island
+KP North korea
+NB Northern Ireland
+MP Northern Mariana Islands NO Norway
+OM Oman
+PK Pakistan
+PW Palau
+PA Panama
+PG Papua New Guinea
+PY Paraguay
+PE Peru
+PH Philippines
+PN Pitcairn
+PL Poland
+PO Ponape
+PT Portugal
+PR Puerto Rico
+QA Qatar
+RE Reunion
+RO Romania
+RT Rota
+RU Russian Federation
+RW Rwanda
+SS Saba
+KN Saint Kitts and Nevis
+LC Saint Lucia
+VC Saint Vincent and the Grenadines SP Saipan
+WS Samoa
+SM San Marino
+ST Sao Tome and Principe
+SA Saudi Arabia
+SF Scotland
+SN Senegal
+RS Serbia
+SC Seychelles
+SL Sierra Leone
+SG Singapore
+SK Slovak Republic
+SI Slovenia
+SB Solomon Islands
+SO Somalia
+ZA South Africa
+GS South Georgia and South Sandwich Islands KR South Korea
+ES Spain
+LK Sri Lanka
+BL St. Barthelemy
+SW St. Christopher
+VI St. Croix
+EU St. Eustatius
+SH St. Helena
+UV St. John
+KN St. Kitts and Nevis
+LC St. Lucia
+MB St. Maarten
+TB St. Martin
+PM St. Pierre and Miquelon
+VL St. Thomas
+VC St. Vincent/Grenadine
+SD Sudan
+SR Suriname
+SJ Svalbard and Jan Mayen Islands
+SZ Swaziland
+SE Sweden
+CH Switzerland
+SY Syria
+TA Tahiti
+TW Taiwan TJ Tajikistan TZ Tanzania
+TH Thailand
+TI Tinian
+TG Togo TK Tokelau TO Tonga TL Tortola
+TT Trinidad and Tobago
+TU Truk
+TN Tunisia
+TR Turkey
+TM Turkmenistan
+TC Turks and Caicos Islands
+TV Tuvalu
+UG Uganda
+UA Ukraine
+UI Union Island
+AE United Arab Emirates
+US United States
+UY Uruguay
+UM US Minor Outlying Islands SU USSR (former)
+UZ Uzbekistan
+VU Vanuatu
+VA Vatican City State (Holy See) VE Venezuela
+VN Vietnam
+VR Virgin Gorda
+VG Virgin Islands (British)
+VI Virgin Islands (U.S.)
+WL Wales
+WF Wallis and Futuna Islands WS Western Samoa
+YA Yap
+YE Yemen
+ZR Zaire
+ZM Zambia
+ZW Zimbabwe
+
+
+Appendix ­US State Codes
+Code State
+
+AL Alabama
+AK Alaska
+AZ Arizona
+AR Arkansas
+CA California
+CO Colorado
+CT Connecticut
+DE Delaware
+DC District of Columbia FL Florida
+GA Georgia
+HI Hawaii
+ID Idaho
+IL Illinois
+IN Indiana
+IA Iowa
+KS Kansas
+KY Kentucky
+LA Louisiana
+ME Maine
+MD Maryland
+MA Massachusetts MI Michigan
+MN Minnesota
+MS Mississippi
+MO Missouri
+MT Montana
+NE Nebraska
+NV Nevada
+NH New Hampshire NJ New Jersey
+NM New Mexico NY New York
+NC North Carolina
+ND North Dakota
+OH Ohio
+OK Oklahoma
+OR Oregon
+PA Pennsylvania RI Rhode Island
+SC South Carolina
+SD South Dakota
+TN Tennessee
+TX Texas
+UT Utah
+VT Vermont
+VA Virginia
+WA Washington
+WV West Virginia
+WI Wisconsin
+WY Wyoming
+AS American Samoa
+GU Guam
+MP Northern Mariana Islands
+PR Puerto Rico
+VI Virgin Islands
+UM U.S. Minor Outlying Islands
+FM Federated States of Micronesia MH Marshall Islands
+PW Palau
+AA U.S. Armed Forces – Americas AE U.S. Armed Forces – Europe AP U.S. Armed Forces – Pacific
+         
+
+Australia
+Code Province
+
+NSW New South Wales
+QLD Queensland
+SA South Australia
+TAS Tasmania
+VIC Victoria
+WA Western Australia
+ACT Australian Capital Territory
+NT Northern Territory
+        
+
+Canada        
+Code Province
+
+AB Alberta
+BC British Columbia
+MB Manitoba
+NB New Brunswick
+NL Newfoundland and Labrador
+NS Nova Scotia
+NT Northwest Territories
+NU Nunavut
+ON Ontario
+PE Prince Edward Island QC Quebec
+SK Saskatchewan
+YT Yukon
+       
+
+Germany 
+Code State
+
+BW Baden-Württemberg BY Bavaria
+BE Berlin
+BB Brandenburg
+HB Bremen
+HH Hamburg
+HE Hesse
+MV Mecklenburg-Western Pomerania NI Lower Saxony
+NW North Rhine-Westphalia RP Rhineland-Palatinate
+SL Saarland
+SN Saxony
+ST Saxony-Anhalt
+SH Schleswig-Holstein TH Thuringia
+       
+ 
+Mexico
+Code State
+
+AG Aguascalientes
+BJ Baja California
+BS Baja California Sur CP Campeche
+CH Chiapas
+CI Chihuahua
+CU Coahuila 
+CL Colima
+DF Distrito Federal
+DG Durango
+GJ Guanajuato GR Guerrero
+HG Hidalgo
+JA Jalisco
+EM Mexico MH Michoacan MR Morelos NA Nayarit
+NL Nuevo Leon OA Oaxaca
+PU Puebla
+QA Queretaro
+QR Quintana Roo SL San Luis Potosi SI Sinaloa
+SO Sonora
+TA Tabasco 
+TM Tamaulipas 
+TL Tlaxcala
+VL Veracruz 
+YC Yucatan
+ZT Zacatecas
