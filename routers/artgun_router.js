@@ -14,23 +14,6 @@ var hybridSecret  = process.env.HYBRID_SECRET;
 
 
 
-// takes order JSON as an input, and makes POST call to ArtGun API to create new order
-
-var artgunPostReq = function(orderDataJSON) {
-  request.post(
-    'http://75.119.176.75/artgunservicetest/OrderService.svc/PlaceOrder',
-    { 'content-type': 'text/plain', body: orderDataJSON },
-    function (error, response, body) {
-        var artGunRes = JSON.stringify(response);
-        if (error || artGunRes.) {
-
-        } else if ( !error && response.statusCode == 200 ) {
-            console.log('new post call worked -- ' + artGunRes);
-        };
-    }
-  );
-};
-
 // verifies shipment notification from ArtGun with SHA1 hashed sum of shared secret, key, and data object
 
 var authArtGunReq = function (artGunShipReq) {
