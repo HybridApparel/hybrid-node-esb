@@ -27,8 +27,6 @@ app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist'));
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 
-var $ = require('jquery');
-var jQuery = require('jquery');
 
 app.use('/artgun', artGunRouter);
 
