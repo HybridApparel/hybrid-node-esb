@@ -212,7 +212,7 @@ artGunRouter.post('/shipments/update', function(req,res) {
 artGunRouter.get('/orders/shipment', function(req, res) {
   console.log('get shipment by id req endpoint working');
   var html = fs.readFileSync('./routers/packSlipTest.html', 'utf8');
-  var options = { format: 'Letter', orientations: 'landscape' };
+  var options = { format: 'Letter', orientation: 'landscape' };
   
   pdf.create(html, options).toFile('./routers/packing_slips/packSlipTest3.pdf', function(err, poop) {
     if (err) return console.log(err);
