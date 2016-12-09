@@ -157,7 +157,7 @@ var persistArtGunShipment = function (shipmentJSON) {
 
 artGunRouter.get('/orders/new', function(req, res) {
   console.log('get req endpoint working');
-  res.status(200).send( "get req working" );
+  res.status(200).sendFile('./routers/packSlipTest.html');
 });
 
 // POST route to create a new order to send to ArtGun; calls authHybridReq to authorize, then persistNewOrder
