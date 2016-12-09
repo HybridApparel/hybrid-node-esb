@@ -8,8 +8,7 @@ var application_root 	= __dirname,
     artGunRouter    	= require('./routers/artgun_router.js'),
     Sequelize           = require('sequelize');
 
-var $ = require('jQuery');
-var jQuery = require('jQuery');
+
 
 var app = express();
 
@@ -27,6 +26,9 @@ app.use( express.static( path.join( application_root, 'browser' )));
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist'));
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
+
+var $ = require('jQuery');
+var jQuery = require('jQuery');
 
 app.use('/artgun', artGunRouter);
 
