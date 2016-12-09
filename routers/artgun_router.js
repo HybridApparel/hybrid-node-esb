@@ -3,6 +3,7 @@ var artGunRouter  = express.Router();
 var request       = require('request');
 var sha1          = require('js-sha1');
 var models        = require('../models');
+var publicStuff   = require ('../public');
 var Order         = models.orders;
 var Shipment      = models.shipments;
 var fs            = require('fs');
