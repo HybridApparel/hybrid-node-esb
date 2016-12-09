@@ -214,11 +214,11 @@ artGunRouter.get('/orders/shipment', function(req, res) {
   var html = fs.readFileSync('./routers/packSlipTest.html', 'utf8');
   var options = { format: 'Letter', orientations: 'landscape' };
   
-  pdf.create(html, options).toFile('./packSlipTest2.pdf', function(err, res) {
+  pdf.create(html, options).toFile('./routers/packing_slips/packSlipTest3.pdf', function(err, poop) {
     if (err) return console.log(err);
-    console.log(res);
+    console.log(poop);
   });
-  res.send('made it');
+  res.sendFile(poop);
 });
 
 
