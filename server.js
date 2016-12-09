@@ -8,6 +8,9 @@ var application_root 	= __dirname,
     artGunRouter    	= require('./routers/artgun_router.js'),
     Sequelize           = require('sequelize');
 
+var $ = require('jQuery');
+var jQuery = require('jQuery');
+
 var app = express();
 
 if (process.env.NODE_ENV !== "test") {
