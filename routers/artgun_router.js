@@ -7,7 +7,6 @@ var Order         = models.orders;
 var Shipment      = models.shipments;
 var fs            = require('fs');
 var pdf           = require('html-pdf');
-var bootstrap     = require('bootstrap');
 
 var artGunKey     = process.env.ARTGUN_KEY;
 var artGunSecret  = process.env.ARTGUN_SECRET;
