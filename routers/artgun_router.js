@@ -211,10 +211,10 @@ artGunRouter.post('/shipments/update', function(req,res) {
 
 artGunRouter.get('/orders/shipment', function(req, res) {
   console.log('get shipment by id req endpoint working');
-  var html = fs.readFileSync('../public/packSlipTest.html', 'utf8', {root: __dirname});
+  var html = fs.readFileSync('./packSlipTest.html', 'utf8');
   var options = { format: 'Letter', orientations: 'landscape' };
   
-  pdf.create(html, options).toFile('../public/packing_slips/packSlipTest.pdf', function(err, res) {
+  pdf.create(html, options).toFile('./packing_slips/packSlipTest.pdf', function(err, res) {
     if (err) return console.log(err);
     console.log(res);
   });
