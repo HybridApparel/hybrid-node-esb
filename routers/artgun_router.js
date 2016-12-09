@@ -5,6 +5,8 @@ var sha1          = require('js-sha1');
 var models        = require('../models');
 var Order         = models.orders;
 var Shipment      = models.shipments;
+var fs            = require('fs');
+var pdf           = require('html-pdf');
 
 var artGunKey     = process.env.ARTGUN_KEY;
 var artGunSecret  = process.env.ARTGUN_SECRET;
