@@ -6,6 +6,8 @@ var models        = require('../models');
 var Order         = models.orders;
 var Shipment      = models.shipments;
 var fs            = require('fs');
+var $             = require('jquery');
+var jQuery        = require('jquery');
 var pdf           = require('html-pdf');
 var bootstrap     = require('bootstrap');
 
