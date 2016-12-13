@@ -214,13 +214,13 @@ artGunRouter.get('/orders/shipment', function(req, res) {
   console.log('get shipment by id req received');
 
   var htmlToPDF = new HTMLToPDF ({
-    inputPath: './routers/packSlipTest.html',
-    outputPath: './routers/packing_slips/packSlipTest3.pdf',
-    renderDelay: 10,
+    inputPath: __dirname + '/packSlipTest.html',
+    outputPath: __dirname + '/packing_slips/packSlipTest3.pdf',
+    renderDelay: 200
   });
 
   htmlToPDF.build(function(error){
-    console.log('did this dot build work?  yes');
+    console.log('did this dot build work? yes');
     console.log('error: ' + err);
     if (err) throw err;
     res.download('./routers/packing_slips/packSlipTest3.pdf');
