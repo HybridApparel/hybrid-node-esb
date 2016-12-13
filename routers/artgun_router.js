@@ -212,14 +212,17 @@ artGunRouter.post('/shipments/update', function(req,res) {
 
 artGunRouter.get('/orders/shipment', function(req, res) {
   console.log('get shipment by id req received');
-  
-  var htmlToPDF = new HTMLToPDF ({
+
+  htmlToPDF = new HTMLToPDF ({
     inputPath: './routers/packSlipTest.html',
-    outputPath: './routers/packing_slips/packSlipTest3.pdf'
+    outputPath: './routers/packing_slips/packSlipTest3.pdf',
+    renderDelay: 100,
+    template: 'htmlbootstrap'
   });
 
   htmlToPDF.build (error) =>
-  throw error if error?
+  throw error if error?;
+
   res.download('./routers/packing_slips/packSlipTest3.pdf');
 
 
