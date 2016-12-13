@@ -231,7 +231,7 @@ artGunRouter.get('/orders/shipment', function(req, res) {
 
   var htmlTest = "<p>here is the test p tag</p>";
 
-  htmlToPDF().from.string(htmlTest).to.buffer({
+  HTMLToPDF().from.string(htmlTest).to.buffer({
     renderDelay: 1000,
     template: 'htmlbootstrap'
   }, function(err, data) {
