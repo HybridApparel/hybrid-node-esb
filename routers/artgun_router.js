@@ -215,6 +215,7 @@ artGunRouter.get('/orders/shipment', function(req, res) {
 
   var htmlToPDF = new HTMLToPDF ({
     inputPath: __dirname + '/packSlipTestBody.html',
+    inputBody: '<p> this is a test bro </p>',
     outputPath: __dirname + '/packing_slips/packSlipTest4.pdf',
     renderDelay: 200,
     template: 'htmlbootstrap'
