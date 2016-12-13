@@ -7,6 +7,7 @@ var Order         = models.orders;
 var Shipment      = models.shipments;
 var fs            = require('fs');
 var pdf           = require('html-pdf');
+var HTMLToPDF     = require 'html5-to-pdf'
 
 var artGunKey     = process.env.ARTGUN_KEY;
 var artGunSecret  = process.env.ARTGUN_SECRET;
@@ -210,16 +211,32 @@ artGunRouter.post('/shipments/update', function(req,res) {
 });
 
 artGunRouter.get('/orders/shipment', function(req, res) {
-  console.log('get shipment by id req endpoint working');
-  var html = fs.readFileSync('./routers/packSlipTest.html', 'utf8');
-  var options = { format: 'Letter', orientation: 'landscape' };
+  console.log('get shipment by id req received');
+  var htmlToPDF = new HTMLToPDF {
+    inputPath: './routers/packSlipTest.html',
+    outputPath: './routers/packing_slips/packSlipTest3.pdf',
+  };
+  htmlToPDF.build (error) =>
+  throw error if error?
+  res.download('./routers/packing_slips/packSlipTest3.pdf');
+
+
+
+
+
+
+  // var html = fs.readFileSync('./routers/packSlipTest.html', 'utf8');
+  // var options = { format: 'Letter', orientation: 'landscape' };
   
-  pdf.create(html, options).toFile('./routers/packing_slips/packSlipTest3.pdf', function(err, poop) {
-    if (err) return console.log(err);
-    console.log(poop);
-    res.download(poop.filename);
-  });
+  // pdf.create(html, options).toFile('./routers/packing_slips/packSlipTest3.pdf', function(err, poop) {
+  //   if (err) return console.log(err);
+  //   console.log(poop);
+  //   res.download(poop.filename);
+  // });
 });
+
+
+
 
 
 module.exports = artGunRouter;
