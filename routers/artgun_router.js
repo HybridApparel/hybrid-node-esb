@@ -233,6 +233,7 @@ artGunRouter.get('/orders/shipment', function(req, res) {
 
   HTMLToPDF().from.string(htmlTest).to.buffer({
     renderDelay: 1000,
+    inputBody: 'this is a test bro',
     template: 'htmlbootstrap'
   }, function(err, data) {
     if (err) {
