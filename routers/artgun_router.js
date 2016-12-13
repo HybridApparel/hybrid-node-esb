@@ -226,7 +226,7 @@ artGunRouter.get('/orders/shipment', function(req, res) {
     console.log('did this dot build work? yes');
     console.log('error: ' + err);
     if (err) throw err;
-    res.download('./routers/packing_slips/packSlipTest3.pdf');
+    res.download(__dirname + '/packing_slips/packSlipTest4.pdf');
   })  
 
 
