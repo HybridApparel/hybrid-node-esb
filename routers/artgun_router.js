@@ -216,7 +216,9 @@ artGunRouter.get('/orders/shipment', function(req, res) {
   var htmlToPDF = new HTMLToPDF ({
     inputPath: __dirname + '/packSlipTest.html',
     outputPath: __dirname + '/packing_slips/packSlipTest3.pdf',
-    renderDelay: 200
+    renderDelay: 200,
+    template: htmlbootstrap,
+    
   });
 
   htmlToPDF.build(function(error){
