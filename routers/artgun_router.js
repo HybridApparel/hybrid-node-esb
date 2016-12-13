@@ -214,11 +214,11 @@ artGunRouter.get('/orders/shipment', function(req, res) {
   console.log('get shipment by id req received');
 
   var htmlToPDF = new HTMLToPDF ({
-    inputPath: __dirname + '/packSlipTest.html',
-    outputPath: __dirname + '/packing_slips/packSlipTest3.pdf',
+    inputPath: __dirname + '/packSlipTestBody.html',
+    outputPath: __dirname + '/packing_slips/packSlipTest4.pdf',
     renderDelay: 200,
-    template: htmlbootstrap,
-    
+    template: 'htmlbootstrap'
+
   });
 
   htmlToPDF.build(function(error){
