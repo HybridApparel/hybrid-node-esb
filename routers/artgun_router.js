@@ -215,10 +215,10 @@ artGunRouter.post('/shipments/update', function(req,res) {
 artGunRouter.get('/orders/shipment', function(req, res) {
   console.log('get shipment by id req received');
 
-  var html = fs.readFileSync('./routers/packSlipTest.html', 'utf8');
+  var html = fs.readFileSync('./packing_slips/packSlipTest.html', 'utf8');
   var options = { format: 'Letter', orientation: 'portrait' };
   
-  pdf.create(html, options).toFile('./packing_slips/packing_slips/packSlipTest6.pdf', function(err, file) {
+  pdf.create(html, options).toFile('./packing_slips/packing_slips/packSlipTest7.pdf', function(err, file) {
     if (err) return console.log(err);
     console.log(file);
     res.download(file.filename);
