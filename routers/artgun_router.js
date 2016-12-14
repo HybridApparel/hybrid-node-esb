@@ -7,7 +7,7 @@ var Order         = models.orders;
 var Shipment      = models.shipments;
 var fs            = require('fs');
 // var pdf           = require('html-pdf');
-var HTMLToPDF     = require ('html5-to-pdf');
+var html5pdf      = require ('html5-to-pdf');
 
 var artGunKey     = process.env.ARTGUN_KEY;
 var artGunSecret  = process.env.ARTGUN_SECRET;
@@ -214,6 +214,13 @@ artGunRouter.post('/shipments/update', function(req,res) {
 artGunRouter.get('/orders/shipment', function(req, res) {
   console.log('get shipment by id req received');
 
+  html5pdf()
+    .from(__dirname + "/packSlipTestBody.html")
+    .to(__dirname + "/packing_slips/packSlipTest5.pdf", function () {
+      console.log("Done w convert");
+      res.download(__dirname + '/packing_slips/packSlipTest4.pdf');
+  })
+
   // var htmlToPDF = new HTMLToPDF ({
   //   inputPath: __dirname + '/packSlipTestBody.html',
   //   inputBody: 'this is a test bro',
@@ -228,15 +235,6 @@ artGunRouter.get('/orders/shipment', function(req, res) {
   //   if (err) throw err;
   //   res.download(__dirname + '/packing_slips/packSlipTest4.pdf');
   // });
-
-  HTMLToPDF({
-    inputPath: __dirname + '/packSlipTestBody.html',
-    inputBody: 'this is a test bro',
-    outputPath: __dirname + '/packing_slips/packSlipTest4.pdf',
-    renderDelay: 200,
-    template: 'htmlbootstrap'
-  });
-
 
   // var htmlTest = "<p>here is the test p tag</p>";
 
