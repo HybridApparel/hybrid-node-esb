@@ -6,8 +6,7 @@ var models        = require('../models');
 var Order         = models.orders;
 var Shipment      = models.shipments;
 var fs            = require('fs');
-// var pdf           = require('html-pdf');
-var HTMLToPDF     = require ('html5-to-pdf');
+var pdf           = require('html-pdf');
 var path          = require('path');  
 
 var artGunKey     = process.env.ARTGUN_KEY;
@@ -216,44 +215,19 @@ artGunRouter.post('/shipments/update', function(req,res) {
 artGunRouter.get('/orders/shipment', function(req, res) {
   console.log('get shipment by id req received');
 
-  console.log(HTMLToPDF);
-
-  var htmlToPDF = new HTMLToPDF({
-    inputPath: path.resolve(__dirname, 'index.html'),
-    inputBody: 'asdas',
-    renderDelay: 200,
-    outputPath: path.resolve(__dirname, 'output.pdf')
+  var html = fs.readFileSync('./routers/packSlipTest.html', 'utf8');
+  var options = { format: 'Letter', orientation: 'portrait' };
+  
+  pdf.create(html, options).toFile('./routers/packing_slips/packSlipTest3.pdf', function(err, file) {
+    if (err) return console.log(err);
+    console.log(file);
+    res.download(file.filename);
   });
 
-  console.log(htmlToPDF);
-  debugger;
-
-  // var htmlToPDF = new HTMLToPDF ({
-  //   // inputPath: __dirname + '/packSlipTestBody.html',
-  //   inputBody: '<p>this is a test bro</p>',
-  //   outputPath: __dirname + '/packing_slips/packSlipTest4.pdf',
-  //   renderDelay: 200,
-  //   template: 'htmlbootstrap'
-  // });
-
-  htmlToPDF.build(function(err){
-    console.log('sdf');
-    console.log('error: ' + err);
-    if (err) throw err;
-  });
-
-  // var testPoop = htmlToPDF.build(
-  //   (function(_this) {
-  //     return function(error, buf) {
-  //       if (error != null) {
-  //         throw error;
-  //       }
-  //       console.log('here is the buf i think');
-  //     };
-  // }));
-
-  console.log('end of route');
+  console.log('end of shipment get route');
 });
 
 
 module.exports = artGunRouter;
+
+
