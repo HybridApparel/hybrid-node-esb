@@ -215,6 +215,8 @@ artGunRouter.post('/shipments/update', function(req,res) {
 
 artGunRouter.get('/orders/shipment', function(req, res) {
   console.log('get shipment by id req received');
+  
+  console.log(HTMLToPDF);
 
   var htmlToPDF = new HTMLToPDF({
     inputPath: path.resolve(__dirname, 'index.html'),
@@ -222,6 +224,8 @@ artGunRouter.get('/orders/shipment', function(req, res) {
     renderDelay: 200,
     outputPath: path.resolve(__dirname, 'output.pdf')
   });
+
+  console.log(htmlToPDF);
 
   // var htmlToPDF = new HTMLToPDF ({
   //   // inputPath: __dirname + '/packSlipTestBody.html',
@@ -231,14 +235,11 @@ artGunRouter.get('/orders/shipment', function(req, res) {
   //   template: 'htmlbootstrap'
   // });
 
-  debugger;
-
   htmlToPDF.build(function(err){
-  console.log('sdf');
-  console.log('error: ' + err);
-  if (err) throw err;
-
-});
+    console.log('sdf');
+    console.log('error: ' + err);
+    if (err) throw err;
+  });
 
   // var testPoop = htmlToPDF.build(
   //   (function(_this) {
