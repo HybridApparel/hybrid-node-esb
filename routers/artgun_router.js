@@ -223,7 +223,7 @@ artGunRouter.get('/orders/shipment', function(req, res) {
     template: 'htmlbootstrap'
   });
 
-  htmlToPDF.build(
+  HTMLToPDF.build(
     (function(_this) {
       return function(error, buf) {
         debugger;
