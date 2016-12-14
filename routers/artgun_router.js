@@ -215,13 +215,31 @@ artGunRouter.post('/shipments/update', function(req,res) {
 artGunRouter.get('/orders/shipment', function(req, res) {
   console.log('get shipment by id req received');
 
-  html5pdf({
+  var htmlToPDF = new HTMLToPDF ({
     inputPath: __dirname + '/packSlipTestBody.html',
     inputBody: 'this is a test bro',
-    outputPath: __dirname + '/packing_slips/packSlipTest5.pdf',
+    outputPath: __dirname + '/packing_slips/packSlipTest4.pdf',
     renderDelay: 200,
     template: 'htmlbootstrap'
   });
+
+  // html5pdf({
+  //   inputPath: __dirname + '/packSlipTestBody.html',
+  //   inputBody: 'this is a test bro',
+  //   outputPath: __dirname + '/packing_slips/packSlipTest5.pdf',
+  //   renderDelay: 200,
+  //   template: 'htmlbootstrap'
+  // });
+
+  htmlToPDF.build((function(_this) {
+    return function(error, buf) {
+      debugger;
+      if (error != null) {
+        throw error;
+      }
+      console.log('here is the buf i think');
+    };
+  })(this));
 
   html5pdf.build(error, buf);
     console.log("Done w convert");
@@ -232,16 +250,9 @@ artGunRouter.get('/orders/shipment', function(req, res) {
     //   }
 
     //   res.download('packSlipTest5.pdf');
-    });
+  });
 
 
-  // var htmlToPDF = new HTMLToPDF ({
-  //   inputPath: __dirname + '/packSlipTestBody.html',
-  //   inputBody: 'this is a test bro',
-  //   outputPath: __dirname + '/packing_slips/packSlipTest4.pdf',
-  //   renderDelay: 200,
-  //   template: 'htmlbootstrap'
-  // });
 
   // htmlToPDF().build(function(error){
   //   console.log('did this dot build work? yes');
