@@ -213,14 +213,14 @@ artGunRouter.post('/shipments/update', function(req,res) {
 artGunRouter.get('/orders/shipment', function(req, res) {
   console.log('get shipment by id req received');
 
-  // var htmlToPDF = new HTMLToPDF ({
-  //   inputPath: __dirname + '/packSlipTestBody.html',
-  //   inputBody: 'this is a test bro',
-  //   outputPath: __dirname + '/packing_slips/packSlipTest4.pdf',
-  //   renderDelay: 200,
-  //   template: 'htmlbootstrap'
+  var htmlToPDF = new HTMLToPDF ({
+    inputPath: __dirname + '/packSlipTestBody.html',
+    inputBody: 'this is a test bro',
+    outputPath: __dirname + '/packing_slips/packSlipTest4.pdf',
+    renderDelay: 200,
+    template: 'htmlbootstrap'
 
-  // });
+  });
 
   // htmlToPDF.build(function(error){
   //   console.log('did this dot build work? yes');
@@ -231,7 +231,7 @@ artGunRouter.get('/orders/shipment', function(req, res) {
 
   var htmlTest = "<p>here is the test p tag</p>";
 
-  HTMLToPDF().from.string(htmlTest).to.buffer({
+  htmlToPDF().from.string(htmlTest).to.buffer({
     renderDelay: 1000,
     inputBody: 'this is a test bro',
     template: 'htmlbootstrap'
