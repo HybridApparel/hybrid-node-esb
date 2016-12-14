@@ -215,23 +215,39 @@ artGunRouter.post('/shipments/update', function(req,res) {
 artGunRouter.get('/orders/shipment', function(req, res) {
   console.log('get shipment by id req received');
 
-  var htmlToPDF = new HTMLToPDF ({
-    // inputPath: __dirname + '/packSlipTestBody.html',
-    inputBody: '<p>this is a test bro</p>',
-    outputPath: __dirname + '/packing_slips/packSlipTest4.pdf',
+  var htmlToPDF = new HTMLToPDF({
+    inputPath: path.resolve(__dirname, 'index.html'),
+    inputBody: 'asdas',
     renderDelay: 200,
-    template: 'htmlbootstrap'
+    outputPath: path.resolve(__dirname, 'output.pdf')
   });
 
-  var testPoop = htmlToPDF.build(
-    (function(_this) {
-      return function(error, buf) {
-        if (error != null) {
-          throw error;
-        }
-        console.log('here is the buf i think');
-      };
-  }));
+  // var htmlToPDF = new HTMLToPDF ({
+  //   // inputPath: __dirname + '/packSlipTestBody.html',
+  //   inputBody: '<p>this is a test bro</p>',
+  //   outputPath: __dirname + '/packing_slips/packSlipTest4.pdf',
+  //   renderDelay: 200,
+  //   template: 'htmlbootstrap'
+  // });
+
+  debugger;
+
+  htmlToPDF.build(function(err){
+  console.log('sdf');
+  console.log('error: ' + err);
+  if (err) throw err;
+
+});
+
+  // var testPoop = htmlToPDF.build(
+  //   (function(_this) {
+  //     return function(error, buf) {
+  //       if (error != null) {
+  //         throw error;
+  //       }
+  //       console.log('here is the buf i think');
+  //     };
+  // }));
 
   console.log('end of route');
 });
