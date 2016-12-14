@@ -211,6 +211,8 @@ artGunRouter.post('/shipments/update', function(req,res) {
   };
 });
 
+artGunRouter.post('/orders/')
+
 artGunRouter.get('/orders/shipment', function(req, res) {
   console.log('get shipment by id req received');
 
@@ -220,9 +222,17 @@ artGunRouter.get('/orders/shipment', function(req, res) {
     outputPath: __dirname + '/packing_slips/packSlipTest5.pdf',
     renderDelay: 200,
     template: 'htmlbootstrap'
-  });
-  console.log("Done w convert");
-  res.download(__dirname + '/packing_slips/packSlipTest5.pdf');
+  }).build(error, buf);
+    console.log("Done w convert");
+    var file = fs.createWriteStream('packSlipTest5.pdf');
+    file.write(data, function(err) {
+      if (err) {
+        res.sendStatus(500);
+      }
+
+      res.download('packSlipTest5.pdf');
+    });
+
 
   // var htmlToPDF = new HTMLToPDF ({
   //   inputPath: __dirname + '/packSlipTestBody.html',
