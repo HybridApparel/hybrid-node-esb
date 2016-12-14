@@ -215,7 +215,7 @@ artGunRouter.post('/shipments/update', function(req,res) {
 
 artGunRouter.get('/orders/shipment', function(req, res) {
   console.log('get shipment by id req received');
-  
+
   console.log(HTMLToPDF);
 
   var htmlToPDF = new HTMLToPDF({
@@ -226,6 +226,7 @@ artGunRouter.get('/orders/shipment', function(req, res) {
   });
 
   console.log(htmlToPDF);
+  debugger;
 
   // var htmlToPDF = new HTMLToPDF ({
   //   // inputPath: __dirname + '/packSlipTestBody.html',
