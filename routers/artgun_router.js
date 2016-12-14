@@ -6,7 +6,7 @@ var models        = require('../models');
 var Order         = models.orders;
 var Shipment      = models.shipments;
 var fs            = require('fs');
-var pdf           = require('html-pdf');
+// var pdf           = require('html-pdf');
 var HTMLToPDF     = require ('html5-to-pdf');
 
 var artGunKey     = process.env.ARTGUN_KEY;
@@ -214,19 +214,27 @@ artGunRouter.post('/shipments/update', function(req,res) {
 artGunRouter.get('/orders/shipment', function(req, res) {
   console.log('get shipment by id req received');
 
-  var htmlToPDF = new HTMLToPDF ({
+  // var htmlToPDF = new HTMLToPDF ({
+  //   inputPath: __dirname + '/packSlipTestBody.html',
+  //   inputBody: 'this is a test bro',
+  //   outputPath: __dirname + '/packing_slips/packSlipTest4.pdf',
+  //   renderDelay: 200,
+  //   template: 'htmlbootstrap'
+  // });
+
+  // htmlToPDF().build(function(error){
+  //   console.log('did this dot build work? yes');
+  //   console.log('error: ' + err);
+  //   if (err) throw err;
+  //   res.download(__dirname + '/packing_slips/packSlipTest4.pdf');
+  // });
+
+  HTMLToPDF({
     inputPath: __dirname + '/packSlipTestBody.html',
     inputBody: 'this is a test bro',
     outputPath: __dirname + '/packing_slips/packSlipTest4.pdf',
     renderDelay: 200,
     template: 'htmlbootstrap'
-  });
-
-  htmlToPDF().build(function(error){
-    console.log('did this dot build work? yes');
-    console.log('error: ' + err);
-    if (err) throw err;
-    res.download(__dirname + '/packing_slips/packSlipTest4.pdf');
   });
 
 
