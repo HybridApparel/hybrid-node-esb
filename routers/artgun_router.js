@@ -232,8 +232,7 @@ artGunRouter.get('/orders/shipment', function(req, res) {
         }
         console.log('here is the buf i think');
       };
-  });
-  );  
+  }));
 });
 
 
