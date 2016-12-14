@@ -217,15 +217,12 @@ artGunRouter.get('/orders/shipment', function(req, res) {
   html5pdf({
     inputPath: __dirname + '/packSlipTestBody.html',
     inputBody: 'this is a test bro',
-    outputPath: __dirname + '/packing_slips/packSlipTest4.pdf',
+    outputPath: __dirname + '/packing_slips/packSlipTest5.pdf',
     renderDelay: 200,
     template: 'htmlbootstrap'
-  })
-    .from(__dirname + "/packSlipTestBody.html")
-    .to(__dirname + "/packing_slips/packSlipTest5.pdf", function () {
-      console.log("Done w convert");
-      res.download(__dirname + '/packing_slips/packSlipTest4.pdf');
-  })
+  });
+  console.log("Done w convert");
+  res.download(__dirname + '/packing_slips/packSlipTest5.pdf');
 
   // var htmlToPDF = new HTMLToPDF ({
   //   inputPath: __dirname + '/packSlipTestBody.html',
