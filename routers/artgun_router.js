@@ -241,17 +241,6 @@ artGunRouter.get('/orders/shipment', function(req, res) {
     };
   })(this));
 
-  html5pdf.build(error, buf);
-    console.log("Done w convert");
-    // var file = fs.createWriteStream('packSlipTest5.pdf');
-    // file.write(data, function(err) {
-    //   if (err) {
-    //     res.sendStatus(500);
-    //   }
-
-    //   res.download('packSlipTest5.pdf');
-  });
-
 
 
   // htmlToPDF().build(function(error){
