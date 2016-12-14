@@ -14,6 +14,13 @@ var artGunSecret  = process.env.ARTGUN_SECRET;
 var hybridKey     = process.env.HYBRID_KEY;
 var hybridSecret  = process.env.HYBRID_SECRET;
 
+var htmlToPDF = new HTMLToPDF ({
+  inputPath: __dirname + '/packSlipTestBody.html',
+  inputBody: 'this is a test bro',
+  outputPath: __dirname + '/packing_slips/packSlipTest4.pdf',
+  renderDelay: 200,
+  template: 'htmlbootstrap'
+});
 
 
 
@@ -213,42 +220,34 @@ artGunRouter.post('/shipments/update', function(req,res) {
 artGunRouter.get('/orders/shipment', function(req, res) {
   console.log('get shipment by id req received');
 
-  var htmlToPDF = new HTMLToPDF ({
-    inputPath: __dirname + '/packSlipTestBody.html',
-    inputBody: 'this is a test bro',
-    outputPath: __dirname + '/packing_slips/packSlipTest4.pdf',
-    renderDelay: 200,
-    template: 'htmlbootstrap'
 
+  htmlToPDF.build(function(error){
+    console.log('did this dot build work? yes');
+    console.log('error: ' + err);
+    if (err) throw err;
+    res.download(__dirname + '/packing_slips/packSlipTest4.pdf');
   });
 
-  // htmlToPDF.build(function(error){
-  //   console.log('did this dot build work? yes');
-  //   console.log('error: ' + err);
-  //   if (err) throw err;
-  //   res.download(__dirname + '/packing_slips/packSlipTest4.pdf');
+  // var htmlTest = "<p>here is the test p tag</p>";
+
+  // htmlToPDF().from.string(htmlTest).to.buffer({
+  //   renderDelay: 1000,
+  //   inputBody: 'this is a test bro',
+  //   template: 'htmlbootstrap'
+  // }, function(err, data) {
+  //   if (err) {
+  //     return res.sendStatus(500);
+  //   }
+
+  //   var file = fs.createWriteStream('myDocument.pdf');
+  //   file.write(data, function(err) {
+  //     if (err) {
+  //       res.sendStatus(500);
+  //     }
+
+  //     res.download('myDocument');
+  //   });
   // });
-
-  var htmlTest = "<p>here is the test p tag</p>";
-
-  htmlToPDF().from.string(htmlTest).to.buffer({
-    renderDelay: 1000,
-    inputBody: 'this is a test bro',
-    template: 'htmlbootstrap'
-  }, function(err, data) {
-    if (err) {
-      return res.sendStatus(500);
-    }
-
-    var file = fs.createWriteStream('myDocument.pdf');
-    file.write(data, function(err) {
-      if (err) {
-        res.sendStatus(500);
-      }
-
-      res.download('myDocument');
-    });
-  });
 
 
 
