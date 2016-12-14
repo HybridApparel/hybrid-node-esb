@@ -216,14 +216,14 @@ artGunRouter.get('/orders/shipment', function(req, res) {
   console.log('get shipment by id req received');
 
   var htmlToPDF = new HTMLToPDF ({
-    inputPath: __dirname + '/packSlipTestBody.html',
-    inputBody: 'this is a test bro',
+    // inputPath: __dirname + '/packSlipTestBody.html',
+    inputBody: '<p>this is a test bro</p>',
     outputPath: __dirname + '/packing_slips/packSlipTest4.pdf',
     renderDelay: 200,
     template: 'htmlbootstrap'
   });
 
-  htmlToPDF.build(
+  var testPoop = htmlToPDF.build(
     (function(_this) {
       return function(error, buf) {
         if (error != null) {
@@ -232,6 +232,8 @@ artGunRouter.get('/orders/shipment', function(req, res) {
         console.log('here is the buf i think');
       };
   }));
+
+  console.log('end of route');
 });
 
 
