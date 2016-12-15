@@ -217,7 +217,8 @@ artGunRouter.get('/orders/shipment', function(req, res) {
 
   var html = fs.readFileSync('./public/packSlipTest.html', 'utf8');
   var options = {
-    "type": "pdf"
+    "type": "pdf",
+    "base": __dirname
     };
   
   pdf.create(html, options).toFile('./packing_slips/packing_slips/packSlipTest8.pdf', function(err, file) {
