@@ -218,7 +218,9 @@ artGunRouter.get('/orders/shipment', function(req, res) {
   var html = fs.readFileSync('./public/packSlipTest.html', 'utf8');
   var options = {
     "type": "pdf",
-    "base": 'http://tranquil-fortress-90513.herokuapp.com/'
+    "base": 'http://tranquil-fortress-90513.herokuapp.com/',
+    "format": "Letter",
+    "orientation": "portrait"
     };
   
   pdf.create(html, options).toFile('./packing_slips/packing_slips/packSlipTest8.pdf', function(err, file) {
