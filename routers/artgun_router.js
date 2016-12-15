@@ -216,7 +216,11 @@ artGunRouter.get('/orders/shipment', function(req, res) {
   console.log('get shipment by id req received');
 
   var html = fs.readFileSync('./packing_slips/packSlipTest.html', 'utf8');
-  var options = { format: 'Letter', orientation: 'portrait' };
+  var options = {
+    "format": 'Letter', 
+    "orientation": 'portrait',
+    "phantomPath": "./node_modules/phantomjs-prebuilt/bin/phantomjs"
+    };
   
   pdf.create(html, options).toFile('./packing_slips/packing_slips/packSlipTest8.pdf', function(err, file) {
     if (err) return console.log(err);
