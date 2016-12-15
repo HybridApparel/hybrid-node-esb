@@ -90,8 +90,8 @@
 				padding-left: 0 !important;
 			}
 			.vert-align {
-				vertical-align: middle !important;
-  				display: inline-block !important;
+				display: flex;
+				align-items: center;     /* Align the flex-items vertically */
 			}
 			.text-center-align {
 				text-align: center !important;
@@ -169,16 +169,16 @@
 			</div>
 		</div>
 		
-		<div class="col-xs-12 line-item-headers">
+		<div class="col-xs-12 line-item-headers vert-align">
 			<div class="col-xs-6 zero-LR-margin-padding vert-align">
-				<div class="col-xs-1 font-100 zero-LR-margin-padding">
+				<div class="col-xs-1 font-100 zero-LR-margin-padding vert-align">
 					<b>LINE</b>
 				</div>
-				<div class="col-xs-2 font-100 zero-LR-margin-padding">
+				<div class="col-xs-2 font-100 zero-LR-margin-padding vert-align">
 					<b>UPC</b>
 				</div>
 				<div class="col-xs-1">&nbsp;</div>
-				<div class="col-xs-3 font-100 zero-LR-margin-padding">
+				<div class="col-xs-3 font-100 zero-LR-margin-padding vert-align">
 					<b>Description</b>
 				</div>
 			</div>
