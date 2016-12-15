@@ -217,7 +217,6 @@ artGunRouter.get('/orders/shipment', function(req, res) {
 
   var html = fs.readFileSync('./public/packSlipTest.html', 'utf8');
   var options = {
-    "timeout": 300,
     "type": "pdf"
     };
   
