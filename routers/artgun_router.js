@@ -223,11 +223,19 @@ artGunRouter.get('/orders/shipment', function(req, res) {
     "base":  __dirname
     };
   
-  pdf.create(html, options).toFile('./packing_slips/packing_slips/packSlipTest8.pdf', function(err, file) {
-    if (err) return console.log(err);
-    console.log(file);
-    res.download(file.filename);
-  });
+  // pdf.create(html, options).toFile('./packing_slips/packing_slips/packSlipTest8.pdf', function(err, file) {
+  //   if (err) return console.log(err);
+  //   console.log(file);
+  //   res.download(file.filename);
+  // });
+
+  pdf.create(someHtml, options).toStream(
+    './packing_slips/packing_slips/packSlipTest8.pdf',
+    (err, stream) => {
+      response.setHeader('Content-Type', 'application/pdf')
+      stream.pipe(response)
+      }
+    )
 
   console.log('end of shipment get route');
 });
