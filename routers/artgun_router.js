@@ -218,9 +218,8 @@ artGunRouter.get('/orders/shipment', function(req, res) {
   var html = fs.readFileSync('./public/packSlipTest.html', 'utf8');
   var options = {
     "phantomPath": "./node_modules/phantomjs-prebuilt/bin/phantomjs",
-    "timeout": 3000,
-    "type": "pdf",
-    "base":  'http://localhost:9888/'
+    "timeout": 300,
+    "type": "pdf"
     };
   
   pdf.create(html, options).toFile('./packing_slips/packing_slips/packSlipTest8.pdf', function(err, file) {
