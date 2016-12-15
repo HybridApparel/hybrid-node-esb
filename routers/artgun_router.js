@@ -233,7 +233,7 @@ artGunRouter.get('/orders/shipment', function(req, res) {
     './packing_slips/packing_slips/packSlipTest8.pdf',
     (err, stream) => {
       response.setHeader('Content-Type', 'application/pdf')
-      stream.pipe(response)
+      stream.pipe(res)
       }
     )
 
