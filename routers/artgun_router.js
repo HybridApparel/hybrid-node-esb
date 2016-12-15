@@ -217,8 +217,7 @@ artGunRouter.get('/orders/shipment', function(req, res) {
 
   var html = fs.readFileSync('./public/packSlipTest.html', 'utf8');
   var options = {
-    "format": 'Letter', 
-    "orientation": 'portrait',
+
     "phantomPath": "./node_modules/phantomjs-prebuilt/bin/phantomjs"
     };
   
