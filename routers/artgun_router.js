@@ -220,7 +220,7 @@ artGunRouter.get('/orders/shipment', function(req, res) {
     "phantomPath": "./node_modules/phantomjs-prebuilt/bin/phantomjs",
     "timeout": 3000,
     "type": "pdf",
-    "base":  __dirname
+    "base":  'http://localhost:9888/'
     };
   
   pdf.create(html, options).toFile('./packing_slips/packing_slips/packSlipTest8.pdf', function(err, file) {
