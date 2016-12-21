@@ -248,11 +248,10 @@ artGunRouter.post('/orders/shipment/test', function(req, res) {
   pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
     if (err) return console.log(err);
     console.log(file);
-    fs.writeFile(fileNameWrite, file);
+    file.writeFileSync(fileNameWrite, file);
     res.download(file.filename);
   });
   console.log('heres the end of the test route brough');
-
 });
 
 module.exports = artGunRouter;
