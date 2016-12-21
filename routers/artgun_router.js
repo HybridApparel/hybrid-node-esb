@@ -237,7 +237,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.shipping_city = sourceBodyJSON.shipping_city;
       templateSourceJSON.shipping_state = sourceBodyJSON.shipping_state;
       templateSourceJSON.shipping_zipcode = sourceBodyJSON.shipping_zipcode;
-      templateSourceJSON.date = moment(sourceBodyJSON.time).format(MM/DD/YYYY);
+      templateSourceJSON.date = sourceBodyJSON.time;
       templateSourceJSON.xid = sourceBodyJSON.xid;
       templateSourceJSON.items = [];
       templateSourceJSON.merchandiseTotal = 0;
@@ -261,6 +261,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.orderTotal = parseFloat(Math.round(floatOrderTotal * 100) / 100).toFixed(2);
       templateSourceJSON.cardType = sourceBodyJSON.cardType;
       templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
+      templateSourceJSON.barcodeValue = sourceBodyJSON.barcodeValue;
       var html = compPackSlipHTML(templateSourceJSON);
       var options = {
         "type": "pdf",
