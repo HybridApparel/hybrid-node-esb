@@ -237,13 +237,9 @@ artGunRouter.get('/orders/shipment', function(req, res) {
 artGunRouter.get('/orders/shipment/test', function(req, res) {
   console.log('test route hit bro');
   var generatePackSlip = function (order) {
-    var testPoop = compPackSlipHTML(order);
-    console.log(testPoop);
-    return testPoop
+    return compPackSlipHTML(order);
   };
-
-
-  var testPoopJSON = {
+  var testNewJSON = {
     "orderJSON":{         
       "type": "ORDER",
       "time": "Fri, 30 Sep 2016 11:48:13 ­0600",
@@ -351,30 +347,28 @@ artGunRouter.get('/orders/shipment/test', function(req, res) {
        "location": "FN",
        "thumbnail": "http://partner.com/thumbnail.jpg",
        "preview": "http://partner.com/preview.jpg"
-     }
-     ]           
-   }]           
- },
- "OrderID":"ABC123",
- "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
- "signature": "07175c00ab32c2e4c4c547b3d4fd52d8d6d9dc7e"
-};
-var html = generatePackSlip(testPoopJSON.orderJSON);
+      }
+      ]           
+    }]           
+  },
+  "OrderID":"ABC123",
+  "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
+  "signature": "07175c00ab32c2e4c4c547b3d4fd52d8d6d9dc7e"
+  };
+  var html = generatePackSlip(testNewJSON.orderJSON);
+  var options = {
+    "type": "pdf",
+    "base": 'http://tranquil-fortress-90513.herokuapp.com/',
+    "format": "Letter",
+    "orientation": "portrait"
+  };
+  pdf.create(html, options).toFile('./packing_slips/packing_slips/packSlipTest8.pdf', function(err, file) {
+    if (err) return console.log(err);
+    console.log(file);
+    res.download(file.filename);
+  });
+  console.log('heres the end of the test route brough');
 
-var options = {
-  "type": "pdf",
-  "base": 'http://tranquil-fortress-90513.herokuapp.com/',
-  "format": "Letter",
-  "orientation": "portrait"
-};
-
-pdf.create(html, options).toFile('./packing_slips/packing_slips/packSlipTest8.pdf', function(err, file) {
-  if (err) return console.log(err);
-  console.log(file);
-  res.download(file.filename);
-});
-
-console.log('heres the end of the test route brough');
 });
 
 module.exports = artGunRouter;
