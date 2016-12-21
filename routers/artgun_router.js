@@ -11,6 +11,7 @@ var path             = require('path');
 var Handlebars       = require('handlebars');
 var packSlipHTML     = fs.readFileSync('./public/packSlipTemplate.html', 'utf8');
 var compPackSlipHTML = Handlebars.compile(packSlipHTML);
+var moment           = require('moment');
 
 var artGunKey        = process.env.ARTGUN_KEY;
 var artGunSecret     = process.env.ARTGUN_SECRET;
@@ -176,7 +177,7 @@ var generatePackSlip = function (orderID) {
       templateSourceJSON.shipping_city = sourceBodyJSON.shipping_city;
       templateSourceJSON.shipping_state = sourceBodyJSON.shipping_state;
       templateSourceJSON.shipping_zipcode = sourceBodyJSON.shipping_zipcode;
-      templateSourceJSON.date = sourceBodyJSON.time.split(' ')[0];
+      templateSourceJSON.date = moment(sourceBodyJSON.time).format(MM/DD/YYYY);
       templateSourceJSON.xid = sourceBodyJSON.xid;
       templateSourceJSON.items = [];
       templateSourceJSON.merchandiseTotal = 0;
