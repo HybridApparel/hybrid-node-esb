@@ -330,7 +330,7 @@ artGunRouter.post('/shipments/update', function(req,res) {
 });
 
 
-artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
+/*artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
   console.log('get shipment by id req received');
 
   var html = fs.readFileSync('./public/packSlipTest.html', 'utf8');
@@ -347,7 +347,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
     res.download(file.filename);
   });
   console.log('end of shipment get route');
-});
+});*/
 
 artGunRouter.post('/orders/pack_slip/test', function(req, res) {
   console.log('test pack slip route hit bro');
