@@ -226,7 +226,7 @@ artGunRouter.get('/orders/shipment', function(req, res) {
     "orientation": "portrait"
     };
   
-  pdf.create(html, options).toFile('./packing_slips/packing_slips/packSlipTest9.pdf', function(err, file) {
+  pdf.create(html, options).toFile('http://tranquil-fortress-90513.herokuapp.com/artgun/packing_slips/packing_slips/packSlipTest9.pdf', function(err, file) {
     if (err) return console.log(err);
     console.log(file);
     res.download(file.filename);
