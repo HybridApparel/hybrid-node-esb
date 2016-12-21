@@ -171,7 +171,7 @@ var generatePackSlip = function (orderID) {
 
 artGunRouter.get('/orders/new', function(req, res) {
   console.log('get req endpoint working');
-  generatePackSlip('17');
+  generatePackSlip('test1');
   res.status(200).send('found order body json');
 });
 
