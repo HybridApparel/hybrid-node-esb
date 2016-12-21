@@ -247,14 +247,17 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
         lineItem.UPC = sourceBodyJSON.items[i].UPC;
         lineItem.quantity = sourceBodyJSON.items[i].quantity;
         lineItem.unit_amount = sourceBodyJSON.items[i].unit_amount;
-        lineItem.lineItemTotal = parseInt(lineItem.quantity) * parseInt(lineItem.unit_amount);
-        templateSourceJSON.merchandiseTotal = parseInt(templateSourceJSON.merchandiseTotal) + lineItem.lineItemTotal;
+        var floatLineItemTotal = parseInt(lineItem.quantity) * parseInt(lineItem.unit_amount);
+        lineItem.lineItemTotal = arseFloat(Math.round(floatLineItemTotal * 100) / 100).toFixed(2)
+        var floatMerchandiseTotal = parseInt(templateSourceJSON.merchandiseTotal) + parseInt(lineItem.lineItemTotal);
+        templateSourceJSON.merchandiseTotal = parseFloat(Math.round(floatMerchandiseTotal * 100) / 100).toFixed(2);
         templateSourceJSON.items.push(lineItem);
       };
-      templateSourceJSON.shippingCharge = sourceBodyJSON.shippingCharge;
+      templateSourceJSON.shippingCharge = parseFloat(Math.round(sourceBodyJSON.shippingCharge * 100) / 100).toFixed(2);
       templateSourceJSON.items_tax = sourceBodyJSON.items_tax;
-      templateSourceJSON.orderTotal = parseInt(templateSourceJSON.merchandiseTotal) + parseInt(templateSourceJSON.shippingCharge) 
+      var floatOrderTotal = parseInt(templateSourceJSON.merchandiseTotal) + parseInt(templateSourceJSON.shippingCharge) 
                                       + parseInt(templateSourceJSON.items_tax);
+      templateSourceJSON.orderTotal = parseFloat(Math.round(floatOrderTotal * 100) / 100).toFixed(2);
       templateSourceJSON.cardType = sourceBodyJSON.cardType;
       templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
       var html = compPackSlipHTML(templateSourceJSON);
