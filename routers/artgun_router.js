@@ -236,7 +236,10 @@ artGunRouter.get('/orders/shipment', function(req, res) {
 
 artGunRouter.get('/orders/shipment/test', function(req, res) {
   console.log('test route hit bro');
+  var orderXID;
+
   var generatePackSlip = function (order) {
+    orderXID = order.orderJSON.xid;
     return compPackSlipHTML(order);
   };
   var testNewJSON = {
@@ -362,9 +365,11 @@ artGunRouter.get('/orders/shipment/test', function(req, res) {
     "format": "Letter",
     "orientation": "portrait"
   };
-  pdf.create(html, options).toFile('./packing_slips/packing_slips/packSlipTest8.pdf', function(err, file) {
+  var fileNameWrite = './public/packing_slips/packSlip_' + orderXID + '.pdf';
+  pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
     if (err) return console.log(err);
     console.log(file);
+    // fs.createWriteStream(fileNameWrite);
     res.download(file.filename);
   });
   console.log('heres the end of the test route brough');
