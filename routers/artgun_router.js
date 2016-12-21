@@ -249,7 +249,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
         lineItem.quantity = sourceBodyJSON.items[i].quantity;
         lineItem.unit_amount = sourceBodyJSON.items[i].unit_amount;
         var floatLineItemTotal = parseInt(lineItem.quantity) * parseInt(lineItem.unit_amount);
-        lineItem.lineItemTotal = arseFloat(Math.round(floatLineItemTotal * 100) / 100).toFixed(2)
+        lineItem.lineItemTotal = parseFloat(Math.round(floatLineItemTotal * 100) / 100).toFixed(2)
         var floatMerchandiseTotal = parseInt(templateSourceJSON.merchandiseTotal) + parseInt(lineItem.lineItemTotal);
         templateSourceJSON.merchandiseTotal = parseFloat(Math.round(floatMerchandiseTotal * 100) / 100).toFixed(2);
         templateSourceJSON.items.push(lineItem);
