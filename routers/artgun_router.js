@@ -236,12 +236,6 @@ artGunRouter.get('/orders/shipment', function(req, res) {
 
 artGunRouter.get('/orders/shipment/test', function(req, res) {
   console.log('test route hit bro');
-  var orderXID;
-
-  var generatePackSlip = function (order) {
-    orderXID = order.orderJSON.xid;
-    return compPackSlipHTML(order);
-  };
   var testNewJSON = {
     "orderJSON":{         
       "type": "ORDER",
@@ -358,7 +352,8 @@ artGunRouter.get('/orders/shipment/test', function(req, res) {
   "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
   "signature": "07175c00ab32c2e4c4c547b3d4fd52d8d6d9dc7e"
   };
-  var html = generatePackSlip(testNewJSON.orderJSON);
+  var html = compPackSlipHTML(testNewJSON.orderJSON);
+  var orderXID = testNewJSON.orderJSON.xid;
   var options = {
     "type": "pdf",
     "base": 'http://tranquil-fortress-90513.herokuapp.com/',
