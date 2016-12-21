@@ -157,11 +157,22 @@ var persistArtGunShipment = function (shipmentJSON) {
   });
 };
 
+var generatePackSlip = function (orderID) {
+  var sourceBodyJSON = {};
+  Order.findOne({
+      where: {OrderID: orderID}
+    }).then(function(order) {
+      sourceBodyJSON = order.Body;
+      console.log('xid is ' + sourceBodyJSON.xid);
+  });
+};
+
 // GET route to ping server/test connection
 
 artGunRouter.get('/orders/new', function(req, res) {
   console.log('get req endpoint working');
-  res.status(200).sendFile('packSlipTest.html');
+  generatePackSlip('17');
+  res.status(200).send('found order body json');
 });
 
 // POST route to create a new order to send to ArtGun; calls authHybridReq to authorize, then persistNewOrder
@@ -215,7 +226,7 @@ artGunRouter.post('/shipments/update', function(req,res) {
 });
 
 
-artGunRouter.get('/orders/shipment', function(req, res) {
+artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
   console.log('get shipment by id req received');
 
   var html = fs.readFileSync('./public/packSlipTest.html', 'utf8');
@@ -234,7 +245,7 @@ artGunRouter.get('/orders/shipment', function(req, res) {
   console.log('end of shipment get route');
 });
 
-artGunRouter.post('/orders/shipment/test', function(req, res) {
+artGunRouter.post('/orders/pack_slip/test', function(req, res) {
   console.log('test pack slip route hit bro');
   var orderXID = req.body.orderJSON.xid;
   var html = compPackSlipHTML(req.body.orderJSON);
@@ -244,15 +255,16 @@ artGunRouter.post('/orders/shipment/test', function(req, res) {
     "format": "Letter",
     "orientation": "portrait"
   };
-  var fileNameWrite = './packing_slips/packing_slips/packSlip_' + orderXID + '.pdf';
+  var fileNameWrite = 'packSlip_' + orderXID + '.pdf';
   pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
     if (err) return console.log(err);
     console.log(file);
-    fs.writeFileSync(fileNameWrite, file);
     res.download(file.filename);
   });
   console.log('heres the end of the test route brough');
 });
+
+
 
 module.exports = artGunRouter;
 
