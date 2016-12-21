@@ -226,7 +226,7 @@ artGunRouter.get('/orders/shipment', function(req, res) {
     "orientation": "portrait"
     };
   
-  pdf.create(html, options).toFile('./packing_slips/packing_slips/packSlipTest8.pdf', function(err, file) {
+  pdf.create(html, options).toFile('./packing_slips/packing_slips/packSlipTest9.pdf', function(err, file) {
     if (err) return console.log(err);
     console.log(file);
     res.download(file.filename);
@@ -234,137 +234,23 @@ artGunRouter.get('/orders/shipment', function(req, res) {
   console.log('end of shipment get route');
 });
 
-artGunRouter.get('/orders/shipment/test', function(req, res) {
-  console.log('test route hit bro');
-  var testNewJSON = {
-    "orderJSON":{         
-      "type": "ORDER",
-      "time": "Fri, 30 Sep 2016 11:48:13 ­0600",
-      "method": "create",
-      "mode": "auto",
-      "status": "In Production",
-      "status_code": "6",
-      "xid": "ABC123",
-      "notes": "Hybrid Order Test",
-      "shiplabel_url": "",
-      "pack_url": "",
-      "giftnote_comment": "",
-      "shipping_carrier": "MI",
-      "shipping_priority": "4272",
-      "shipping_account": "",
-      "billing_name": "Joe Foo",
-      "billing_address1": "123 Main Street",
-      "billing_address2": "Apt 3",
-      "billing_city": "Anytown",
-      "billing_state": "NY",
-      "billing_country": "US",
-      "billing_zipcode": "11221",
-      "shipping_name": "Joe Foo",
-      "shipping_address1": "123 Main Street",
-      "shipping_address2": "Apt 3",
-      "shipping_city": "Anytown",
-      "shipping_state": "NY",
-      "shipping_country": "US",
-      "shipping_zipcode": "11221",
-      "shipping_phone": "8471231234",
-      "shipping_email": "joe.foo@bar.com",
-      "items_quantity": "1",
-      "items_amount": "1.50",
-      "lineItemTotal": "1.50",
-      "merchandiseTotal": "3.00",
-      "shippingCharge": "0.00",
-      "cardType": "AMEX",
-      "cardDigits": "4321",
-      "items_tax": "0.05",
-      "orderTotal": "3.05",
-      "items": [{
-        "name": "Bacon",          
-        "sku": "10290403",
-        "UPC": "111111111111UPC",           
-        "quantity": "1",    
-        "unit_amount": "1.50",            
-        "subtotal_amount": "1.50",
-        "lineItemTotal": "1.50",  
-        "necklabel_binid": "",       
-        "hangtag_binid": "",         
-        "attributes": [      
-        {           
-          "type": "DigitalPrint",
-          "location": "CF",
-          "thumbnail": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_THUMB_WRD-8479.png?13376761505423016394",
-          "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_WRD-8479.png?13376761505423016394",
-          "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/WRD-8479_FPO-01.png?13376761505423016394",
-          "file_extension": "png"
-        },
-        {           
-          "type": "DigitalPrint",
-          "location": "FB",
-          "thumbnail": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_THUMB_WRD-8479.png?13376761505423016394",
-          "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_WRD-8479.png?13376761505423016394",
-          "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/WRD-8479_FPO-01.png?13376761505423016394",
-          "file_extension": "png"
-        },
-        {
-         "type": "HangTag",
-         "location": "FN",
-         "thumbnail": "http://partner.com/thumbnail.jpg",
-         "preview": "http://partner.com/preview.jpg"
-       }
-       ]           
-     },
-     {
-      "name": "More Bacon",          
-      "sku": "10290404",
-      "UPC": "2222222222UPC",           
-      "quantity": "1",    
-      "unit_amount": "1.50",            
-      "subtotal_amount": "1.50",
-      "lineItemTotal": "1.50",    
-      "necklabel_binid": "",       
-      "hangtag_binid": "",         
-      "attributes": [      
-      {           
-        "type": "DigitalPrint",
-        "location": "CF",
-        "thumbnail": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_THUMB_WRD-8479.png?13376761505423016394",
-        "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_WRD-8479.png?13376761505423016394",
-        "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/WRD-8479_FPO-01.png?13376761505423016394",
-        "file_extension": "png"
-      },
-      {           
-        "type": "DigitalPrint",
-        "location": "FB",
-        "thumbnail": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_THUMB_WRD-8479.png?13376761505423016394",
-        "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_WRD-8479.png?13376761505423016394",
-        "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/WRD-8479_FPO-01.png?13376761505423016394",
-        "file_extension": "png"
-      },
-      {
-       "type": "HangTag",
-       "location": "FN",
-       "thumbnail": "http://partner.com/thumbnail.jpg",
-       "preview": "http://partner.com/preview.jpg"
-      }
-      ]           
-    }]           
-  },
-  "OrderID":"ABC123",
-  "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
-  "signature": "07175c00ab32c2e4c4c547b3d4fd52d8d6d9dc7e"
-  };
-  var html = compPackSlipHTML(testNewJSON.orderJSON);
-  var orderXID = testNewJSON.orderJSON.xid;
+artGunRouter.post('/orders/shipment/test', function(req, res) {
+  console.log('test pack slip route hit bro');
+  var orderXID = req.body.orderJSON.xid;
+  var html = compPackSlipHTML(req.body.orderJSON);
   var options = {
     "type": "pdf",
     "base": 'http://tranquil-fortress-90513.herokuapp.com/',
     "format": "Letter",
     "orientation": "portrait"
   };
-  var fileNameWrite = './public/packing_slips/packSlip_' + orderXID + '.pdf';
+  var fileNameWrite = './packing_slips/packing_slips/packSlip_' + orderXID + '.pdf';
   pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
     if (err) return console.log(err);
     console.log(file);
-    // fs.createWriteStream(fileNameWrite);
+    fs.writeFile(fileNameWrite, file, (err) => {
+      if (err) throw err;
+      console.log('It\'s saved!'););
     res.download(file.filename);
   });
   console.log('heres the end of the test route brough');
