@@ -164,41 +164,41 @@ var generatePackSlip = function (orderID) {
       where: {OrderID: orderID}
     }).then(function(order) {
       sourceBodyJSON = order.Body;
-  });
-  templateSourceJSON.billing_name = sourceBodyJSON.billing_name;
-  templateSourceJSON.billing_address1 = sourceBodyJSON.billing_address1;
-  templateSourceJSON.billing_address2 = sourceBodyJSON.billing_address2;
-  templateSourceJSON.billing_city = sourceBodyJSON.billing_city;
-  templateSourceJSON.billing_state = sourceBodyJSON.billing_state;
-  templateSourceJSON.billing_zipcode = sourceBodyJSON.billing_zipcode;
-  templateSourceJSON.shipping_name = sourceBodyJSON.shipping_name;
-  templateSourceJSON.shipping_address1 = sourceBodyJSON.shipping_address1;
-  templateSourceJSON.shipping_address2 =  sourceBodyJSON.shipping_address2;
-  templateSourceJSON.shipping_city = sourceBodyJSON.shipping_city;
-  templateSourceJSON.shipping_state = sourceBodyJSON.shipping_state;
-  templateSourceJSON.shipping_zipcode = sourceBodyJSON.shipping_zipcode;
-  templateSourceJSON.date = sourceBodyJSON.time.split(' ')[0];
-  templateSourceJSON.xid = sourceBodyJSON.xid;
-  templateSourceJSON.items = [];
-  templateSourceJSON.merchandiseTotal = 0;
-  for (var i=0; i<sourceBodyJSON.items.length; i++) {
-    var lineItem = {};
-    lineItem.name = sourceBodyJSON.items[i].name;
-    lineItem.index = i + 1;
-    lineItem.UPC = sourceBodyJSON.items[i].UPC;
-    lineItem.quantity = sourceBodyJSON.items[i].quantity;
-    lineItem.unit_amount = sourceBodyJSON.items[i].unit_amount;
-    lineItem.lineItemTotal = parseInt(lineItem.quantity) * parseInt(lineItem.unit_amount);
-    templateSourceJSON.merchandiseTotal = parseInt(templateSourceJSON.merchandiseTotal) + lineItem.lineItemTotal;
-    templateSourceJSON.items.push(lineItem);
-  };
-  templateSourceJSON.shippingCharge = sourceBodyJSON.shippingCharge;
-  templateSourceJSON.items_tax = sourceBodyJSON.items_tax;
-  templateSourceJSON.orderTotal = parseInt(templateSourceJSON.merchandiseTotal) + parseInt(templateSourceJSON.shippingCharge) 
-                                  + parseInt(templateSourceJSON.items_tax);
-  templateSourceJSON.cardType = sourceBodyJSON.cardType;
-  templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
-  return templateSourceJSON;
+      templateSourceJSON.billing_name = sourceBodyJSON.billing_name;
+      templateSourceJSON.billing_address1 = sourceBodyJSON.billing_address1;
+      templateSourceJSON.billing_address2 = sourceBodyJSON.billing_address2;
+      templateSourceJSON.billing_city = sourceBodyJSON.billing_city;
+      templateSourceJSON.billing_state = sourceBodyJSON.billing_state;
+      templateSourceJSON.billing_zipcode = sourceBodyJSON.billing_zipcode;
+      templateSourceJSON.shipping_name = sourceBodyJSON.shipping_name;
+      templateSourceJSON.shipping_address1 = sourceBodyJSON.shipping_address1;
+      templateSourceJSON.shipping_address2 =  sourceBodyJSON.shipping_address2;
+      templateSourceJSON.shipping_city = sourceBodyJSON.shipping_city;
+      templateSourceJSON.shipping_state = sourceBodyJSON.shipping_state;
+      templateSourceJSON.shipping_zipcode = sourceBodyJSON.shipping_zipcode;
+      templateSourceJSON.date = sourceBodyJSON.time.split(' ')[0];
+      templateSourceJSON.xid = sourceBodyJSON.xid;
+      templateSourceJSON.items = [];
+      templateSourceJSON.merchandiseTotal = 0;
+      for (var i=0; i<sourceBodyJSON.items.length; i++) {
+        var lineItem = {};
+        lineItem.name = sourceBodyJSON.items[i].name;
+        lineItem.index = i + 1;
+        lineItem.UPC = sourceBodyJSON.items[i].UPC;
+        lineItem.quantity = sourceBodyJSON.items[i].quantity;
+        lineItem.unit_amount = sourceBodyJSON.items[i].unit_amount;
+        lineItem.lineItemTotal = parseInt(lineItem.quantity) * parseInt(lineItem.unit_amount);
+        templateSourceJSON.merchandiseTotal = parseInt(templateSourceJSON.merchandiseTotal) + lineItem.lineItemTotal;
+        templateSourceJSON.items.push(lineItem);
+      };
+      templateSourceJSON.shippingCharge = sourceBodyJSON.shippingCharge;
+      templateSourceJSON.items_tax = sourceBodyJSON.items_tax;
+      templateSourceJSON.orderTotal = parseInt(templateSourceJSON.merchandiseTotal) + parseInt(templateSourceJSON.shippingCharge) 
+                                      + parseInt(templateSourceJSON.items_tax);
+      templateSourceJSON.cardType = sourceBodyJSON.cardType;
+      templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
+      return templateSourceJSON;
+    });
 };
 
 // GET route to download Packing Slip
