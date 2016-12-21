@@ -197,7 +197,19 @@ var generatePackSlip = function (orderID) {
                                       + parseInt(templateSourceJSON.items_tax);
       templateSourceJSON.cardType = sourceBodyJSON.cardType;
       templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
-      return templateSourceJSON;
+      var html = compPackSlipHTML(generatePackSlip(orderXID));
+      var options = {
+        "type": "pdf",
+        "base": 'http://tranquil-fortress-90513.herokuapp.com/',
+        "format": "Letter",
+        "orientation": "portrait"
+      };
+      var fileNameWrite = 'packSlip_' + orderXID + '.pdf';
+      pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
+        if (err) return console.log(err);
+        console.log(file);
+        res.download(file.filename);
+      });
     });
 };
 
@@ -206,20 +218,7 @@ var generatePackSlip = function (orderID) {
 artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
   console.log('get pack slip endpoint hit');
   var orderXID = req.params.orderID;
-  generatePackSlip(orderXID)
-  var html = compPackSlipHTML(generatePackSlip(orderXID));
-  var options = {
-    "type": "pdf",
-    "base": 'http://tranquil-fortress-90513.herokuapp.com/',
-    "format": "Letter",
-    "orientation": "portrait"
-  };
-  var fileNameWrite = 'packSlip_' + orderXID + '.pdf';
-  pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
-    if (err) return console.log(err);
-    console.log(file);
-    res.download(file.filename);
-  });
+  generatePackSlip(orderXID);
   console.log('heres the end of the pack slip route');
 
 });
