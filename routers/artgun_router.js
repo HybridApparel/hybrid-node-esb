@@ -204,7 +204,7 @@ var generatePackSlip = function (orderID) {
         "format": "Letter",
         "orientation": "portrait"
       };
-      var fileNameWrite = 'packSlip_' + orderXID + '.pdf';
+      var fileNameWrite = 'packSlip_' + orderID + '.pdf';
       pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
         if (err) return console.log(err);
         console.log(file);
