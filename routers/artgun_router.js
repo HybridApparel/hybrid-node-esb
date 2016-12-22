@@ -158,7 +158,7 @@ var persistArtGunShipment = function (shipmentJSON) {
   });
 };
 
-var generatePackSlip = function (orderID) {
+/*var generatePackSlip = function (orderID) {
   var sourceBodyJSON = {};
   var templateSourceJSON = {};
   Order.findOne({
@@ -212,7 +212,7 @@ var generatePackSlip = function (orderID) {
         res.download(file.filename);
       });
     });
-};
+};*/
 
 // GET route to download Packing Slip
 
@@ -225,6 +225,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       where: {OrderID: orderXID}
     }).then(function(order) {
       sourceBodyJSON = order.Body;
+      console.log('the barcode value is ' + sourceBodyJSON.barcodeValue);
       templateSourceJSON.billing_name = sourceBodyJSON.billing_name;
       templateSourceJSON.billing_address1 = sourceBodyJSON.billing_address1;
       templateSourceJSON.billing_address2 = sourceBodyJSON.billing_address2;
@@ -261,7 +262,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.orderTotal = parseFloat(Math.round(floatOrderTotal * 100) / 100).toFixed(2);
       templateSourceJSON.cardType = sourceBodyJSON.cardType;
       templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
-      templateSourceJSON.barcodeValue = sourceBodyJSON.barcodeValue;
+      templateSourceJSON.barcodeValue = sourceBodyJSON.barcodeValue.toString();
       var html = compPackSlipHTML(templateSourceJSON);
       var options = {
         "type": "pdf",
