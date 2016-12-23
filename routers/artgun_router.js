@@ -263,7 +263,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.orderTotal = parseFloat(Math.round(floatOrderTotal * 100) / 100).toFixed(2);
       templateSourceJSON.cardType = sourceBodyJSON.cardType;
       templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
-      // templateSourceJSON.barcodeValue = sourceBodyJSON.barcodeValue.toString();
+      templateSourceJSON.barcodeValue = sourceBodyJSON.barcodeValue;
       var html = compPackSlipHTML(templateSourceJSON);
       var options = {
         "type": "pdf",
@@ -292,7 +292,7 @@ artGunRouter.post('/orders/new', function(req, res) {
     persistNewOrder(req.body);
     var artGunSig = sha1(artGunSecret + artGunKey + JSON.stringify(orderReqBody));
     var artGunPostBody = "Key=" + artGunKey + "&data=" + JSON.stringify(orderReqBody) + "&signature=" + artGunSig;
-    // newArtGunPostReq(artGunPostBody);
+    newArtGunPostReq(artGunPostBody);
     res.status(200).send('order received and will be processed');
   } else if (authHybridReq(req.body) != true) {
     console.log("invalid signature");
@@ -368,6 +368,12 @@ artGunRouter.post('/orders/pack_slip/test', function(req, res) {
     res.download(file.filename);
   });
   console.log('heres the end of the test route brough');
+});
+
+
+artGunRouter.get('/orders/:orderID/status', function(req, res) {
+  console.log('get route for order status hit');
+
 });
 
 

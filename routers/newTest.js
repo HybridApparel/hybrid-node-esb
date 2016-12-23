@@ -655,3 +655,496 @@ var testNewJSON = {
 "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
 "signature": "07175c00ab32c2e4c4c547b3d4fd52d8d6d9dc7e"
 };
+
+
+
+
+var testOrder1 = 
+{
+  "orderJSON":{        
+    "type": "ORDER",
+    "time": "Thurs, 22 Dec 2016 11:48:13 ­0600",
+    "method": "create",
+    "mode": "auto",
+    "status": "In Production",
+    "status_code": "6",
+    "xid": "TEST0500",
+    "notes": "Hybrid Order Test",
+    "shiplabel_url": "",
+    "pack_url": "",
+    "giftnote_comment": "",
+    "shipping_carrier": "MI",
+    "shipping_priority": "4272",
+    "shipping_account": "",
+    "billing_name": "Lora Lozano",
+    "billing_address1": "10711 Walker St",
+    "billing_address2": "Hybrid Apparel",
+    "billing_city": "Cypress",
+    "billing_state": "CA",
+    "billing_country": "US",
+    "billing_zipcode": "90630",
+    "shipping_name": "Lora Lozano",
+    "shipping_address1": "10711 Walker St",
+    "shipping_address2": "Hybrid Apparel",
+    "shipping_city": "Cypress",
+    "shipping_state": "CA",
+    "shipping_country": "US",
+    "shipping_zipcode": "90630",
+    "shipping_phone": "8471231234",
+    "shipping_email": "ama@hybridapparel.com",
+    "items_quantity": "6",
+    "items_amount": "90.00",
+    "items_tax": "0.05",
+    "items": [{
+      "name": "Pink Floyd",          
+      "sku": "10290102",
+      "UPC": "",           
+      "quantity": "6",    
+      "unit_amount": "15.00",            
+      "subtotal_amount": "90.00",
+      "necklabel_binid": "",       
+      "hangtag_binid": "",         
+      "attributes": [      
+      {           
+        "type": "DigitalPrint",
+        "location": "CF",
+        "thumbnail": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_THUMB_PF-368.png?16454377556678490292",
+        "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_PF-368.png?16454377556678490292",
+        "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/PF-368-Prism-Flock-FPO.png?16454377556678490292",
+        "file_extension": "png"
+      },
+      {           
+        "type": "DigitalPrint",
+        "location": "FB",
+        "thumbnail": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_THUMB_PF-368.png?16454377556678490292",
+        "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_PF-368.png?16454377556678490292",
+        "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/PF-368-Prism-Flock-FPO.png?16454377556678490292",
+        "file_extension": "png"
+      },
+      {
+       "type": "HangTag",
+       "location": "FN",
+       "thumbnail": "",
+       "preview": ""
+     }
+     ]           
+   }
+ }]         
+},
+"shippingCharge": "5.00",
+"cardType": "AMEX",
+"cardDigits": "4321",
+"barcodeValue": "",
+"OrderID":"TEST0500",
+"key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
+"signature": ""
+};
+
+
+var testOrder2 = {
+  "orderJSON":
+  {        
+    "type": "ORDER",
+    "time": "Thurs, 22 Dec 2016 11:48:13 ­0600",
+    "method": "create",
+    "mode": "auto",
+    "status": "In Production",
+    "status_code": "6",
+    "xid": "TEST0501",
+    "notes": "Hybrid Order Test",
+    "shiplabel_url": "",
+    "pack_url": "",
+    "giftnote_comment": "",
+    "shipping_carrier": "MI",
+    "shipping_priority": "4272",
+    "shipping_account": "",
+    "billing_name": "Lora Lozano",
+    "billing_address1": "10711 Walker St",
+    "billing_address2": "Hybrid Apparel",
+    "billing_city": "Cypress",
+    "billing_state": "CA",
+    "billing_country": "US",
+    "billing_zipcode": "90630",
+    "shipping_name": "Lora Lozano",
+    "shipping_address1": "10711 Walker St",
+    "shipping_address2": "Hybrid Apparel",
+    "shipping_city": "Cypress",
+    "shipping_state": "CA",
+    "shipping_country": "US",
+    "shipping_zipcode": "90630",
+    "shipping_phone": "8471231234",
+    "shipping_email": "ama@hybridapparel.com",
+    "items_quantity": "6",
+    "items_amount": "90.00",
+    "items_tax": "0.05",
+    "items": [{
+      "name": "Bon Jovi",          
+      "sku": "10291002",
+      "UPC": "",           
+      "quantity": "6",    
+      "unit_amount": "15.00",            
+      "subtotal_amount": "90.00",
+      "necklabel_binid": "",       
+      "hangtag_binid": "",         
+      "attributes": [      
+      {           
+        "type": "DigitalPrint",
+        "location": "CF",
+        "thumbnail": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_THUMB_BJM-0010.png?16454377556678490292",
+        "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_BJM-0010.png?16454377556678490292",
+        "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/BJM-0010_FPO.png?16454377556678490292",
+        "file_extension": "png"
+      },
+      {           
+        "type": "DigitalPrint",
+        "location": "FB",
+        "thumbnail": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_THUMB_BJM-0010.png?16454377556678490292",
+        "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_BJM-0010.png?16454377556678490292",
+        "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/BJM-0010_FPO.png?16454377556678490292",
+        "file_extension": "png"
+      },
+      {
+       "type": "HangTag",
+       "location": "FN",
+       "thumbnail": "",
+       "preview": ""
+     }
+     ]           
+   }
+"shippingCharge": "5.00",
+"cardType": "AMEX",
+"cardDigits": "1234",
+"barcodeValue": "",
+"OrderID":"TEST0501",
+"key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
+"signature": ""
+};
+
+var testOrder3 = 
+{
+  "orderJSON":{        
+    "type": "ORDER",
+    "time": "Thurs, 22 Dec 2016 11:48:13 ­0600",
+    "method": "create",
+    "mode": "auto",
+    "status": "In Production",
+    "status_code": "6",
+    "xid": "TEST0502",
+    "notes": "Hybrid Order Test",
+    "shiplabel_url": "",
+    "pack_url": "",
+    "giftnote_comment": "",
+    "shipping_carrier": "MI",
+    "shipping_priority": "4272",
+    "shipping_account": "",
+    "billing_name": "Lora Lozano",
+    "billing_address1": "10711 Walker St",
+    "billing_address2": "Hybrid Apparel",
+    "billing_city": "Cypress",
+    "billing_state": "CA",
+    "billing_country": "US",
+    "billing_zipcode": "90630",
+    "shipping_name": "Lora Lozano",
+    "shipping_address1": "10711 Walker St",
+    "shipping_address2": "Hybrid Apparel",
+    "shipping_city": "Cypress",
+    "shipping_state": "CA",
+    "shipping_country": "US",
+    "shipping_zipcode": "90630",
+    "shipping_phone": "8471231234",
+    "shipping_email": "ama@hybridapparel.com",
+    "items_quantity": "6",
+    "items_amount": "90.00",
+    "items_tax": "0.05",
+    "items": [{
+      "name": "St Partys Day",          
+      "sku": "10290102",
+      "UPC": "",           
+      "quantity": "6",    
+      "unit_amount": "15.00",            
+      "subtotal_amount": "90.00",
+      "necklabel_binid": "",       
+      "hangtag_binid": "",         
+      "attributes": [      
+      {           
+        "type": "DigitalPrint",
+        "location": "CF",
+        "thumbnail": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_THUMB_WRD-9788.png?16454377556678490292",
+        "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_WRD-9788.png?16454377556678490292",
+        "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/WRD-9788_FPO-01.png?16454377556678490292",
+        "file_extension": "png"
+      },
+      {           
+        "type": "DigitalPrint",
+        "location": "FB",
+        "thumbnail": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_THUMB_WRD-9788.png?16454377556678490292",
+        "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_WRD-9788.png?16454377556678490292",
+        "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/WRD-9788_FPO-01.png?16454377556678490292",
+        "file_extension": "png"
+      },
+      {
+       "type": "HangTag",
+       "location": "FN",
+       "thumbnail": "",
+       "preview": ""
+     }
+     ]           
+   }
+ }]         
+},
+"shippingCharge": "5.00",
+"cardType": "AMEX",
+"cardDigits": "4321",
+"barcodeValue": "",
+"OrderID":"TEST0502",
+"key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
+"signature": ""
+};
+
+var testOrder4 = 
+{
+  "orderJSON":{        
+    "type": "ORDER",
+    "time": "Thurs, 22 Dec 2016 11:48:13 ­0600",
+    "method": "create",
+    "mode": "auto",
+    "status": "In Production",
+    "status_code": "6",
+    "xid": "TEST0503",
+    "notes": "Hybrid Order Test",
+    "shiplabel_url": "",
+    "pack_url": "",
+    "giftnote_comment": "",
+    "shipping_carrier": "MI",
+    "shipping_priority": "4272",
+    "shipping_account": "",
+    "billing_name": "Lora Lozano",
+    "billing_address1": "10711 Walker St",
+    "billing_address2": "Hybrid Apparel",
+    "billing_city": "Cypress",
+    "billing_state": "CA",
+    "billing_country": "US",
+    "billing_zipcode": "90630",
+    "shipping_name": "Lora Lozano",
+    "shipping_address1": "10711 Walker St",
+    "shipping_address2": "Hybrid Apparel",
+    "shipping_city": "Cypress",
+    "shipping_state": "CA",
+    "shipping_country": "US",
+    "shipping_zipcode": "90630",
+    "shipping_phone": "8471231234",
+    "shipping_email": "ama@hybridapparel.com",
+    "items_quantity": "6",
+    "items_amount": "90.00",
+    "items_tax": "0.05",
+    "items": [{
+      "name": "Cheers",          
+      "sku": "10292402",
+      "UPC": "",           
+      "quantity": "6",    
+      "unit_amount": "15.00",            
+      "subtotal_amount": "90.00",
+      "necklabel_binid": "",       
+      "hangtag_binid": "",         
+      "attributes": [      
+      {           
+        "type": "DigitalPrint",
+        "location": "CF",
+        "thumbnail": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_THUMB_WRD-9784.png?16454377556678490292",
+        "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_WRD-9784.png?16454377556678490292",
+        "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/WRD-9784_FPO-01.png?16454377556678490292",
+        "file_extension": "png"
+      },
+      {           
+        "type": "DigitalPrint",
+        "location": "FB",
+        "thumbnail": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_THUMB_WRD-9784.png?16454377556678490292",
+        "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_WRD-9784.png?16454377556678490292",
+        "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/WRD-9784_FPO-01.png?16454377556678490292",
+        "file_extension": "png"
+      },
+      {
+       "type": "HangTag",
+       "location": "FN",
+       "thumbnail": "",
+       "preview": ""
+     }
+     ]           
+   }
+ }]         
+},
+"shippingCharge": "5.00",
+"cardType": "AMEX",
+"cardDigits": "4321",
+"barcodeValue": "",
+"OrderID":"TEST0503",
+"key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
+"signature": ""
+};
+
+var testOrder5 = 
+{
+  "orderJSON":{        
+    "type": "ORDER",
+    "time": "Thurs, 22 Dec 2016 11:48:13 ­0600",
+    "method": "create",
+    "mode": "auto",
+    "status": "In Production",
+    "status_code": "6",
+    "xid": "TEST0504",
+    "notes": "Hybrid Order Test",
+    "shiplabel_url": "",
+    "pack_url": "",
+    "giftnote_comment": "",
+    "shipping_carrier": "MI",
+    "shipping_priority": "4272",
+    "shipping_account": "",
+    "billing_name": "Lora Lozano",
+    "billing_address1": "10711 Walker St",
+    "billing_address2": "Hybrid Apparel",
+    "billing_city": "Cypress",
+    "billing_state": "CA",
+    "billing_country": "US",
+    "billing_zipcode": "90630",
+    "shipping_name": "Lora Lozano",
+    "shipping_address1": "10711 Walker St",
+    "shipping_address2": "Hybrid Apparel",
+    "shipping_city": "Cypress",
+    "shipping_state": "CA",
+    "shipping_country": "US",
+    "shipping_zipcode": "90630",
+    "shipping_phone": "8471231234",
+    "shipping_email": "ama@hybridapparel.com",
+    "items_quantity": "6",
+    "items_amount": "90.00",
+    "items_tax": "0.05",
+    "items": [{
+      "name": "Disney",          
+      "sku": "10290202",
+      "UPC": "",           
+      "quantity": "6",    
+      "unit_amount": "15.00",            
+      "subtotal_amount": "90.00",
+      "necklabel_binid": "",       
+      "hangtag_binid": "",         
+      "attributes": [      
+      {           
+        "type": "DigitalPrint",
+        "location": "CF",
+        "thumbnail": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_THUMB_DNY-3319.png?16454377556678490292",
+        "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_DNY-3319.png?16454377556678490292",
+        "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/DNY-3319_FPO.png?16454377556678490292",
+        "file_extension": "png"
+      },
+      {           
+        "type": "DigitalPrint",
+        "location": "FB",
+        "thumbnail": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_THUMB_DNY-3319.png?16454377556678490292",
+        "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_DNY-3319.png?16454377556678490292",
+        "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/DNY-3319_FPO.png?16454377556678490292",
+        "file_extension": "png"
+      },
+      {
+       "type": "HangTag",
+       "location": "FN",
+       "thumbnail": "",
+       "preview": ""
+     }
+     ]           
+   }
+ }]         
+},
+"shippingCharge": "5.00",
+"cardType": "AMEX",
+"cardDigits": "4321",
+"barcodeValue": "",
+"OrderID":"TEST0504",
+"key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
+"signature": ""
+};
+
+var testOrder6 = 
+{
+  "orderJSON":{        
+    "type": "ORDER",
+    "time": "Thurs, 22 Dec 2016 11:48:13 ­0600",
+    "method": "create",
+    "mode": "auto",
+    "status": "In Production",
+    "status_code": "6",
+    "xid": "TEST0505",
+    "notes": "Hybrid Order Test",
+    "shiplabel_url": "",
+    "pack_url": "",
+    "giftnote_comment": "",
+    "shipping_carrier": "MI",
+    "shipping_priority": "4272",
+    "shipping_account": "",
+    "billing_name": "Lora Lozano",
+    "billing_address1": "10711 Walker St",
+    "billing_address2": "Hybrid Apparel",
+    "billing_city": "Cypress",
+    "billing_state": "CA",
+    "billing_country": "US",
+    "billing_zipcode": "90630",
+    "shipping_name": "Lora Lozano",
+    "shipping_address1": "10711 Walker St",
+    "shipping_address2": "Hybrid Apparel",
+    "shipping_city": "Cypress",
+    "shipping_state": "CA",
+    "shipping_country": "US",
+    "shipping_zipcode": "90630",
+    "shipping_phone": "8471231234",
+    "shipping_email": "ama@hybridapparel.com",
+    "items_quantity": "6",
+    "items_amount": "90.00",
+    "items_tax": "0.05",
+    "items": [{
+      "name": "Kiss Me Im Irish",          
+      "sku": "10291002",
+      "UPC": "",           
+      "quantity": "6",    
+      "unit_amount": "15.00",            
+      "subtotal_amount": "90.00",
+      "necklabel_binid": "",       
+      "hangtag_binid": "",         
+      "attributes": [      
+      {           
+        "type": "DigitalPrint",
+        "location": "CF",
+        "thumbnail": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_THUMB_PNT-0966.png?16454377556678490292",
+        "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_PNT-0966.png?16454377556678490292",
+        "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/PNT-0966_FPO-01.png?16454377556678490292",
+        "file_extension": "png"
+      },
+      {           
+        "type": "DigitalPrint",
+        "location": "FB",
+        "thumbnail": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_THUMB_PNT-0966.png?16454377556678490292",
+        "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_PNT-0966.png?16454377556678490292",
+        "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/PNT-0966_FPO-01.png?16454377556678490292",
+        "file_extension": "png"
+      },
+      {
+       "type": "HangTag",
+       "location": "FN",
+       "thumbnail": "",
+       "preview": ""
+     }
+     ]           
+   }
+ }]         
+},
+"shippingCharge": "5.00",
+"cardType": "AMEX",
+"cardDigits": "4321",
+"barcodeValue": "",
+"OrderID":"TEST0505",
+"key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
+"signature": ""
+};
+
+
+
+
+
