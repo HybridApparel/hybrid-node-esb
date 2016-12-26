@@ -292,7 +292,7 @@ artGunRouter.post('/orders/new', function(req, res) {
     persistNewOrder(req.body);
     var artGunSig = sha1(artGunSecret + artGunKey + JSON.stringify(orderReqBody));
     var artGunPostBody = "Key=" + artGunKey + "&data=" + JSON.stringify(orderReqBody) + "&signature=" + artGunSig;
-    newArtGunPostReq(artGunPostBody);
+    // newArtGunPostReq(artGunPostBody);
     res.status(200).send('order received and will be processed');
   } else if (authHybridReq(req.body) != true) {
     console.log("invalid signature");
