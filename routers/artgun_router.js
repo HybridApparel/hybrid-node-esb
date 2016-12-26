@@ -371,10 +371,16 @@ artGunRouter.post('/orders/pack_slip/test', function(req, res) {
 });
 
 
-artGunRouter.get('/orders/:orderID/status', function(req, res) {
-  console.log('get route for order status hit');
+// artGunRouter.get('/orders/:orderID/status', function(req, res) {
+//   console.log('get route for order status hit');
+//   var responseJSON = {};
+//   Order.findOne({
+//     where: {OrderID: req.params.orderID}
+//   }).then(function(order) {
+//     responseJSON.
+//   })
 
-});
+// });
 
 
 
