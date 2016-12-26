@@ -265,7 +265,8 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
       templateSourceJSON.barcodeValue = sourceBodyJSON.barcodeValue;
       var html = compPackSlipHTML(templateSourceJSON);
-      var options = {
+      res.send(html);
+/*      var options = {
         "type": "pdf",
         "base": 'http://tranquil-fortress-90513.herokuapp.com/',
         "format": "Letter",
@@ -276,7 +277,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
         if (err) return console.log(err);
         console.log(file);
         res.download(file.filename);
-      });
+      });*/
     });
   console.log('heres the end of the pack slip route');
 });
