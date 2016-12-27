@@ -18,10 +18,6 @@ var artGunSecret     = process.env.ARTGUN_SECRET;
 var hybridKey        = process.env.HYBRID_KEY;
 var hybridSecret     = process.env.HYBRID_SECRET;
 
-
-
-
-
 // verifies shipment notification from ArtGun with SHA1 hashed sum of shared secret, key, and data object
 
 var authArtGunReq = function (artGunShipReq) {
@@ -158,62 +154,6 @@ var persistArtGunShipment = function (shipmentJSON) {
   });
 };
 
-/*var generatePackSlip = function (orderID) {
-  var sourceBodyJSON = {};
-  var templateSourceJSON = {};
-  Order.findOne({
-      where: {OrderID: orderID}
-    }).then(function(order) {
-      sourceBodyJSON = order.Body;
-      templateSourceJSON.billing_name = sourceBodyJSON.billing_name;
-      templateSourceJSON.billing_address1 = sourceBodyJSON.billing_address1;
-      templateSourceJSON.billing_address2 = sourceBodyJSON.billing_address2;
-      templateSourceJSON.billing_city = sourceBodyJSON.billing_city;
-      templateSourceJSON.billing_state = sourceBodyJSON.billing_state;
-      templateSourceJSON.billing_zipcode = sourceBodyJSON.billing_zipcode;
-      templateSourceJSON.shipping_name = sourceBodyJSON.shipping_name;
-      templateSourceJSON.shipping_address1 = sourceBodyJSON.shipping_address1;
-      templateSourceJSON.shipping_address2 =  sourceBodyJSON.shipping_address2;
-      templateSourceJSON.shipping_city = sourceBodyJSON.shipping_city;
-      templateSourceJSON.shipping_state = sourceBodyJSON.shipping_state;
-      templateSourceJSON.shipping_zipcode = sourceBodyJSON.shipping_zipcode;
-      templateSourceJSON.date = moment(sourceBodyJSON.time).format(MM/DD/YYYY);
-      templateSourceJSON.xid = sourceBodyJSON.xid;
-      templateSourceJSON.items = [];
-      templateSourceJSON.merchandiseTotal = 0;
-      for (var i=0; i<sourceBodyJSON.items.length; i++) {
-        var lineItem = {};
-        lineItem.name = sourceBodyJSON.items[i].name;
-        lineItem.index = i + 1;
-        lineItem.UPC = sourceBodyJSON.items[i].UPC;
-        lineItem.quantity = sourceBodyJSON.items[i].quantity;
-        lineItem.unit_amount = sourceBodyJSON.items[i].unit_amount;
-        lineItem.lineItemTotal = parseInt(lineItem.quantity) * parseInt(lineItem.unit_amount);
-        templateSourceJSON.merchandiseTotal = parseInt(templateSourceJSON.merchandiseTotal) + lineItem.lineItemTotal;
-        templateSourceJSON.items.push(lineItem);
-      };
-      templateSourceJSON.shippingCharge = sourceBodyJSON.shippingCharge;
-      templateSourceJSON.items_tax = sourceBodyJSON.items_tax;
-      templateSourceJSON.orderTotal = parseInt(templateSourceJSON.merchandiseTotal) + parseInt(templateSourceJSON.shippingCharge) 
-                                      + parseInt(templateSourceJSON.items_tax);
-      templateSourceJSON.cardType = sourceBodyJSON.cardType;
-      templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
-      var html = compPackSlipHTML(templateSourceJSON);
-      var options = {
-        "type": "pdf",
-        "base": 'http://tranquil-fortress-90513.herokuapp.com/',
-        "format": "Letter",
-        "orientation": "portrait"
-      };
-      var fileNameWrite = 'packSlip_' + orderID + '.pdf';
-      pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
-        if (err) return console.log(err);
-        console.log(file);
-        res.download(file.filename);
-      });
-    });
-};*/
-
 // GET route to download Packing Slip
 
 artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
@@ -319,7 +259,7 @@ artGunRouter.post('/shipments/update', function(req,res) {
       Shipment.create({
         order_id: orderPrimaryKey,
         status: req.body.status,
-        tracking_number: req.body.tracking_number,
+        tracking_number: JSON.parse(req.body.data).tracking_number,
         body: req.body
       }).then(function(shipment) {
         resJSON.res = "success";
@@ -353,16 +293,21 @@ artGunRouter.post('/orders/pack_slip/test', function(req, res) {
 });
 
 
-artGunRouter.get('/orders/:orderID/status', function(req, res) {
-  console.log('get route for order status hit');
-  var responseJSON = {};
-  Order.findOne({
-    where: {OrderID: req.params.orderID}
-  }).then(function(order) {
-    responseJSON.orderID =  order.orderID;
-  });
+// artGunRouter.get('/orders/:orderID/status', function(req, res) {
+//   console.log('get route for order status hit');
+//   var responseJSON = {};
+//   Order.findOne({
+//     where: {OrderID: req.params.orderID},
+//     include: Shipment
+//   }).then(function(order) {
+//     responseJSON.orderID =  order.orderID;
+//     responseJSON.isProcessed = order.isProcessed;
+//     if (responseJSON.isProcessed === true) {
+//       responseJSON.tracking = order.shipments.tracking
+//     }
+//   });
 
-});
+// });
 
 
 
