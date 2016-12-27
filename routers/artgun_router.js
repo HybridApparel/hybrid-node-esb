@@ -360,8 +360,7 @@ artGunRouter.get('/orders/:orderID/status', function(req, res) {
     where: {OrderID: req.params.orderID}
   }).then(function(order) {
     responseJSON.orderID =  order.orderID;
-    responseJSON.
-  })
+  });
 
 });
 
