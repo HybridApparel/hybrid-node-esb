@@ -333,26 +333,6 @@ artGunRouter.post('/shipments/update', function(req,res) {
   };
 });
 
-
-/*artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
-  console.log('get shipment by id req received');
-
-  var html = fs.readFileSync('./public/packSlipTest.html', 'utf8');
-  var options = {
-    "type": "pdf",
-    "base": 'http://tranquil-fortress-90513.herokuapp.com/',
-    "format": "Letter",
-    "orientation": "portrait"
-    };
-  
-  pdf.create(html, options).toFile('http://tranquil-fortress-90513.herokuapp.com/artgun/packing_slips/packing_slips/packSlipTest9.pdf', function(err, file) {
-    if (err) return console.log(err);
-    console.log(file);
-    res.download(file.filename);
-  });
-  console.log('end of shipment get route');
-});*/
-
 artGunRouter.post('/orders/pack_slip/test', function(req, res) {
   console.log('test pack slip route hit bro');
   var orderXID = req.body.orderJSON.xid;
@@ -379,6 +359,7 @@ artGunRouter.get('/orders/:orderID/status', function(req, res) {
   Order.findOne({
     where: {OrderID: req.params.orderID}
   }).then(function(order) {
+    responseJSON.orderID =  order.orderID;
     responseJSON.
   })
 
