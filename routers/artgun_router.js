@@ -295,8 +295,10 @@ artGunRouter.post('/orders/pack_slip/test', function(req, res) {
 artGunRouter.get('/orders/:orderID/status', function(req, res) {
   console.log('get route for order status hit');
   var responseJSON = {};
+  var orderXID = req.params.orderID;
+  console.log("req.params.orderID is " + req.params.orderID);
   Order.findOne({
-    where: {OrderID: req.params.orderID}
+    where: {OrderID: orderXID}
   }).then(function(order) {
     // responseJSON.orderID =  order.orderID;
     // responseJSON.isProcessed = order.isProcessed;
