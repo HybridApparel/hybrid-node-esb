@@ -296,15 +296,18 @@ artGunRouter.get('/orders/:orderID/status', function(req, res) {
   console.log('get route for order status hit');
   var responseJSON = {};
   Order.findOne({
-    where: {OrderID: req.params.orderID},
-    include: Shipment
+    where: {OrderID: req.params.orderID}
   }).then(function(order) {
     // responseJSON.orderID =  order.orderID;
     // responseJSON.isProcessed = order.isProcessed;
     // if (responseJSON.isProcessed === true) {
     //   responseJSON.tracking = order.shipments.tracking
     // }
-    res.send(order);
+    Shipment.findOne({
+      where: {order_id: order.id}
+    }).then(function(shipment) {
+      res.send(order + " and heres the shipment " + shipment);
+    })
   });
 });
 
