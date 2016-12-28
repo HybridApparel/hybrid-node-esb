@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
-        shipments.belongsTo(models.orders, {foreighKey: "orderID"});
+        shipments.belongsTo(models.orders, {foreignKey: "orderID"});
       }
     }
   });
