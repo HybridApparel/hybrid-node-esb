@@ -292,28 +292,23 @@ artGunRouter.post('/orders/pack_slip/test', function(req, res) {
 });
 
 
-artGunRouter.get('/orders/:orderID/status/:signature', function(req, res) {
+artGunRouter.get('/orders/:orderID/status/', function(req, res) {
   console.log('get route for order status hit');
-  var authSig = sha1(hybridSecret + hybridKey + req.params.orderID);
-  //if (req.params.signature == authSig) {
-    var responseJSON = {};
-    Order.findOne({
-      where: {OrderID: req.params.orderID},
-      include: Shipment
-    }).then(function(order) {
-      responseJSON.isProcessed = order.isProcessed;
-      responseJSON.OrderID = order.OrderID;
-      if (order.shipments) {    
-          responseJSON.isShipped = JSON.parse(shipment.body).status;
-          responseJSON.trackingNumber = JSON.parse(shipment.body).tracking_number;
-          responseJSON.bol = JSON.parse(shipment.body).bol;
-      };
-      res.send(responseJSON).status(200);
-    }); 
-  // } else {
-  //   console.log("invalid signature");
-  //   res.status(403).send("invalid credentials, signature does not match");
-  // }
+  // var authSig = sha1(hybridSecret + hybridKey + req.params.orderID);
+  var responseJSON = {};
+  Order.findOne({
+    where: {OrderID: req.params.orderID},
+    include: Shipment
+  }).then(function(order) {
+    responseJSON.isProcessed = order.isProcessed;
+    responseJSON.OrderID = order.OrderID;
+/*    if (order.shipments) {    
+        responseJSON.isShipped = JSON.parse(shipment.body).status;
+        responseJSON.trackingNumber = JSON.parse(shipment.body).tracking_number;
+        responseJSON.bol = JSON.parse(shipment.body).bol;
+    };*/
+    res.send(order).status(200);
+  }); 
 });
 
 
