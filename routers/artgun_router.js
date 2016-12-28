@@ -296,18 +296,13 @@ artGunRouter.get('/orders/:orderID/status', function(req, res) {
   console.log('get route for order status hit');
   var responseJSON = {};
   var orderXID = req.params.orderID;
-  var orderDbId;
-  console.log("req.params.orderID is " + req.params.orderID);
   Order.findOne({
     where: {OrderID: orderXID}
   }).then(function(order) {
-    console.log(order);
-    var orderDbId = order.id
-    console.log(orderDbId);
     Shipment.findOne({
-      where: {orderID: orderDbId}
+      where: {orderID: order.id}
     }).then(function(shipment) {
-      console.log(shipment);
+      res.send(shipment);
     });
   });
 });
