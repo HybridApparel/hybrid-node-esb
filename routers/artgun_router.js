@@ -205,7 +205,6 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
       templateSourceJSON.barcodeValue = sourceBodyJSON.barcodeValue;
       var html = compPackSlipHTML(templateSourceJSON);
-      res.send(html);
       console.log(html);
       var options = {
         "type": "pdf",
