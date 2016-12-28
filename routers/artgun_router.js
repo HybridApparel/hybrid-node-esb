@@ -302,7 +302,7 @@ artGunRouter.get('/orders/:orderID/status', function(req, res) {
     Shipment.findOne({
       where: {orderID: associatedID}
     }).then(function(shipment) {
-      console.log(shipment);
+      res.send(shipment);
     })
   });
 });
