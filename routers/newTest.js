@@ -720,15 +720,8 @@ var testOrder1 =
         "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_PF-368.png?16454377556678490292",
         "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/PF-368-Prism-Flock-FPO.png?16454377556678490292",
         "file_extension": "png"
-      },
-      {
-       "type": "HangTag",
-       "location": "FN",
-       "thumbnail": "",
-       "preview": ""
-     }
+      }
      ]           
-   }
  }]         
 },
 "shippingCharge": "5.00",
@@ -737,13 +730,12 @@ var testOrder1 =
 "barcodeValue": "",
 "OrderID":"TEST0500",
 "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
-"signature": ""
+"signature": "088d71acad2a54c0295d5a1ef6b4904a4ac40cc8"
 };
 
 
 var testOrder2 = {
-  "orderJSON":
-  {        
+  "orderJSON":{        
     "type": "ORDER",
     "time": "Thurs, 22 Dec 2016 11:48:13 ­0600",
     "method": "create",
@@ -802,22 +794,17 @@ var testOrder2 = {
         "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_BJM-0010.png?16454377556678490292",
         "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/BJM-0010_FPO.png?16454377556678490292",
         "file_extension": "png"
-      },
-      {
-       "type": "HangTag",
-       "location": "FN",
-       "thumbnail": "",
-       "preview": ""
-     }
+      }
      ]           
-   }
+   }]
+ },
 "shippingCharge": "5.00",
 "cardType": "AMEX",
 "cardDigits": "1234",
 "barcodeValue": "",
 "OrderID":"TEST0501",
 "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
-"signature": ""
+"signature": "ee634bfb9b89f5062002eb5242e0657d70e2a258"
 };
 
 var testOrder3 = 
@@ -881,15 +868,9 @@ var testOrder3 =
         "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_WRD-9788.png?16454377556678490292",
         "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/WRD-9788_FPO-01.png?16454377556678490292",
         "file_extension": "png"
-      },
-      {
-       "type": "HangTag",
-       "location": "FN",
-       "thumbnail": "",
-       "preview": ""
-     }
+      }
      ]           
-   }
+   
  }]         
 },
 "shippingCharge": "5.00",
@@ -898,7 +879,7 @@ var testOrder3 =
 "barcodeValue": "",
 "OrderID":"TEST0502",
 "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
-"signature": ""
+"signature": "fbbc5ecb2c52f0bb5c7f2f26e169e92ec73a43a6"
 };
 
 var testOrder4 = 
@@ -962,15 +943,9 @@ var testOrder4 =
         "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_WRD-9784.png?16454377556678490292",
         "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/WRD-9784_FPO-01.png?16454377556678490292",
         "file_extension": "png"
-      },
-      {
-       "type": "HangTag",
-       "location": "FN",
-       "thumbnail": "",
-       "preview": ""
-     }
+      }
      ]           
-   }
+   
  }]         
 },
 "shippingCharge": "5.00",
@@ -979,7 +954,7 @@ var testOrder4 =
 "barcodeValue": "",
 "OrderID":"TEST0503",
 "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
-"signature": ""
+"signature": "4e43295565b23b3b2a20eded4b7a956bd9f2d9ae"
 };
 
 var testOrder5 = 
@@ -1043,15 +1018,9 @@ var testOrder5 =
         "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_DNY-3319.png?16454377556678490292",
         "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/DNY-3319_FPO.png?16454377556678490292",
         "file_extension": "png"
-      },
-      {
-       "type": "HangTag",
-       "location": "FN",
-       "thumbnail": "",
-       "preview": ""
-     }
+      }
      ]           
-   }
+   
  }]         
 },
 "shippingCharge": "5.00",
@@ -1060,7 +1029,7 @@ var testOrder5 =
 "barcodeValue": "",
 "OrderID":"TEST0504",
 "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
-"signature": ""
+"signature": "506c26123a4655ca620564295d4658aaf8cf4850"
 };
 
 var testOrder6 = 
@@ -1124,15 +1093,8 @@ var testOrder6 =
         "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_PNT-0966.png?16454377556678490292",
         "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/PNT-0966_FPO-01.png?16454377556678490292",
         "file_extension": "png"
-      },
-      {
-       "type": "HangTag",
-       "location": "FN",
-       "thumbnail": "",
-       "preview": ""
-     }
-     ]           
-   }
+      }
+      ]           
  }]         
 },
 "shippingCharge": "5.00",
@@ -1141,7 +1103,7 @@ var testOrder6 =
 "barcodeValue": "",
 "OrderID":"TEST0505",
 "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
-"signature": ""
+"signature": "2f146e958fdac5a9b78d7771d35bee46d1d348bd"
 };
 
 
