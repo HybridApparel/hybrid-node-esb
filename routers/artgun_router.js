@@ -302,12 +302,13 @@ artGunRouter.get('/orders/:orderID/status/', function(req, res) {
   }).then(function(order) {
     responseJSON.isProcessed = order.isProcessed;
     responseJSON.OrderID = order.OrderID;
-/*    if (order.shipments) {    
-        responseJSON.isShipped = JSON.parse(shipment.body).status;
-        responseJSON.trackingNumber = JSON.parse(shipment.body).tracking_number;
-        responseJSON.bol = JSON.parse(shipment.body).bol;
-    };*/
-    res.send(order).status(200);
+    responseJSON.ArtGunResponseBody = order.EndpointResponseBody;
+    if (order.shipments) {    
+        responseJSON.isShipped = JSON.parse(order.shipments[0].body).status;
+        responseJSON.trackingNumber = JSON.parse(order.shipments[0].body).tracking_number;
+        responseJSON.bol = JSON.parse(order.shipments[0].body).bol;
+    };
+    res.send(responseJSON).status(200);
   }); 
 });
 
