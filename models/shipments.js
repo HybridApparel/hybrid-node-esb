@@ -1,7 +1,7 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var shipments = sequelize.define('shipments', {
-    order_id: DataTypes.INTEGER,
+    orderID: DataTypes.INTEGER,
     status: DataTypes.STRING,
     tracking_number: DataTypes.STRING,
     body: DataTypes.JSONB
