@@ -305,7 +305,7 @@ artGunRouter.get('/orders/:orderID/status', function(req, res) {
     var orderDbId = order.id
     console.log(orderDbId);
     Shipment.findOne({
-      where: {order_id: orderDbId}
+      where: {order_id: '"orderDbId" DESC'}
     }).then(function(shipment) {
       console.log(shipment);
     });
