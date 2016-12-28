@@ -1107,6 +1107,10 @@ var testOrder6 =
 };
 
 
-
+    // responseJSON.orderID =  order.orderID;
+    // responseJSON.isProcessed = order.isProcessed;
+    // if (responseJSON.isProcessed === true) {
+    //   responseJSON.tracking = order.shipments.tracking
+    // }
 
 
