@@ -298,8 +298,12 @@ artGunRouter.get('/orders/:orderID/status', function(req, res) {
   Order.findOne({
     where: {OrderID: req.params.orderID}
   }).then(function(order) {
-    console.log(order);
-    res.send(order);
+    var associatedID = order.id;
+    Shipment.findOne({
+      where: {orderID: associatedID}
+    }).then(function(shipment) {
+      console.log(shipment);
+    })
   });
 });
 
