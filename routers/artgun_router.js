@@ -303,7 +303,7 @@ artGunRouter.get('/orders/:orderID/status/:signature', function(req, res) {
       "code": "1",
       "message": "signature does not match"
     };
-    return hybridErrorRes;  
+    res.send(hybridErrorRes).status(403);  
   } else if (authSig === req.params.signature) {
     var responseJSON = {};
     Order.findOne({
