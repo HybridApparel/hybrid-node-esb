@@ -293,24 +293,34 @@ artGunRouter.post('/orders/pack_slip/test', function(req, res) {
 });
 
 
-artGunRouter.get('/orders/:orderID/status/', function(req, res) {
+artGunRouter.get('/orders/:orderID/status/:signature', function(req, res) {
   console.log('get route for order status hit');
-  // var authSig = sha1(hybridSecret + hybridKey + req.params.orderID);
-  var responseJSON = {};
-  Order.findOne({
-    where: {OrderID: req.params.orderID},
-    include: Shipment
-  }).then(function(order) {
-    responseJSON.isProcessed = order.isProcessed;
-    responseJSON.OrderID = order.OrderID;
-    responseJSON.ArtGunResponseBody = order.EndpointResponseBody;
-    if (order.shipments[0]) {    
-        responseJSON.isShipped = JSON.parse(order.shipments[0].body).status;
-        responseJSON.trackingNumber = JSON.parse(order.shipments[0].body).tracking_number;
-        responseJSON.billOfLading = JSON.parse(order.shipments[0].body).bol;
+  var authSig = sha1(hybridSecret + hybridKey + req.params.orderID);
+  if (authSig != req.params.signature) {
+    console.log('request not accepted - invalid credentials and signature');
+    var hybridErrorRes = {
+      "error": "403 - authentication failed, invalid signature - request not received",
+      "code": "1",
+      "message": "signature does not match"
     };
-    res.send(responseJSON).status(200);
-  }); 
+    return hybridErrorRes;  
+  } else if (authSig === req.params.signature) {
+    var responseJSON = {};
+    Order.findOne({
+      where: {OrderID: req.params.orderID},
+      include: Shipment
+    }).then(function(order) {
+      responseJSON.isProcessed = order.isProcessed;
+      responseJSON.OrderID = order.OrderID;
+      responseJSON.ArtGunResponseBody = order.EndpointResponseBody;
+      if (order.shipments[0]) {    
+          responseJSON.isShipped = JSON.parse(order.shipments[0].body).status;
+          responseJSON.trackingNumber = JSON.parse(order.shipments[0].body).tracking_number;
+          responseJSON.billOfLading = JSON.parse(order.shipments[0].body).bol;
+      };
+      res.send(responseJSON).status(200);
+    });  
+  }
 });
 
 
