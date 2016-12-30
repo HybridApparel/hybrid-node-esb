@@ -204,6 +204,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.cardType = sourceBodyJSON.cardType;
       templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
       templateSourceJSON.barcodeValue = sourceBodyJSON.barcodeValue;
+      templateSourceJSON.barcodeValue1 = '<script>JsBarcode("#barcode1", ' + ,  {format:"CODE39"});</script>
       var html = compPackSlipHTML(templateSourceJSON);
       console.log(html);
       var options = {
@@ -303,12 +304,12 @@ artGunRouter.get('/orders/:orderID/status/', function(req, res) {
     responseJSON.isProcessed = order.isProcessed;
     responseJSON.OrderID = order.OrderID;
     responseJSON.ArtGunResponseBody = order.EndpointResponseBody;
-/*    if (order.shipments) {    
+    if (order.shipments[0]) {    
         responseJSON.isShipped = JSON.parse(order.shipments[0].body).status;
         responseJSON.trackingNumber = JSON.parse(order.shipments[0].body).tracking_number;
-        responseJSON.bol = JSON.parse(order.shipments[0].body).bol;
-    };*/
-    res.send(order).status(200);
+        responseJSON.billOfLading = JSON.parse(order.shipments[0].body).bol;
+    };
+    res.send(responseJSON).status(200);
   }); 
 });
 

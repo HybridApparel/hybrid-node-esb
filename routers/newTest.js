@@ -668,8 +668,8 @@ var testOrder1 =
     "mode": "auto",
     "status": "In Production",
     "status_code": "6",
-    "xid": "TEST0500",
-    "notes": "Hybrid Order Test",
+    "xid": "PROD0500",
+    "notes": "Hybrid Order",
     "shiplabel_url": "",
     "pack_url": "",
     "giftnote_comment": "",
@@ -727,10 +727,10 @@ var testOrder1 =
 "shippingCharge": "5.00",
 "cardType": "AMEX",
 "cardDigits": "4321",
-"barcodeValue": "",
-"OrderID":"TEST0500",
+"barcodeValue": "PROD0500",
+"OrderID":"PROD0500",
 "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
-"signature": "088d71acad2a54c0295d5a1ef6b4904a4ac40cc8"
+"signature": "ca1acc7a99708f0a2b92e42f67095d17368e08b0"
 };
 
 
@@ -742,8 +742,8 @@ var testOrder2 = {
     "mode": "auto",
     "status": "In Production",
     "status_code": "6",
-    "xid": "TEST0501",
-    "notes": "Hybrid Order Test",
+    "xid": "PROD0501",
+    "notes": "Hybrid Order",
     "shiplabel_url": "",
     "pack_url": "",
     "giftnote_comment": "",
@@ -801,10 +801,10 @@ var testOrder2 = {
 "shippingCharge": "5.00",
 "cardType": "AMEX",
 "cardDigits": "1234",
-"barcodeValue": "",
-"OrderID":"TEST0501",
+"barcodeValue": "PROD0501",
+"OrderID":"PROD0501",
 "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
-"signature": "ee634bfb9b89f5062002eb5242e0657d70e2a258"
+"signature": "4db0f2e277ff8478398e60ace7b5e6c3788f548f"
 };
 
 var testOrder3 = 
@@ -816,8 +816,8 @@ var testOrder3 =
     "mode": "auto",
     "status": "In Production",
     "status_code": "6",
-    "xid": "TEST0502",
-    "notes": "Hybrid Order Test",
+    "xid": "PROD0502",
+    "notes": "Hybrid Order",
     "shiplabel_url": "",
     "pack_url": "",
     "giftnote_comment": "",
@@ -876,10 +876,10 @@ var testOrder3 =
 "shippingCharge": "5.00",
 "cardType": "AMEX",
 "cardDigits": "4321",
-"barcodeValue": "",
-"OrderID":"TEST0502",
+"barcodeValue": "PROD0502",
+"OrderID":"PROD0502",
 "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
-"signature": "fbbc5ecb2c52f0bb5c7f2f26e169e92ec73a43a6"
+"signature": "75867a87da5a55267a88ac533f71456a0358297a"
 };
 
 var testOrder4 = 
@@ -891,8 +891,8 @@ var testOrder4 =
     "mode": "auto",
     "status": "In Production",
     "status_code": "6",
-    "xid": "TEST0503",
-    "notes": "Hybrid Order Test",
+    "xid": "PROD0503",
+    "notes": "Hybrid Order",
     "shiplabel_url": "",
     "pack_url": "",
     "giftnote_comment": "",
@@ -951,10 +951,10 @@ var testOrder4 =
 "shippingCharge": "5.00",
 "cardType": "AMEX",
 "cardDigits": "4321",
-"barcodeValue": "",
-"OrderID":"TEST0503",
+"barcodeValue": "PROD0503",
+"OrderID":"PROD0503",
 "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
-"signature": "4e43295565b23b3b2a20eded4b7a956bd9f2d9ae"
+"signature": "6018439a9b883c1d6364e9d5b059d04d574bf466"
 };
 
 var testOrder5 = 
@@ -966,8 +966,8 @@ var testOrder5 =
     "mode": "auto",
     "status": "In Production",
     "status_code": "6",
-    "xid": "TEST0504",
-    "notes": "Hybrid Order Test",
+    "xid": "PROD0504",
+    "notes": "Hybrid Order",
     "shiplabel_url": "",
     "pack_url": "",
     "giftnote_comment": "",
@@ -1026,10 +1026,10 @@ var testOrder5 =
 "shippingCharge": "5.00",
 "cardType": "AMEX",
 "cardDigits": "4321",
-"barcodeValue": "",
-"OrderID":"TEST0504",
+"barcodeValue": "PROD0504",
+"OrderID":"PROD0504",
 "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
-"signature": "506c26123a4655ca620564295d4658aaf8cf4850"
+"signature": "461990c58003ab2854d14d02300c366c4604c062"
 };
 
 var testOrder6 = 
@@ -1041,8 +1041,8 @@ var testOrder6 =
     "mode": "auto",
     "status": "In Production",
     "status_code": "6",
-    "xid": "TEST0505",
-    "notes": "Hybrid Order Test",
+    "xid": "PROD0505",
+    "notes": "Hybrid Order",
     "shiplabel_url": "",
     "pack_url": "",
     "giftnote_comment": "",
@@ -1100,10 +1100,10 @@ var testOrder6 =
 "shippingCharge": "5.00",
 "cardType": "AMEX",
 "cardDigits": "4321",
-"barcodeValue": "",
-"OrderID":"TEST0505",
+"barcodeValue": "PROD0505",
+"OrderID":"PROD0505",
 "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
-"signature": "2f146e958fdac5a9b78d7771d35bee46d1d348bd"
+"signature": "f2b10e07dadd9b9569e066860d12b8b2f4a9c107"
 };
 
 
