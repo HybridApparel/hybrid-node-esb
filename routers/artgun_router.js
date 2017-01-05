@@ -166,7 +166,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       where: {OrderID: orderXID}
     }).then(function(order) {
       sourceBodyJSON = order.Body;
-      console.log('the body is ' + sourceBodyJSON);
+      console.log('the body is ' + sourceBodyJSON.orderJSON.);
       templateSourceJSON.billing_name = sourceBodyJSON.orderJSON.billing_name;
       templateSourceJSON.billing_address1 = sourceBodyJSON.orderJSON.billing_address1;
       templateSourceJSON.billing_address2 = sourceBodyJSON.orderJSON.billing_address2;
@@ -193,10 +193,10 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
         lineItem.unit_amount = sourceBodyJSON.orderJSON.items[i].unit_amount;
         var floatLineItemTotal = parseInt(lineItem.quantity) * parseInt(lineItem.unit_amount);
         lineItem.lineItemTotal = parseFloat(Math.round(floatLineItemTotal * 100) / 100).toFixed(2)
-        var floatMerchandiseTotal = parseInt(templateSourceJSON.orderJSON.merchandiseTotal) + parseInt(lineItem.lineItemTotal);
-        templateSourceJSON.merchandiseTotal = parseFloat(Math.round(floatMerchandiseTotal * 100) / 100).toFixed(2);
+        // var floatMerchandiseTotal = parseInt(templateSourceJSON.orderJSON.merchandiseTotal) + parseInt(lineItem.lineItemTotal);
         templateSourceJSON.items.push(lineItem);
       };
+      templateSourceJSON.merchandiseTotal = sourceBodyJSON.orderJSON.items_amount;
       templateSourceJSON.shippingCharge = parseFloat(Math.round(sourceBodyJSON.shippingCharge * 100) / 100).toFixed(2);
       templateSourceJSON.items_tax = sourceBodyJSON.items_tax;
       var floatOrderTotal = parseInt(templateSourceJSON.merchandiseTotal) + parseInt(templateSourceJSON.shippingCharge) 
