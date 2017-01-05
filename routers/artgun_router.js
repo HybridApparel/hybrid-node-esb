@@ -289,7 +289,7 @@ artGunRouter.post('/orders/pack_slip/test', function(req, res) {
   var orderXID = req.body.orderJSON.xid;
   var html = compPackSlipHTML(req.body.orderJSON);
   var options = {
-    "type": "pdf",
+    "type": "jpeg",
     "base": 'http://tranquil-fortress-90513.herokuapp.com/',
     "format": "Letter",
     "orientation": "portrait"
