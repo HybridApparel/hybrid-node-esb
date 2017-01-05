@@ -206,7 +206,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
       // templateSourceJSON.barcodeValue = sourceBodyJSON.barcodeValue;
       var testBarcodeValue = sourceBodyJSON.barcodeValue;
-      templateSourceJSON.barcodeValue1 = '<script>JsBarcode("#barcode1", ' + testBarcodeValue + ',  {format:"CODE39"});</script>';
+      templateSourceJSON.barcodeValue1 = '<script>JsBarcode("#barcode1", "' + testBarcodeValue + '",  {format:"CODE39"});</script>';
       
       //var html = compPackSlipHTML(templateSourceJSON);
 
