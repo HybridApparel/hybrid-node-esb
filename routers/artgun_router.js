@@ -6,7 +6,7 @@ var models           = require('../models');
 var Order            = models.orders;
 var Shipment         = models.shipments;
 var fs               = require('fs');
-// var pdf              = require('html-pdf');
+var pdf              = require('html-pdf');
 var path             = require('path');
 var Handlebars       = require('handlebars');
 var packSlipHTML     = fs.readFileSync('./public/packSlipTemplate.html', 'utf8');
@@ -61,7 +61,7 @@ var persistNewOrder = function (newOrderJSON) {
   Order.create({
     OrderID: newOrderJSON.orderJSON.xid,
     isProcessed: false,
-    Body: newOrderJSON.orderJSON
+    Body: newOrderJSON
   }).then(function(newOrderRecord) {
     console.log('new order persisted');
   });
@@ -166,7 +166,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       where: {OrderID: orderXID}
     }).then(function(order) {
       sourceBodyJSON = order.Body;
-      console.log('the barcode value is ' + sourceBodyJSON.barcodeValue);
+      console.log('the barcode value is ' + sourceBodyJSON);
       templateSourceJSON.billing_name = sourceBodyJSON.billing_name;
       templateSourceJSON.billing_address1 = sourceBodyJSON.billing_address1;
       templateSourceJSON.billing_address2 = sourceBodyJSON.billing_address2;
