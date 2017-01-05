@@ -219,12 +219,12 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       var html = compPackSlipHTML(templateSourceJSON);
       console.log(html);
       var options = {
-        "type": "pdf",
+        "type": "jpeg",
         "base": 'http://tranquil-fortress-90513.herokuapp.com/',
         "format": "Letter",
         "orientation": "portrait"
       };
-      var fileNameWrite = 'packSlip_' + orderXID + '.pdf';
+      var fileNameWrite = 'packSlip_' + orderXID + '.jpg';
       pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
         if (err) return console.log(err);
         console.log(file);
