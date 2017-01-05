@@ -166,7 +166,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       where: {OrderID: orderXID}
     }).then(function(order) {
       sourceBodyJSON = order.Body;
-      console.log('the body is ' + sourceBodyJSON.orderJSON);
+      console.log('the barcode value is ' + sourceBodyJSON.barcodeValue);
       templateSourceJSON.billing_name = sourceBodyJSON.orderJSON.billing_name;
       templateSourceJSON.billing_address1 = sourceBodyJSON.orderJSON.billing_address1;
       templateSourceJSON.billing_address2 = sourceBodyJSON.orderJSON.billing_address2;
@@ -205,7 +205,8 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.cardType = sourceBodyJSON.cardType;
       templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
       // templateSourceJSON.barcodeValue = sourceBodyJSON.barcodeValue;
-      templateSourceJSON.barcodeValue1 = '<script>JsBarcode("#barcode1", ' + sourceBodyJSON.barcodeValue + ',  {format:"CODE39"});</script>';
+      var testBarcodeValue = sourceBodyJSON.barcodeValue;
+      templateSourceJSON.barcodeValue1 = '<script>JsBarcode("#barcode1", ' + testBarcodeValue + ',  {format:"CODE39"});</script>';
       
       //var html = compPackSlipHTML(templateSourceJSON);
 
