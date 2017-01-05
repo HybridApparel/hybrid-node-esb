@@ -6,12 +6,13 @@ var models           = require('../models');
 var Order            = models.orders;
 var Shipment         = models.shipments;
 var fs               = require('fs');
-var pdf              = require('html-pdf');
+// var pdf              = require('html-pdf');
 var path             = require('path');
 var Handlebars       = require('handlebars');
 var packSlipHTML     = fs.readFileSync('./public/packSlipTemplate.html', 'utf8');
 var compPackSlipHTML = Handlebars.compile(packSlipHTML);
 var moment           = require('moment');
+var wkhtmltoimage    = require('wkhtmltoimage');
 
 var artGunKey        = process.env.ARTGUN_KEY;
 var artGunSecret     = process.env.ARTGUN_SECRET;
@@ -204,8 +205,17 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.cardType = sourceBodyJSON.cardType;
       templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
       templateSourceJSON.barcodeValue = sourceBodyJSON.barcodeValue;
-      templateSourceJSON.barcodeValue1 = '<script>JsBarcode("#barcode1", ' + sourceBodyJSON.barcodeValue + ',  {format:"CODE39"});</script>'
+      templateSourceJSON.barcodeValue1 = '<script>JsBarcode("#barcode1", ' + sourceBodyJSON.barcodeValue + ',  {format:"CODE39"});</script>';
+      
       var html = compPackSlipHTML(templateSourceJSON);
+
+
+
+
+
+      // unused html to pdf code saved for later potential use
+
+      /*var html = compPackSlipHTML(templateSourceJSON);
       console.log(html);
       var options = {
         "type": "pdf",
@@ -218,7 +228,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
         if (err) return console.log(err);
         console.log(file);
         res.download(file.filename);
-      });
+      });*/
     });
   console.log('heres the end of the pack slip route');
 });

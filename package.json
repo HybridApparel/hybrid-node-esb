@@ -28,6 +28,7 @@
     "sequelize": "^3.24.3",
     "sequelize-cli": "^2.4.0",
     "underscore": "^1.8.3",
-    "validator": "^5.7.0"
+    "validator": "^5.7.0",
+    "wkhtmltoimage": "^0.1.5"
   }
 }
