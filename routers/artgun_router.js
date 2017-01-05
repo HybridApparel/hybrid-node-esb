@@ -207,7 +207,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.barcodeValue = sourceBodyJSON.barcodeValue;
       templateSourceJSON.barcodeValue1 = '<script>JsBarcode("#barcode1", ' + sourceBodyJSON.barcodeValue + ',  {format:"CODE39"});</script>';
       
-      var html = compPackSlipHTML(templateSourceJSON);
+      //var html = compPackSlipHTML(templateSourceJSON);
 
 
 
@@ -215,7 +215,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
 
       // unused html to pdf code saved for later potential use
 
-      /*var html = compPackSlipHTML(templateSourceJSON);
+      var html = compPackSlipHTML(templateSourceJSON);
       console.log(html);
       var options = {
         "type": "pdf",
@@ -228,7 +228,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
         if (err) return console.log(err);
         console.log(file);
         res.download(file.filename);
-      });*/
+      });
     });
   console.log('heres the end of the pack slip route');
 });
