@@ -204,7 +204,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.orderTotal = parseFloat(Math.round(floatOrderTotal * 100) / 100).toFixed(2);
       templateSourceJSON.cardType = sourceBodyJSON.cardType;
       templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
-      templateSourceJSON.barcodeValue = sourceBodyJSON.barcodeValue;
+      // templateSourceJSON.barcodeValue = sourceBodyJSON.barcodeValue;
       templateSourceJSON.barcodeValue1 = '<script>JsBarcode("#barcode1", ' + sourceBodyJSON.barcodeValue + ',  {format:"CODE39"});</script>';
       
       //var html = compPackSlipHTML(templateSourceJSON);
