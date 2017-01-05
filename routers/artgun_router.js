@@ -166,7 +166,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       where: {OrderID: orderXID}
     }).then(function(order) {
       sourceBodyJSON = order.Body;
-      console.log('the barcode value is ' + sourceBodyJSON);
+      console.log('the body is ' + JSON.stringify(sourceBodyJSON));
       templateSourceJSON.billing_name = sourceBodyJSON.billing_name;
       templateSourceJSON.billing_address1 = sourceBodyJSON.billing_address1;
       templateSourceJSON.billing_address2 = sourceBodyJSON.billing_address2;
