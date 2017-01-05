@@ -166,34 +166,34 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       where: {OrderID: orderXID}
     }).then(function(order) {
       sourceBodyJSON = order.Body;
-      console.log('the body is ' + JSON.stringify(sourceBodyJSON));
-      templateSourceJSON.billing_name = sourceBodyJSON.billing_name;
-      templateSourceJSON.billing_address1 = sourceBodyJSON.billing_address1;
-      templateSourceJSON.billing_address2 = sourceBodyJSON.billing_address2;
-      templateSourceJSON.billing_city = sourceBodyJSON.billing_city;
-      templateSourceJSON.billing_state = sourceBodyJSON.billing_state;
-      templateSourceJSON.billing_zipcode = sourceBodyJSON.billing_zipcode;
-      templateSourceJSON.shipping_name = sourceBodyJSON.shipping_name;
-      templateSourceJSON.shipping_address1 = sourceBodyJSON.shipping_address1;
-      templateSourceJSON.shipping_address2 =  sourceBodyJSON.shipping_address2;
-      templateSourceJSON.shipping_city = sourceBodyJSON.shipping_city;
-      templateSourceJSON.shipping_state = sourceBodyJSON.shipping_state;
-      templateSourceJSON.shipping_zipcode = sourceBodyJSON.shipping_zipcode;
+      console.log('the body is ' + sourceBodyJSON);
+      templateSourceJSON.billing_name = sourceBodyJSON.orderJSON.billing_name;
+      templateSourceJSON.billing_address1 = sourceBodyJSON.orderJSON.billing_address1;
+      templateSourceJSON.billing_address2 = sourceBodyJSON.orderJSON.billing_address2;
+      templateSourceJSON.billing_city = sourceBodyJSON.orderJSON.billing_city;
+      templateSourceJSON.billing_state = sourceBodyJSON.orderJSON.billing_state;
+      templateSourceJSON.billing_zipcode = sourceBodyJSON.orderJSON.billing_zipcode;
+      templateSourceJSON.shipping_name = sourceBodyJSON.orderJSON.shipping_name;
+      templateSourceJSON.shipping_address1 = sourceBodyJSON.orderJSON.shipping_address1;
+      templateSourceJSON.shipping_address2 =  sourceBodyJSON.orderJSON.shipping_address2;
+      templateSourceJSON.shipping_city = sourceBodyJSON.orderJSON.shipping_city;
+      templateSourceJSON.shipping_state = sourceBodyJSON.orderJSON.shipping_state;
+      templateSourceJSON.shipping_zipcode = sourceBodyJSON.orderJSON.shipping_zipcode;
       //templateSourceJSON.date = moment(sourceBodyJSON.time, "ddd, DD MMM YYYY ").format("MM/DD/YYYY");
-      templateSourceJSON.date = sourceBodyJSON.time;
-      templateSourceJSON.xid = sourceBodyJSON.xid;
+      templateSourceJSON.date = sourceBodyJSON.orderJSON.time;
+      templateSourceJSON.xid = sourceBodyJSON.orderJSON.xid;
       templateSourceJSON.items = [];
       templateSourceJSON.merchandiseTotal = 0;
-      for (var i=0; i<sourceBodyJSON.items.length; i++) {
+      for (var i=0; i<sourceBodyJSON.orderJSON.items.length; i++) {
         var lineItem = {};
-        lineItem.name = sourceBodyJSON.items[i].name;
+        lineItem.name = sourceBodyJSON.orderJSON.items[i].name;
         lineItem.index = i + 1;
-        lineItem.UPC = sourceBodyJSON.items[i].UPC;
-        lineItem.quantity = sourceBodyJSON.items[i].quantity;
-        lineItem.unit_amount = sourceBodyJSON.items[i].unit_amount;
+        lineItem.UPC = sourceBodyJSON.orderJSON.items[i].UPC;
+        lineItem.quantity = sourceBodyJSON.orderJSON.items[i].quantity;
+        lineItem.unit_amount = sourceBodyJSON.orderJSON.items[i].unit_amount;
         var floatLineItemTotal = parseInt(lineItem.quantity) * parseInt(lineItem.unit_amount);
         lineItem.lineItemTotal = parseFloat(Math.round(floatLineItemTotal * 100) / 100).toFixed(2)
-        var floatMerchandiseTotal = parseInt(templateSourceJSON.merchandiseTotal) + parseInt(lineItem.lineItemTotal);
+        var floatMerchandiseTotal = parseInt(templateSourceJSON.orderJSON.merchandiseTotal) + parseInt(lineItem.lineItemTotal);
         templateSourceJSON.merchandiseTotal = parseFloat(Math.round(floatMerchandiseTotal * 100) / 100).toFixed(2);
         templateSourceJSON.items.push(lineItem);
       };
