@@ -1102,15 +1102,8 @@ var testOrder6 =
 "cardDigits": "4321",
 "barcodeValue": "PROD0505",
 "OrderID":"PROD0505",
+"Brand": "11"
 "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
 "signature": "f2b10e07dadd9b9569e066860d12b8b2f4a9c107"
 };
-
-
-    // responseJSON.orderID =  order.orderID;
-    // responseJSON.isProcessed = order.isProcessed;
-    // if (responseJSON.isProcessed === true) {
-    //   responseJSON.tracking = order.shipments.tracking
-    // }
-
 
