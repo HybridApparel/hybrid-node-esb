@@ -219,9 +219,11 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       var bloomReturnCodeS = "- Visit www.bloomingdales.com/easyreturn to create and print your free return label.<br>IN STORE     Most purchases can be returned to your local Bloomingdale's store:<br>- Take your merchandise and this invoice (make sure the barcode is attached) to your local store.<br>- Any sales associate can process your return."
       
       if (sourceBodyJSON.brand == 11 || sourceBodyJSON.brand == 13) {
-        templateSourceJSON.logo = "https://cdn.shopify.com/s/files/1/0641/9285/files/MacysLogo.png?16454377556678490292";
+        templateSourceJSON.logo = '<img src="https://cdn.shopify.com/s/files/1/0641/9285/files/MacysLogo.png?12072762125356310521" alt="" style="max-width:40%;">';
+        templateSourceJSON.contactInfo = "www.macys.com/contactus<br>1-800-289-6229<br>customerservice@macys.com";  
       } else if (sourceBodyJSON.brand == 21 || sourceBodyJSON.brand == 23) {
-        templateSourceJSON.logo = "https://cdn.shopify.com/s/files/1/0641/9285/files/BloomingdalesLogo.png?16454377556678490292";
+        templateSourceJSON.logo = '<img src="https://cdn.shopify.com/s/files/1/0641/9285/files/BloomingdalesLogo.png?16454377556678490292" alt="" style="max-width:40%;">';
+        templateSourceJSON.contactInfo = 'www.bloomingdales.com/contactus<br>1-800-777-0000<br>customerservice@bloomingdales.com';
       };
 
       if ((sourceBodyJSON.brand == 11 || sourceBodyJSON.brand == 13) && ["NV", "NE", "NN", "NM", "NJ", "NW", "NP", "NG"].indexOf(sourceBodyJSON.returnCode) > -1) {

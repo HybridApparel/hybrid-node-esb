@@ -1032,11 +1032,11 @@ var testOrder5 =
 "signature": "461990c58003ab2854d14d02300c366c4604c062"
 };
 
-var testOrder6 = 
+var testOrder60 = 
 {
   "orderJSON":{        
     "type": "ORDER",
-    "time": "Thurs, 22 Dec 2016 11:48:13 ­0600",
+    "time": "Fri, 06 Jan 2016 11:48:13 ­0600",
     "method": "create",
     "mode": "auto",
     "status": "In Production",
@@ -1101,8 +1101,9 @@ var testOrder6 =
 "cardType": "AMEX",
 "cardDigits": "4321",
 "barcodeValue": "PROD0522",
-"OrderID":"PROD0522",
-"Brand": "11",
+"orderID":"PROD0522",
+"returnCode": "SW"
+"brand": "11",
 "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
 "signature": "f2b10e07dadd9b9569e066860d12b8b2f4a9c107"
 };
