@@ -214,7 +214,6 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       var bloomReturnCodeNX = "- If you have any questions or would like assistance with a return, please refer to the CONTACT US information at the top of this page.";
       var bloomReturnCodeS = "- Visit www.bloomingdales.com/easyreturn to create and print your free return label.<br>IN STORE     Most purchases can be returned to your local Bloomingdale's store:<br>- Take your merchandise and this invoice (make sure the barcode is attached) to your local store.<br>- Any sales associate can process your return."
 
-      templateSourceJSON.returnInstructions = 
 
 
 
@@ -223,7 +222,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
 
       var html = compPackSlipHTML(templateSourceJSON);
       var options = {
-        "type": "jpeg",
+        "type": "pdf",
         "base": 'http://tranquil-fortress-90513.herokuapp.com/',
         "format": "Letter",
         "orientation": "portrait"
@@ -287,26 +286,6 @@ artGunRouter.post('/shipments/update', function(req,res) {
     });  
   };
 });
-
-artGunRouter.post('/orders/pack_slip/test', function(req, res) {
-  console.log('test pack slip route hit bro');
-  var orderXID = req.body.orderJSON.xid;
-  var html = compPackSlipHTML(req.body.orderJSON);
-  var options = {
-    "type": "jpeg",
-    "base": 'http://tranquil-fortress-90513.herokuapp.com/',
-    "format": "Letter",
-    "orientation": "portrait"
-  };
-  var fileNameWrite = 'packSlip_' + orderXID + '.pdf';
-  pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
-    if (err) return console.log(err);
-    console.log(file);
-    res.download(file.filename);
-  });
-  console.log('heres the end of the test route brough');
-});
-
 
 artGunRouter.get('/orders/:orderID/:signaturestatus/', function(req, res) {
   console.log('get route for order status hit');
