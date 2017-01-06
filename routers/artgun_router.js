@@ -296,7 +296,7 @@ artGunRouter.post('/shipments/update', function(req,res) {
       console.log('heres the order receipt id... ' + orderReceiptID);
       Shipment.create({
         order_id: orderPrimaryKey,
-        status: req.body.status,
+        status: JSON.parse(req.body.data).status,
         tracking_number: JSON.parse(req.body.data).tracking_number,
         body: req.body
       }).then(function(shipment) {
@@ -311,7 +311,7 @@ artGunRouter.post('/shipments/update', function(req,res) {
   };
 });
 
-artGunRouter.get('/orders/:orderID/:signaturestatus/', function(req, res) {
+artGunRouter.get('/orders/:orderID/:signature/status/', function(req, res) {
   console.log('get route for order status hit');
   var authSig = sha1(hybridSecret + hybridKey + req.params.orderID);
   if (authSig != req.params.signature) {
