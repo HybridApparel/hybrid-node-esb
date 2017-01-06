@@ -171,6 +171,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
   Order.findOne({
       where: {OrderID: orderXID}
     }).then(function(order) {
+      Globalize.locale("en");
       sourceBodyJSON = order.Body;
       templateSourceJSON.billing_name = sourceBodyJSON.orderJSON.billing_name;
       templateSourceJSON.billing_address1 = sourceBodyJSON.orderJSON.billing_address1;
