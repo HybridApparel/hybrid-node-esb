@@ -242,8 +242,6 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
         templateSourceJSON.returnInstructions = bloomReturnCodeS;
       };
 
-
-
       var html = compPackSlipHTML(templateSourceJSON);
       var options = {
         "type": "pdf",
