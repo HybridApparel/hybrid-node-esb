@@ -204,7 +204,8 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.merchandiseTotal = Globalize.currencyFormatter("USD")(parseInt(sourceBodyJSON.orderJSON.items_amount));
       templateSourceJSON.shippingCharge = Globalize.currencyFormatter("USD")(parseInt(sourceBodyJSON.shippingCharge));
       templateSourceJSON.items_tax = Globalize.currencyFormatter("USD")(parseInt(sourceBodyJSON.items_tax));
-      templateSourceJSON.orderTotal.Globalize.currencyFormatter("USD")((parseInt(merchTotal) + parseInt(templateSourceJSON.shippingCharge) + parseInt(sourceBodyJSON.items_tax)));
+      console.log('merch total is ' + merchTotal + ' shipping charge is ' + templateSourceJSON.shippingCharge + ' tax is ' + sourceBodyJSON.items_tax);
+      templateSourceJSON.orderTotal = Globalize.currencyFormatter("USD")((parseInt(merchTotal) + parseInt(templateSourceJSON.shippingCharge) + parseInt(sourceBodyJSON.items_tax)));
       templateSourceJSON.cardType = sourceBodyJSON.cardType;
       templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
       var testBarcodeValue = sourceBodyJSON.barcodeValue;
