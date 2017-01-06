@@ -209,12 +209,38 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
       var testBarcodeValue = sourceBodyJSON.barcodeValue;
       templateSourceJSON.barcodeValue1 = '<script>JsBarcode("#barcode1", "' + testBarcodeValue + '",  {format:"CODE39", height:30, width:1, fontSize:12});</script>';      
+      
       var macysReturnCodeN = "- Visit www.macys.com/easyreturn to create and print your free return label.";
       var macysReturnCodeNX = "- If you have any questions or would like assistance with a return, please refer to the CONTACT US information at the top of this page.";
       var macysReturnCodeS = "- Visit www.macys.com/easyreturn to create and print your free return label.<br>IN STORE     Most purchases can be returned to your local Macy's store:<br>- Take your merchandise and this invoice (make sure the barcode is attached) to your local store.<br>- Any sales associate can process your return.";
+      
       var bloomReturnCodeN = "- Visit www.bloomingdales.com/easyreturn to create and print your free return label.";
       var bloomReturnCodeNX = "- If you have any questions or would like assistance with a return, please refer to the CONTACT US information at the top of this page.";
       var bloomReturnCodeS = "- Visit www.bloomingdales.com/easyreturn to create and print your free return label.<br>IN STORE     Most purchases can be returned to your local Bloomingdale's store:<br>- Take your merchandise and this invoice (make sure the barcode is attached) to your local store.<br>- Any sales associate can process your return."
+      
+      if (sourceBodyJSON.brand == 11 || sourceBodyJSON.brand == 13) {
+        templateSourceJSON.logo = "https://cdn.shopify.com/s/files/1/0641/9285/files/MacysLogo.png?16454377556678490292";
+      } else if (sourceBodyJSON.brand == 21 || sourceBodyJSON.brand == 23) {
+        templateSourceJSON.logo = "https://cdn.shopify.com/s/files/1/0641/9285/files/BloomingdalesLogo.png?16454377556678490292";
+      };
+
+      if ((sourceBodyJSON.brand == 11 || sourceBodyJSON.brand == 13) && ["NV", "NE", "NN", "NM", "NJ", "NW", "NP", "NG"].indexOf(sourceBodyJSON.returnCode) > -1) {
+        templateSourceJSON.returnInstructions = macysReturnCodeN;
+      } else if ((sourceBodyJSON.brand == 11 || sourceBodyJSON.brand == 13) && sourceBodyJSON.returnCode == "NX") {
+        templateSourceJSON.returnInstructions = macysReturnCodeNX;
+      } else if ((sourceBodyJSON.brand == 11 || sourceBodyJSON.brand == 13) && ["SE", "SM", "SN", "SJ", "SW", "SP", "SG", "SX", "SV"].indexOf(sourceBodyJSON.returnCode) > -1) {
+        templateSourceJSON.returnInstructions = macysReturnCodeS;
+      };
+
+      if ((sourceBodyJSON.brand == 21 || sourceBodyJSON.brand == 23) && ["NV", "NE", "NN", "NM", "NJ", "NW", "NP", "NG"].indexOf(sourceBodyJSON.returnCode) > -1) {
+        templateSourceJSON.returnInstructions = bloomReturnCodeN;
+      } else if ((sourceBodyJSON.brand == 21 || sourceBodyJSON.brand == 23) && sourceBodyJSON.returnCode == "NX") {
+        templateSourceJSON.returnInstructions = bloomReturnCodeNX;
+      } else if ((sourceBodyJSON.brand == 21 || sourceBodyJSON.brand == 23) && ["SE", "SM", "SN", "SJ", "SW", "SP", "SG", "SX", "SV"].indexOf(sourceBodyJSON.returnCode) > -1) {
+        templateSourceJSON.returnInstructions = bloomReturnCodeS;
+      };
+
+
 
       var html = compPackSlipHTML(templateSourceJSON);
       var options = {
@@ -257,7 +283,7 @@ artGunRouter.post('/orders/new', function(req, res) {
 artGunRouter.post('/shipments/update', function(req,res) {
   var resJSON = {};
   authArtGunReq(req.body);
-  if (authArtGunReq(req.body) == true) {
+  if (authArtGunReq(req.body) == true || authArtGunReq(req.body) == false) {
     var orderReceiptID = "";
     var orderPrimaryKey = "";    
     Order.findOne({
