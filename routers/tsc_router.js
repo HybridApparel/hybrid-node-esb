@@ -15,8 +15,8 @@ var moment           = require('moment');
 var Globalize        = require("globalize");
 Globalize.load(require( "cldr-data").entireSupplemental() );
 Globalize.load(require( "cldr-data").entireMainFor("en") );
+Globalize.loadMessages( require( "./messages/en" ) );
 Globalize.locale( "en" );
-
 
 
 var artGunKey        = process.env.ARTGUN_KEY;
