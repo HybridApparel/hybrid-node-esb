@@ -13,8 +13,10 @@ var packSlipHTML     = fs.readFileSync('./public/packSlipTemplate.html', 'utf8')
 var compPackSlipHTML = Handlebars.compile(packSlipHTML);
 var moment           = require('moment');
 var Globalize        = require( "globalize" );
-Globalize.load( require( "cldr-data" ).entireSupplemental() );
-Globalize.load( require( "cldr-data" ).entireMainFor( "en") );
+Globalize.load(require( "cldr-data").entireSupplemental() );
+Globalize.load(require( "cldr-data").entireMainFor("en") );
+Globalize.loadMessages( require( "./messages/en" ) );
+Globalize.locale( "en" );
 
 
 
@@ -169,6 +171,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
   Order.findOne({
       where: {OrderID: orderXID}
     }).then(function(order) {
+      Globalize.locale("en");
       sourceBodyJSON = order.Body;
       templateSourceJSON.billing_name = sourceBodyJSON.orderJSON.billing_name;
       templateSourceJSON.billing_address1 = sourceBodyJSON.orderJSON.billing_address1;
