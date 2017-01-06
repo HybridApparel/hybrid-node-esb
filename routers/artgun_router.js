@@ -184,9 +184,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.shipping_city = sourceBodyJSON.orderJSON.shipping_city;
       templateSourceJSON.shipping_state = sourceBodyJSON.orderJSON.shipping_state;
       templateSourceJSON.shipping_zipcode = sourceBodyJSON.orderJSON.shipping_zipcode;
-      var createdAtDate = order.createdAt;
-      console.log('date is ' + Globalize.dateFormatter({ skeleton: "yMd" })(createdAtDate));
-      templateSourceJSON.date = Globalize.dateParser({ skeleton: "yMd" })(createdAtDate);
+      templateSourceJSON.date = Globalize.dateFormatter({ skeleton: "yMd" })(order.createdAt);
       templateSourceJSON.xid = sourceBodyJSON.orderJSON.xid;
       templateSourceJSON.items = [];
       var merchTotal = 0;
