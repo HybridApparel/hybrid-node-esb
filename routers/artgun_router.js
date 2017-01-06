@@ -285,7 +285,7 @@ artGunRouter.post('/orders/new', function(req, res) {
 artGunRouter.post('/shipments/update', function(req,res) {
   var resJSON = {};
   authArtGunReq(req.body);
-  if (authArtGunReq(req.body == true) {
+  if (authArtGunReq(req.body) == true) {
     var orderReceiptID = "";
     var orderPrimaryKey = "";    
     Order.findOne({
