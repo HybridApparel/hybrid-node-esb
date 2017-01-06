@@ -195,16 +195,16 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
         lineItem.index = i + 1;
         lineItem.UPC = sourceBodyJSON.orderJSON.items[i].UPC;
         lineItem.quantity = sourceBodyJSON.orderJSON.items[i].quantity;
-        lineItem.unit_amount = Globalize.currencyFormatter("USD")(sourceBodyJSON.orderJSON.items[i].unit_amount);
-        lineItem.lineItemTotal = Globalize.currencyFormatter( "USD" )(sourceBodyJSON.orderJSON.items[i].unit_amount * sourceBodyJSON.orderJSON.items[i].quantity)
-        merchTotal = merchTotal + (sourceBodyJSON.orderJSON.items[i].unit_amount * sourceBodyJSON.orderJSON.items[i].quantity)
+        lineItem.unit_amount = Globalize.currencyFormatter("USD")(parseInt(sourceBodyJSON.orderJSON.items[i].unit_amount));
+        lineItem.lineItemTotal = Globalize.currencyFormatter( "USD" )(parseInt(sourceBodyJSON.orderJSON.items[i].unit_amount) * parseInt(sourceBodyJSON.orderJSON.items[i].quantity));
+        merchTotal = merchTotal + (parseInt(sourceBodyJSON.orderJSON.items[i].unit_amount) * parseInt(sourceBodyJSON.orderJSON.items[i].quantity));
         templateSourceJSON.items.push(lineItem);
 
       };
-      templateSourceJSON.merchandiseTotal = Globalize.currencyFormatter("USD")(sourceBodyJSON.orderJSON.items_amount);
-      templateSourceJSON.shippingCharge = Globalize.currencyFormatter("USD")(sourceBodyJSON.shippingCharge);
-      templateSourceJSON.items_tax = Globalize.currencyFormatter("USD")(sourceBodyJSON.items_tax);
-      templateSourceJSON.orderTotal.Globalize.currencyFormatter("USD")(templateSourceJSON.merchandiseTotal + templateSourceJSON.shippingCharge + sourceBodyJSON.items_tax);
+      templateSourceJSON.merchandiseTotal = Globalize.currencyFormatter("USD")(parseInt(sourceBodyJSON.orderJSON.items_amount));
+      templateSourceJSON.shippingCharge = Globalize.currencyFormatter("USD")(parseInt(sourceBodyJSON.shippingCharge));
+      templateSourceJSON.items_tax = Globalize.currencyFormatter("USD")(parseInt(sourceBodyJSON.items_tax));
+      templateSourceJSON.orderTotal.Globalize.currencyFormatter("USD")(parseInt(templateSourceJSON.merchandiseTotal) + parseInt(templateSourceJSON.shippingCharge) + parseInt(sourceBodyJSON.items_tax));
       templateSourceJSON.cardType = sourceBodyJSON.cardType;
       templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
       var testBarcodeValue = sourceBodyJSON.barcodeValue;
@@ -215,8 +215,6 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       var bloomReturnCodeN = "- Visit www.bloomingdales.com/easyreturn to create and print your free return label.";
       var bloomReturnCodeNX = "- If you have any questions or would like assistance with a return, please refer to the CONTACT US information at the top of this page.";
       var bloomReturnCodeS = "- Visit www.bloomingdales.com/easyreturn to create and print your free return label.<br>IN STORE     Most purchases can be returned to your local Bloomingdale's store:<br>- Take your merchandise and this invoice (make sure the barcode is attached) to your local store.<br>- Any sales associate can process your return."
-
-      // unused html to pdf code saved for later potential use
 
       var html = compPackSlipHTML(templateSourceJSON);
       var options = {
