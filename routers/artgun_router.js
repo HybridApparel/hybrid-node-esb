@@ -195,16 +195,16 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
         lineItem.index = i + 1;
         lineItem.UPC = sourceBodyJSON.orderJSON.items[i].UPC;
         lineItem.quantity = sourceBodyJSON.orderJSON.items[i].quantity;
-        lineItem.unit_amount = Globalize.currencyFormatter("USD")(parseInt(sourceBodyJSON.orderJSON.items[i].unit_amount));
-        lineItem.lineItemTotal = Globalize.currencyFormatter( "USD" )(parseInt(sourceBodyJSON.orderJSON.items[i].unit_amount) * parseInt(sourceBodyJSON.orderJSON.items[i].quantity));
-        merchTotal = merchTotal + (parseInt(sourceBodyJSON.orderJSON.items[i].unit_amount) * parseInt(sourceBodyJSON.orderJSON.items[i].quantity));
+        lineItem.unit_amount = Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.orderJSON.items[i].unit_amount));
+        lineItem.lineItemTotal = Globalize.currencyFormatter( "USD" )(parseFloat(sourceBodyJSON.orderJSON.items[i].unit_amount) * parseFloat(sourceBodyJSON.orderJSON.items[i].quantity));
+        merchTotal = merchTotal + (parseFloat(sourceBodyJSON.orderJSON.items[i].unit_amount) * parseFloat(sourceBodyJSON.orderJSON.items[i].quantity));
         templateSourceJSON.items.push(lineItem);
 
       };
-      templateSourceJSON.merchandiseTotal = Globalize.currencyFormatter("USD")(parseInt(sourceBodyJSON.orderJSON.items_amount));
-      templateSourceJSON.shippingCharge = Globalize.currencyFormatter("USD")(parseInt(sourceBodyJSON.shippingCharge));
-      templateSourceJSON.items_tax = Globalize.currencyFormatter("USD")(parseInt(sourceBodyJSON.orderJSON.items_tax));
-      var sumOrderTotal = ( parseInt(merchTotal) + parseInt(sourceBodyJSON.shippingCharge) + parseInt(sourceBodyJSON.orderJSON.items_tax) );
+      templateSourceJSON.merchandiseTotal = Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.orderJSON.items_amount));
+      templateSourceJSON.shippingCharge = Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.shippingCharge));
+      templateSourceJSON.items_tax = Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.orderJSON.items_tax));
+      var sumOrderTotal = ( parseFloat(merchTotal) + parseFloat(sourceBodyJSON.shippingCharge) + parseFloat(sourceBodyJSON.orderJSON.items_tax) );
       console.log('order total is ' + sumOrderTotal);
       templateSourceJSON.orderTotal = Globalize.currencyFormatter("USD")(sumOrderTotal);
       templateSourceJSON.cardType = sourceBodyJSON.cardType;
