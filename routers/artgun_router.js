@@ -214,10 +214,6 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       var bloomReturnCodeNX = "- If you have any questions or would like assistance with a return, please refer to the CONTACT US information at the top of this page.";
       var bloomReturnCodeS = "- Visit www.bloomingdales.com/easyreturn to create and print your free return label.<br>IN STORE     Most purchases can be returned to your local Bloomingdale's store:<br>- Take your merchandise and this invoice (make sure the barcode is attached) to your local store.<br>- Any sales associate can process your return."
 
-
-
-
-
       // unused html to pdf code saved for later potential use
 
       var html = compPackSlipHTML(templateSourceJSON);
