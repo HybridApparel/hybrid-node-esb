@@ -12,7 +12,11 @@ var Handlebars       = require('handlebars');
 var packSlipHTML     = fs.readFileSync('./public/packSlipTemplate.html', 'utf8');
 var compPackSlipHTML = Handlebars.compile(packSlipHTML);
 var moment           = require('moment');
-var wkhtmltoimage    = require('wkhtmltoimage');
+var Globalize        = require( "globalize" );
+Globalize.load( require( "cldr-data" ).entireSupplemental() );
+Globalize.load( require( "cldr-data" ).entireMainFor( "en") );
+
+
 
 var artGunKey        = process.env.ARTGUN_KEY;
 var artGunSecret     = process.env.ARTGUN_SECRET;
@@ -166,7 +170,6 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       where: {OrderID: orderXID}
     }).then(function(order) {
       sourceBodyJSON = order.Body;
-      console.log('the barcode value is ' + sourceBodyJSON.barcodeValue);
       templateSourceJSON.billing_name = sourceBodyJSON.orderJSON.billing_name;
       templateSourceJSON.billing_address1 = sourceBodyJSON.orderJSON.billing_address1;
       templateSourceJSON.billing_address2 = sourceBodyJSON.orderJSON.billing_address2;
@@ -183,33 +186,35 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.date = sourceBodyJSON.orderJSON.time;
       templateSourceJSON.xid = sourceBodyJSON.orderJSON.xid;
       templateSourceJSON.items = [];
-      templateSourceJSON.merchandiseTotal = 0;
+      var merchTotal = 0;
       for (var i=0; i<sourceBodyJSON.orderJSON.items.length; i++) {
         var lineItem = {};
         lineItem.name = sourceBodyJSON.orderJSON.items[i].name;
         lineItem.index = i + 1;
         lineItem.UPC = sourceBodyJSON.orderJSON.items[i].UPC;
         lineItem.quantity = sourceBodyJSON.orderJSON.items[i].quantity;
-        lineItem.unit_amount = sourceBodyJSON.orderJSON.items[i].unit_amount;
-        var floatLineItemTotal = parseInt(lineItem.quantity) * parseInt(lineItem.unit_amount);
-        lineItem.lineItemTotal = parseFloat(Math.round(floatLineItemTotal * 100) / 100).toFixed(2)
-        // var floatMerchandiseTotal = parseInt(templateSourceJSON.orderJSON.merchandiseTotal) + parseInt(lineItem.lineItemTotal);
+        lineItem.unit_amount = Globalize.currencyFormatter("USD")(sourceBodyJSON.orderJSON.items[i].unit_amount);
+        lineItem.lineItemTotal = Globalize.currencyFormatter( "USD" )(sourceBodyJSON.orderJSON.items[i].unit_amount * sourceBodyJSON.orderJSON.items[i].quantity)
+        merchTotal = merchTotal + (sourceBodyJSON.orderJSON.items[i].unit_amount * sourceBodyJSON.orderJSON.items[i].quantity)
         templateSourceJSON.items.push(lineItem);
+
       };
-      templateSourceJSON.merchandiseTotal = sourceBodyJSON.orderJSON.items_amount;
-      templateSourceJSON.shippingCharge = parseFloat(Math.round(sourceBodyJSON.shippingCharge * 100) / 100).toFixed(2);
-      templateSourceJSON.items_tax = sourceBodyJSON.items_tax;
-      var floatOrderTotal = parseInt(templateSourceJSON.merchandiseTotal) + parseInt(templateSourceJSON.shippingCharge) 
-                                      + parseInt(templateSourceJSON.items_tax);
-      templateSourceJSON.orderTotal = parseFloat(Math.round(floatOrderTotal * 100) / 100).toFixed(2);
+      templateSourceJSON.merchandiseTotal = Globalize.currencyFormatter("USD")(sourceBodyJSON.orderJSON.items_amount);
+      templateSourceJSON.shippingCharge = Globalize.currencyFormatter("USD")(sourceBodyJSON.shippingCharge);
+      templateSourceJSON.items_tax = Globalize.currencyFormatter("USD")(sourceBodyJSON.items_tax);
+      templateSourceJSON.orderTotal.Globalize.currencyFormatter("USD")(templateSourceJSON.merchandiseTotal + templateSourceJSON.shippingCharge + sourceBodyJSON.items_tax);
       templateSourceJSON.cardType = sourceBodyJSON.cardType;
       templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
-      // templateSourceJSON.barcodeValue = sourceBodyJSON.barcodeValue;
       var testBarcodeValue = sourceBodyJSON.barcodeValue;
-      templateSourceJSON.barcodeValue1 = '<script>JsBarcode("#barcode1", "' + testBarcodeValue + '",  {format:"CODE39", height:30, width:1, fontSize:12});</script>';
-      
-      //var html = compPackSlipHTML(templateSourceJSON);
+      templateSourceJSON.barcodeValue1 = '<script>JsBarcode("#barcode1", "' + testBarcodeValue + '",  {format:"CODE39", height:30, width:1, fontSize:12});</script>';      
+      var macysReturnCodeN = "- Visit www.macys.com/easyreturn to create and print your free return label.";
+      var macysReturnCodeNX = "- If you have any questions or would like assistance with a return, please refer to the CONTACT US information at the top of this page.";
+      var macysReturnCodeS = "- Visit www.macys.com/easyreturn to create and print your free return label.<br>IN STORE     Most purchases can be returned to your local Macy's store:<br>- Take your merchandise and this invoice (make sure the barcode is attached) to your local store.<br>- Any sales associate can process your return.";
+      var bloomReturnCodeN = "- Visit www.bloomingdales.com/easyreturn to create and print your free return label.";
+      var bloomReturnCodeNX = "- If you have any questions or would like assistance with a return, please refer to the CONTACT US information at the top of this page.";
+      var bloomReturnCodeS = "- Visit www.bloomingdales.com/easyreturn to create and print your free return label.<br>IN STORE     Most purchases can be returned to your local Bloomingdale's store:<br>- Take your merchandise and this invoice (make sure the barcode is attached) to your local store.<br>- Any sales associate can process your return."
 
+      templateSourceJSON.returnInstructions = 
 
 
 
@@ -217,7 +222,6 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       // unused html to pdf code saved for later potential use
 
       var html = compPackSlipHTML(templateSourceJSON);
-      console.log(html);
       var options = {
         "type": "jpeg",
         "base": 'http://tranquil-fortress-90513.herokuapp.com/',
@@ -304,7 +308,7 @@ artGunRouter.post('/orders/pack_slip/test', function(req, res) {
 });
 
 
-artGunRouter.get('/orders/:orderID/status/:signature', function(req, res) {
+artGunRouter.get('/orders/:orderID/:signaturestatus/', function(req, res) {
   console.log('get route for order status hit');
   var authSig = sha1(hybridSecret + hybridKey + req.params.orderID);
   if (authSig != req.params.signature) {
