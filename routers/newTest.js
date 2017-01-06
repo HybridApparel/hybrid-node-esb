@@ -1041,7 +1041,7 @@ var testOrder6 =
     "mode": "auto",
     "status": "In Production",
     "status_code": "6",
-    "xid": "PROD0505",
+    "xid": "PROD0522",
     "notes": "Hybrid Order",
     "shiplabel_url": "",
     "pack_url": "",
@@ -1071,7 +1071,7 @@ var testOrder6 =
     "items": [{
       "name": "Kiss Me Im Irish",          
       "sku": "10291002",
-      "UPC": "",           
+      "UPC": "1111111111",           
       "quantity": "6",    
       "unit_amount": "15.00",            
       "subtotal_amount": "90.00",
@@ -1100,9 +1100,9 @@ var testOrder6 =
 "shippingCharge": "5.00",
 "cardType": "AMEX",
 "cardDigits": "4321",
-"barcodeValue": "PROD0505",
-"OrderID":"PROD0505",
-"Brand": "11"
+"barcodeValue": "PROD0522",
+"OrderID":"PROD0522",
+"Brand": "11",
 "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
 "signature": "f2b10e07dadd9b9569e066860d12b8b2f4a9c107"
 };
