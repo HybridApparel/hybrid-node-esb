@@ -163,6 +163,7 @@ var persistArtGunShipment = function (shipmentJSON) {
 // GET route to download Packing Slip
 
 artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
+  Globalize.locale("en");
   console.log('get pack slip endpoint hit');
   var orderXID = req.params.orderID;
   var sourceBodyJSON = {};
