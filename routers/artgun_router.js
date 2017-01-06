@@ -224,7 +224,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
         "format": "Letter",
         "orientation": "portrait"
       };
-      var fileNameWrite = 'packSlip_' + orderXID + '.jpg';
+      var fileNameWrite = 'packSlip_' + orderXID + '.pdf';
       pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
         if (err) return console.log(err);
         console.log(file);
