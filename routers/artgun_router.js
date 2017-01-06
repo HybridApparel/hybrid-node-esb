@@ -311,7 +311,7 @@ artGunRouter.post('/shipments/update', function(req,res) {
   };
 });
 
-artGunRouter.get('/orders/:orderID/:signature/status/', function(req, res) {
+artGunRouter.get('/orders/:orderID/status/:signature', function(req, res) {
   console.log('get route for order status hit');
   var authSig = sha1(hybridSecret + hybridKey + req.params.orderID);
   if (authSig != req.params.signature) {
