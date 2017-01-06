@@ -255,7 +255,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
         if (err) return console.log(err);
         console.log(file);
-        res.download(file.filename);
+        res.download(file.filename).status(200).send('Your download will begin shortly');
       });
     });
   console.log('heres the end of the pack slip route');
