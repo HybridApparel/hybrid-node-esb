@@ -357,6 +357,8 @@ artGunRouter.get('/shipments/testchange/:shipID', function(req, res) {
       shipment.update({
         orderID: updateOrderAssociate,
         status: updateStatus
+      }).then(function(newShipmentUpdate) {
+        res.send('shipment updated');
       })
     })
   })
