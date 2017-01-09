@@ -253,7 +253,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
         if (err) return console.log(err);
         console.log(file);
-        res.download(file.filename).status(200).send('Your download will begin shortly');
+        res.download(file.filename).status(200);
       });
     });
   console.log('heres the end of the pack slip route');
@@ -282,7 +282,6 @@ artGunRouter.post('/orders/new', function(req, res) {
 
 artGunRouter.post('/shipments/update', function(req,res) {
   var resJSON = {};
-  authArtGunReq(req.body);
   if (authArtGunReq(req.body) == true) {
     var orderReceiptID = "";
     var orderPrimaryKey = "";    
@@ -306,7 +305,14 @@ artGunRouter.post('/shipments/update', function(req,res) {
         res.status(200).send(resJSON);
       });
     });  
-  };
+  } else if (authArtGunReq(req.body) !== true) {
+    var errorRes = {
+      "error": "403 - authentication failed, invalid signature - request not received",
+      "code": "1",
+      "message": "signature does not match sha1(secret + key + data)"
+    };
+    res.send(errorRes).status(403);
+  }
 });
 
 artGunRouter.get('/orders/:orderID/status/:signature', function(req, res) {
