@@ -336,9 +336,9 @@ artGunRouter.get('/orders/:orderID/status/:signature', function(req, res) {
       responseJSON.OrderID = order.OrderID;
       responseJSON.ArtGunResponseBody = order.EndpointResponseBody;
       if (order.shipments[0]) {    
-          responseJSON.isShipped = JSON.parse(order.shipments[0].body).status;
-          responseJSON.trackingNumber = JSON.parse(order.shipments[0].body).tracking_number;
-          responseJSON.billOfLading = JSON.parse(order.shipments[0].body).bol;
+          responseJSON.isShipped = JSON.parse(order.shipments[0].body.data).status;
+          responseJSON.trackingNumber = JSON.parse(order.shipments[0].body.data).tracking_number;
+          responseJSON.billOfLading = JSON.parse(order.shipments[0].body.data).bol;
       };
       res.send(responseJSON).status(200);
     });  
