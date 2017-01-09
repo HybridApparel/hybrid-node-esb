@@ -610,7 +610,7 @@ artGunRouter.get('/orders/testchange/PROD0501', function(req, res) {
 });
 
 
-artGunRouter.get('/orders/testchange/PROD0501', function(req, res) {
+artGunRouter.get('/orders/testchange/PROD0500', function(req, res) {
   var updatedBodyJSON = {
   "orderJSON":{        
     "type": "ORDER",
