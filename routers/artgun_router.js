@@ -345,6 +345,7 @@ artGunRouter.get('/orders/:orderID/status/:signature', function(req, res) {
   }
 });
 
+
 artGunRouter.get('/shipments/testchange/:shipID', function(req, res) {
   Shipment.findOne({
     where: {id: req.params.shipID}
