@@ -346,24 +346,24 @@ artGunRouter.get('/orders/:orderID/status/:signature', function(req, res) {
 });
 
 
-artGunRouter.get('/shipments/testchange/:shipID', function(req, res) {
-  Shipment.findOne({
-    where: {id: req.params.shipID}
-  }).then(function(shipment) {
-    Order.findOne({
-      where: {OrderID: JSON.parse(shipment.body.data).xid}
-    }).then(function(order) {
-      var updateOrderAssociate = order.id;
-      var updateStatus = JSON.parse(shipment.body.data).status;
-      shipment.update({
-        orderID: updateOrderAssociate,
-        status: updateStatus
-      }).then(function(updatedShipment) {
-        res.send(updatedShipment);
-      });
-    });
-  });
-});
+// artGunRouter.get('/shipments/testchange/:shipID', function(req, res) {
+//   Shipment.findOne({
+//     where: {id: req.params.shipID}
+//   }).then(function(shipment) {
+//     Order.findOne({
+//       where: {OrderID: JSON.parse(shipment.body.data).xid}
+//     }).then(function(order) {
+//       var updateOrderAssociate = order.id;
+//       var updateStatus = JSON.parse(shipment.body.data).status;
+//       shipment.update({
+//         orderID: updateOrderAssociate,
+//         status: updateStatus
+//       }).then(function(updatedShipment) {
+//         res.send(updatedShipment);
+//       });
+//     });
+//   });
+// });
 
 
 
