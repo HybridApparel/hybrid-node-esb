@@ -349,6 +349,90 @@ artGunRouter.get('/orders/:orderID/status/:signature', function(req, res) {
   }
 });
 
+artGunRouter.get('/orders/testchange/PROD0505', function(req, res) {
+  Order.findOne({
+    where: {OrderID: "PROD0505"}
+  }).then(function(order) {
+    order.Body = 
+    {
+      "orderJSON":{        
+        "type": "ORDER",
+        "time": "Thurs, 22 Dec 2016 11:48:13 ­0600",
+        "method": "create",
+        "mode": "auto",
+        "status": "In Production",
+        "status_code": "6",
+        "xid": "PROD0505",
+        "notes": "Hybrid Order",
+        "shiplabel_url": "",
+        "pack_url": "",
+        "giftnote_comment": "",
+        "shipping_carrier": "MI",
+        "shipping_priority": "4272",
+        "shipping_account": "",
+        "billing_name": "Lora Lozano",
+        "billing_address1": "10711 Walker St",
+        "billing_address2": "Hybrid Apparel",
+        "billing_city": "Cypress",
+        "billing_state": "CA",
+        "billing_country": "US",
+        "billing_zipcode": "90630",
+        "shipping_name": "Lora Lozano",
+        "shipping_address1": "10711 Walker St",
+        "shipping_address2": "Hybrid Apparel",
+        "shipping_city": "Cypress",
+        "shipping_state": "CA",
+        "shipping_country": "US",
+        "shipping_zipcode": "90630",
+        "shipping_phone": "8471231234",
+        "shipping_email": "ama@hybridapparel.com",
+        "items_quantity": "6",
+        "items_amount": "90.00",
+        "items_tax": "0.05",
+        "items": [{
+          "name": "Kiss Me Im Irish",          
+          "sku": "10291002",
+          "UPC": "111111111111",           
+          "quantity": "6",    
+          "unit_amount": "15.00",            
+          "subtotal_amount": "90.00",
+          "necklabel_binid": "",       
+          "hangtag_binid": "",         
+          "attributes": [      
+          {           
+            "type": "DigitalPrint",
+            "location": "CF",
+            "thumbnail": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_THUMB_PNT-0966.png?16454377556678490292",
+            "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_PNT-0966.png?16454377556678490292",
+            "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/PNT-0966_FPO-01.png?16454377556678490292",
+            "file_extension": "png"
+          },
+          {           
+            "type": "DigitalPrint",
+            "location": "FB",
+            "thumbnail": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_THUMB_PNT-0966.png?16454377556678490292",
+            "preview": "https://cdn.shopify.com/s/files/1/0641/9285/files/AG_PREVIEW_PNT-0966.png?16454377556678490292",
+            "file_url": "https://cdn.shopify.com/s/files/1/0641/9285/files/PNT-0966_FPO-01.png?16454377556678490292",
+            "file_extension": "png"
+          }
+          ]           
+        }]         
+      },
+      "shippingCharge": "5.00",
+      "cardType": "AMEX",
+      "cardDigits": "4321",
+      "barcodeValue": "PROD0505",
+      "orderID":"PROD0505",
+      "returnCode": "SW",
+      "brand": "11",
+      "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
+      "signature": "f2b10e07dadd9b9569e066860d12b8b2f4a9c107"
+    }
+    console.log("order updated");
+    res.send("order now updated");
+  })
+});
+
 
 
 module.exports = artGunRouter;
