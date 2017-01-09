@@ -349,12 +349,11 @@ artGunRouter.get('/shipments/testchange/:shipID', function(req, res) {
   Shipment.findOne({
     where: {id: req.params.shipID}
   }).then(function(shipment) {
-    console.log(JSON.parse(shipment.body.data).xid);
     Order.findOne({
-      where: {OrderID: shipment.body.data.xid}
+      where: {OrderID: JSON.parse(shipment.body.data).xid}
     }).then(function(order) {
       var updateOrderAssociate = order.id;
-      var updateStatus = shipment.body.data.status;
+      var updateStatus = JSON.parse(shipment.body.data).status;
       shipment.update({
         orderID: updateOrderAssociate,
         status: updateStatus
