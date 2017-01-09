@@ -345,6 +345,25 @@ artGunRouter.get('/orders/:orderID/status/:signature', function(req, res) {
   }
 });
 
+artGunRouter.get('/shipments/testchange/:shipID', function(req, res) {
+  Shipment.findOne({
+    where: {id: req.params.shipID}
+  }).then(function(shipment) {
+    Order.findOne({
+      where: {OrderID: shipment.body.xid}
+    }}.then(function(order) {
+      var updateOrderAssociate = order.id;
+      var updateStatus = shipment.body.status;
+      shipment.update({
+        orderID: updateOrderAssociate,
+        status: updateStatus
+      })
+    })
+  })
+});
+
+
+
 module.exports = artGunRouter;
 
 

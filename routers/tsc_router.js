@@ -25,7 +25,7 @@ var hybridSecret     = process.env.HYBRID_SECRET;
 
 // verifies shipment notification from ArtGun with SHA1 hashed sum of shared secret, key, and data object
 
-var authArtGunReq = function (artGunShipReq) {
+var authTSCReq = function (artGunShipReq) {
   var hashedSig = sha1(artGunSecret + artGunKey + artGunShipReq.data);
   if (hashedSig !== artGunShipReq.signature) {
     console.log('request not accepted - invalid credentials and signature');
@@ -74,7 +74,7 @@ var persistNewOrder = function (newOrderJSON) {
 // after artGunPostReq() is called, the ArtGun res is logged if success
 // separated success and error functions for potential future notifications 
 
-var persistArtGunResSuccess = function (artGunRes) {
+var persistTSCResSuccess = function (artGunRes) {
   Order.findOne({
     where:{OrderID: artGunRes.xid}
   }).then(function (order) {
@@ -92,7 +92,7 @@ var persistArtGunResSuccess = function (artGunRes) {
 // after artGunPostReq() is called, the ArtGun res is logged if error
 
 
-var persistArtGunResError = function(artGunRes) {
+var persistTSCResError = function(artGunRes) {
   Order.findOne({
     where: {OrderID: artGunRes.xid}
   }).then(function (order) {
@@ -109,11 +109,11 @@ var persistArtGunResError = function(artGunRes) {
 
 // makes a POST req to the ArtGun API, call functions to persist response
 
-var newArtGunPostReq = function (orderDataJSON) {
+var newTSCPostReq = function (orderDataJSON) {
   
   var options = { 
     method: 'POST',
-    url: 'http://75.119.176.75/artgunservicetest/OrderService.svc/PlaceOrder',
+    url: 'http:/apptest.tscmiami.com/api/order/create',
     headers: 
     { 'cache-control': 'no-cache',
       'content-type': 'application/x-www-form-urlencoded' },
@@ -133,7 +133,7 @@ var newArtGunPostReq = function (orderDataJSON) {
 
 // receive POST from ArtGun with shipment notification, associate with existing order_id and persist to shipments table
 
-var persistArtGunShipment = function (shipmentJSON) {
+var persistTSCShipment = function (shipmentJSON) {
   var resJSON = {};
   var orderReceiptID = "";
   var orderPrimaryKey = "";
