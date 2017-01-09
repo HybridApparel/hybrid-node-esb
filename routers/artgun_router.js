@@ -83,7 +83,7 @@ var persistArtGunResSuccess = function (artGunRes) {
     order.update({
       EndpointResponseID: artGunRes.receipt_id,
       EndpointResponseBody: artGunRes,
-      isProcessed: true,
+      isProcessed: true
     }).then(function () {
       console.log('new artgun res persisted');
     })
@@ -101,7 +101,7 @@ var persistArtGunResError = function(artGunRes) {
     order.update({
       EndpointResponseID: artGunRes.receipt_id,
       EndpointResponseBody: artGunRes,
-      isProcessed: false,
+      isProcessed: false
     }).then(function () {
       console.log('new error persisted');
     })
@@ -351,17 +351,16 @@ artGunRouter.get('/shipments/testchange/:shipID', function(req, res) {
   }).then(function(shipment) {
     Order.findOne({
       where: {OrderID: shipment.body.xid}
-    }}.then(function(order) {
+    }).then(function(order) {
       var updateOrderAssociate = order.id;
       var updateStatus = shipment.body.status;
       shipment.update({
         orderID: updateOrderAssociate,
         status: updateStatus
-      }).then(function(newShipmentUpdate) {
-        res.send('shipment updated');
+      }).then(function(updatedShipment) {
+        res.send(updatedShipment);
       });
     });
-  });
   });
 });
 
