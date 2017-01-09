@@ -350,11 +350,7 @@ artGunRouter.get('/orders/:orderID/status/:signature', function(req, res) {
 });
 
 artGunRouter.get('/orders/testchange/PROD0505', function(req, res) {
-  Order.findOne({
-    where: {OrderID: "PROD0505"}
-  }).then(function(order) {
-    order.Body = 
-    {
+  var updatedBodyJSON = {
       "orderJSON":{        
         "type": "ORDER",
         "time": "Thurs, 22 Dec 2016 11:48:13 ­0600",
@@ -427,9 +423,16 @@ artGunRouter.get('/orders/testchange/PROD0505', function(req, res) {
       "brand": "11",
       "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
       "signature": "f2b10e07dadd9b9569e066860d12b8b2f4a9c107"
-    }
-    console.log("order updated");
-    res.send("order now updated");
+    };
+  Order.findOne({
+    where: {OrderID: "PROD0505"}
+  }).then(function(order) {
+    order.update({
+      Body: updatedBodyJSON
+    }).then(function(){
+      console.log("order updated");
+      res.send("order now updated");
+    })
   })
 });
 
