@@ -359,8 +359,10 @@ artGunRouter.get('/shipments/testchange/:shipID', function(req, res) {
         status: updateStatus
       }).then(function(newShipmentUpdate) {
         res.send('shipment updated');
-      })
-    })
+      });
+    });
+  });
+  });
 });
 
 
