@@ -361,7 +361,6 @@ artGunRouter.get('/shipments/testchange/:shipID', function(req, res) {
         res.send('shipment updated');
       })
     })
-  })
 });
 
 
