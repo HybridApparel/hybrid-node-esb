@@ -201,7 +201,8 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
         templateSourceJSON.items.push(lineItem);
 
       };
-      templateSourceJSON.merchandiseTotal = Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.orderJSON.items_amount));
+      console.log('merch total is ' + merchTotal + ' and quantity is ' + sourceBodyJSON.orderJSON.items[i].quantity + ' and shipping is ' + sourceBodyJSON.shippingCharge + ' and tax is ' + Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.orderJSON.items_tax)););
+      templateSourceJSON.merchandiseTotal = Globalize.currencyFormatter("USD")(parseFloat(merchTotal));
       templateSourceJSON.shippingCharge = Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.shippingCharge));
       templateSourceJSON.items_tax = Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.orderJSON.items_tax));
       var sumOrderTotal = ( parseFloat(merchTotal) + parseFloat(sourceBodyJSON.shippingCharge) + parseFloat(sourceBodyJSON.orderJSON.items_tax) );
@@ -264,13 +265,14 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
 // to persist the order data, then calls newArtGunPostReq to send the order data to ArtGun
 
 artGunRouter.post('/orders/new', function(req, res) {
-  var orderReqBody = req.body.orderJSON;
+  var orderReqBody = req.body;
   authHybridReq(req.body);
   if (authHybridReq(req.body) == true) {
     console.log("hybrid sig verified");
-    persistNewOrder(req.body);
-    var artGunSig = sha1(artGunSecret + artGunKey + JSON.stringify(orderReqBody));
-    var artGunPostBody = "Key=" + artGunKey + "&data=" + JSON.stringify(orderReqBody) + "&signature=" + artGunSig;
+    orderReqBody.orderJSON.pack_url = "http://tranquil-fortress-90513.herokuapp.com/orders/" + orderReqBody.orderJSON.xid + "/packslip"
+    persistNewOrder(orderReqBody);
+    var artGunSig = sha1( artGunSecret + artGunKey + JSON.stringify(orderReqBody.orderJSON) );
+    var artGunPostBody = "Key=" + artGunKey + "&data=" + JSON.stringify(orderReqBody.orderJSON) + "&signature=" + artGunSig;
     newArtGunPostReq(artGunPostBody);
     res.status(200).send('order received and will be processed');
   } else if (authHybridReq(req.body) != true) {
