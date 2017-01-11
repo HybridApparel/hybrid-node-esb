@@ -201,7 +201,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
         templateSourceJSON.items.push(lineItem);
 
       };
-      console.log('merch total is ' + merchTotal + ' and quantity is ' + sourceBodyJSON.orderJSON.items[i].quantity + ' and shipping is ' + sourceBodyJSON.shippingCharge + ' and tax is ' + Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.orderJSON.items_tax)););
+      console.log('merch total is ' + merchTotal + ' and quantity is ' + sourceBodyJSON.orderJSON.items[i].quantity + ' and shipping is ' + sourceBodyJSON.shippingCharge + ' and tax is ' + Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.orderJSON.items_tax)) );
       templateSourceJSON.merchandiseTotal = Globalize.currencyFormatter("USD")(parseFloat(merchTotal));
       templateSourceJSON.shippingCharge = Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.shippingCharge));
       templateSourceJSON.items_tax = Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.orderJSON.items_tax));
