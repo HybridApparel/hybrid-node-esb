@@ -176,7 +176,9 @@
 				<p id="bill_address">
 					{{billing_name}}<br>
 					{{billing_address1}}<br>
-					{{billing_address2}}<br>
+					{{#if billing_address2}}
+    					{{billing_address2}}<br>
+  					{{/if}}
 					{{billing_city}}, {{billing_state}} {{billing_zipcode}}<br>
 				</p>
 			</div>
@@ -184,6 +186,9 @@
 				<p id="ship_address">
 					{{shipping_name}}<br>
 					{{shipping_address1}}<br>
+					{{#if shipping_address2}}
+    					{{shipping_address2}}<br>
+  					{{/if}}
 					{{shipping_address2}}<br>
 					{{shipping_city}}, {{shipping_state}} {{shipping_zipcode}}<br>
 				</p>
@@ -305,7 +310,10 @@
 					{{items_tax}}
 				</div>
 				<div class="col-xs-8 order-total-box-left vert-align-test-2 font-100">
-					Order Total &#60;{{cardType}}-{{cardDigits}}&#62;
+					<div class="col-xs-3">&nbsp;</div>
+					<div class="col-xs-9">
+						Order Total &#60;{{cardType}}-{{cardDigits}}&#62;
+					</div>
 				</div>
 				<div class="col-xs-4 order-total-box-right vert-align-test-2 font-100">
 					{{orderTotal}}
