@@ -9,7 +9,7 @@ var fs               = require('fs');
 var pdf              = require('html-pdf');
 var path             = require('path');
 var Handlebars       = require('handlebars');
-var packSlipHTML     = fs.readFileSync('./public/packSlipTemplate.html', 'utf8');
+var packSlipHTML     = fs.readFileSync('./public/newTestPackSlip.html', 'utf8');
 var compPackSlipHTML = Handlebars.compile(packSlipHTML);
 var moment           = require('moment');
 var Globalize        = require( "globalize" );
@@ -195,14 +195,12 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
         lineItem.index = i + 1;
         lineItem.UPC = sourceBodyJSON.orderJSON.items[i].UPC;
         lineItem.quantity = sourceBodyJSON.orderJSON.items[i].quantity;
-        console.log('quantity is ' + sourceBodyJSON.orderJSON.items[i].quantity);
         lineItem.unit_amount = Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.orderJSON.items[i].unit_amount));
         lineItem.lineItemTotal = Globalize.currencyFormatter( "USD" )(parseFloat(sourceBodyJSON.orderJSON.items[i].unit_amount) * parseFloat(sourceBodyJSON.orderJSON.items[i].quantity));
         merchTotal = merchTotal + (parseFloat(sourceBodyJSON.orderJSON.items[i].unit_amount) * parseFloat(sourceBodyJSON.orderJSON.items[i].quantity));
+        
         templateSourceJSON.items.push(lineItem);
-
       };
-      console.log('merch total is ' + merchTotal + ' and shipping is ' + sourceBodyJSON.shippingCharge + ' and tax is ' + Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.orderJSON.items_tax)) );
       templateSourceJSON.merchandiseTotal = Globalize.currencyFormatter("USD")(parseFloat(merchTotal));
       templateSourceJSON.shippingCharge = Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.shippingCharge));
       templateSourceJSON.items_tax = Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.orderJSON.items_tax));
@@ -211,6 +209,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.cardType = sourceBodyJSON.cardType;
       templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
       var testBarcodeValue = sourceBodyJSON.barcodeValue;
+      templateSourceJSON.reservationNumber = testBarcodeValue;
       templateSourceJSON.barcodeValue1 = '<script>JsBarcode("#barcode1", "' + testBarcodeValue + '",  {format:"CODE39", height:30, width:1, fontSize:12});</script>';      
       
       var macysReturnCodeN = "- Visit www.macys.com/easyreturn to create and print your free return label.";
