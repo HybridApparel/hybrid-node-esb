@@ -17,12 +17,16 @@ Globalize.load(require( "cldr-data").entireSupplemental() );
 Globalize.load(require( "cldr-data").entireMainFor("en") );
 Globalize.locale( "en" );
 
-
-
 var artGunKey        = process.env.ARTGUN_KEY;
 var artGunSecret     = process.env.ARTGUN_SECRET;
 var hybridKey        = process.env.HYBRID_KEY;
 var hybridSecret     = process.env.HYBRID_SECRET;
+
+Handlebars.registerHelper('breaklines', function(text) {
+    text = Handlebars.Utils.escapeExpression(text);
+    text = text.replace(/(\r\n|\n|\r)/gm, '<br>');
+    return new Handlebars.SafeString(text);
+});
 
 // verifies shipment notification from ArtGun with SHA1 hashed sum of shared secret, key, and data object
 
