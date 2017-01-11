@@ -1,5 +1,5 @@
 var express          = require('express');
-var artGunRouter     = express.Router();
+var TSCRouter        = express.Router();
 var request          = require('request');
 var sha1             = require('js-sha1');
 var models           = require('../models');
@@ -9,7 +9,7 @@ var fs               = require('fs');
 var pdf              = require('html-pdf');
 var path             = require('path');
 var Handlebars       = require('handlebars');
-var packSlipHTML     = fs.readFileSync('./public/packSlipTemplate.html', 'utf8');
+var packSlipHTML     = fs.readFileSync('./public/TSCpackSlipTemplate.html', 'utf8');
 var compPackSlipHTML = Handlebars.compile(packSlipHTML);
 var moment           = require('moment');
 var Globalize        = require("globalize");
@@ -18,16 +18,19 @@ Globalize.load(require( "cldr-data").entireMainFor("en") );
 Globalize.locale( "en" );
 
 
-var artGunKey        = process.env.ARTGUN_KEY;
-var artGunSecret     = process.env.ARTGUN_SECRET;
+var TSCRKey          = process.env.ARTGUN_KEY;
+var TSCSecret        = process.env.ARTGUN_SECRET;
 var hybridKey        = process.env.HYBRID_KEY;
 var hybridSecret     = process.env.HYBRID_SECRET;
 
+
+
+
 // verifies shipment notification from ArtGun with SHA1 hashed sum of shared secret, key, and data object
 
-var authTSCReq = function (artGunShipReq) {
-  var hashedSig = sha1(artGunSecret + artGunKey + artGunShipReq.data);
-  if (hashedSig !== artGunShipReq.signature) {
+var authTSCReq = function (TSCReq) {
+  var hashedSig = sha1(TSCSecret + TSCKey + TSCReq.data);
+  if (hashedSig !== TSCReq.signature) {
     console.log('request not accepted - invalid credentials and signature');
     var errorRes = {
       "error": "403 - authentication failed, invalid signature - request not received",
@@ -35,7 +38,7 @@ var authTSCReq = function (artGunShipReq) {
       "message": "signature does not match sha1(secret + key + data)"
     };
     return errorRes;
-  } else if (hashedSig == artGunShipReq.signature) {
+  } else if (hashedSig == TSCReq.signature) {
     console.log('valid creds');
     return true;
   };
@@ -65,7 +68,8 @@ var persistNewOrder = function (newOrderJSON) {
   Order.create({
     OrderID: newOrderJSON.orderJSON.xid,
     isProcessed: false,
-    Body: newOrderJSON
+    Body: newOrderJSON,
+    Method: "tsc"
   }).then(function(newOrderRecord) {
     console.log('new order persisted');
   });
@@ -74,17 +78,17 @@ var persistNewOrder = function (newOrderJSON) {
 // after artGunPostReq() is called, the ArtGun res is logged if success
 // separated success and error functions for potential future notifications 
 
-var persistTSCResSuccess = function (artGunRes) {
+var persistTSCResSuccess = function (TSCRes) {
   Order.findOne({
-    where:{OrderID: artGunRes.xid}
+    where:{OrderID: TSCRes.xid}
   }).then(function (order) {
-    console.log('artgun res to db is ...  ' + artGunRes);
+    console.log('TSC res to db is ...  ' + JSON.stringify(TSCRes));
     order.update({
-      EndpointResponseID: artGunRes.receipt_id,
-      EndpointResponseBody: artGunRes,
-      isProcessed: true,
+      EndpointResponseID: TSCRes.receipt_id,
+      EndpointResponseBody: TSCRes,
+      isProcessed: true
     }).then(function () {
-      console.log('new artgun res persisted');
+      console.log('new TSC res persisted');
     })
   })
 };
@@ -92,22 +96,22 @@ var persistTSCResSuccess = function (artGunRes) {
 // after artGunPostReq() is called, the ArtGun res is logged if error
 
 
-var persistTSCResError = function(artGunRes) {
+var persistTSCResError = function(TSCRes) {
   Order.findOne({
-    where: {OrderID: artGunRes.xid}
+    where: {OrderID: TSCRes.xid}
   }).then(function (order) {
-    console.log('artgun res to db plus found order is ...  ' + artGunRes + order);
+    console.log('TSC res to db plus found order is ...  ' + TSCRes + order);
     order.update({
-      EndpointResponseID: artGunRes.receipt_id,
-      EndpointResponseBody: artGunRes,
-      isProcessed: false,
+      EndpointResponseID: TSCRes.receipt_id,
+      EndpointResponseBody: TSCRes,
+      isProcessed: false
     }).then(function () {
       console.log('new error persisted');
     })
   })
 };
 
-// makes a POST req to the ArtGun API, call functions to persist response
+// makes a POST req to the TSC API, call functions to persist response
 
 var newTSCPostReq = function (orderDataJSON) {
   
@@ -120,13 +124,13 @@ var newTSCPostReq = function (orderDataJSON) {
     body: orderDataJSON
   };
   request(options, function (error, response, body) {
-    var artGunResBody = JSON.parse(response.body);
-    if (artGunResBody.res == "success") {
-      persistArtGunResSuccess(artGunResBody);
-      console.log('successfully processed new ArtGun order... ' + JSON.stringify(artGunResBody));
-    } else if (artGunResBody.res == "error") {
-      persistArtGunResError(artGunResBody);
-      console.log('error processing order to ArtGun - please check ArtGun error... ' + JSON.stringify(artGunResBody));
+    var TSCResBody = JSON.parse(response.body);
+    if (TSCResBody.res == "success") {
+      persistTSCResResSuccess(artGunResBody);
+      console.log('successfully processed new TSC order... ' + JSON.stringify(TSCResBody));
+    } else if (TSCResBody.res == "error") {
+      persistTSCResError(TSCResBody);
+      console.log('error processing order to TSC - please check TSC error... ' + JSON.stringify(TSCResBody));
     };
   });
 };
@@ -161,7 +165,7 @@ var persistTSCShipment = function (shipmentJSON) {
 
 // GET route to download Packing Slip
 
-artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
+TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
   Globalize.locale("en");
   console.log('get pack slip endpoint hit');
   var orderXID = req.params.orderID;
@@ -184,7 +188,6 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.shipping_city = sourceBodyJSON.orderJSON.shipping_city;
       templateSourceJSON.shipping_state = sourceBodyJSON.orderJSON.shipping_state;
       templateSourceJSON.shipping_zipcode = sourceBodyJSON.orderJSON.shipping_zipcode;
-      //templateSourceJSON.date = moment(sourceBodyJSON.time, "ddd, DD MMM YYYY ").format("MM/DD/YYYY");
       templateSourceJSON.date = sourceBodyJSON.orderJSON.time;
       templateSourceJSON.xid = sourceBodyJSON.orderJSON.xid;
       templateSourceJSON.items = [];
@@ -216,11 +219,10 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       var bloomReturnCodeNX = "- If you have any questions or would like assistance with a return, please refer to the CONTACT US information at the top of this page.";
       var bloomReturnCodeS = "- Visit www.bloomingdales.com/easyreturn to create and print your free return label.<br>IN STORE     Most purchases can be returned to your local Bloomingdale's store:<br>- Take your merchandise and this invoice (make sure the barcode is attached) to your local store.<br>- Any sales associate can process your return."
 
-      // unused html to pdf code saved for later potential use
 
       var html = compPackSlipHTML(templateSourceJSON);
       var options = {
-        "type": "pdf",
+        "type": "jpg",
         "base": 'http://tranquil-fortress-90513.herokuapp.com/',
         "format": "Letter",
         "orientation": "portrait"
@@ -238,7 +240,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
 // POST route to create a new order to send to ArtGun; calls authHybridReq to authorize, then persistNewOrder
 // to persist the order data, then calls newArtGunPostReq to send the order data to ArtGun
 
-artGunRouter.post('/orders/new', function(req, res) {
+TSCRouter.post('/orders/new', function(req, res) {
   var orderReqBody = req.body.orderJSON;
   authHybridReq(req.body);
   if (authHybridReq(req.body) == true) {
@@ -256,10 +258,10 @@ artGunRouter.post('/orders/new', function(req, res) {
 
 // POST route for ArtGun shipment updates
 
-artGunRouter.post('/shipments/update', function(req,res) {
+TSCRouter.post('/shipments/update', function(req,res) {
   var resJSON = {};
-  authArtGunReq(req.body);
-  if (authArtGunReq(req.body) == true) {
+  authTSCReq(req.body);
+  if (authTSCReq(req.body) == true) {
     var orderReceiptID = "";
     var orderPrimaryKey = "";    
     Order.findOne({
@@ -285,9 +287,9 @@ artGunRouter.post('/shipments/update', function(req,res) {
   };
 });
 
-artGunRouter.get('/orders/:orderID/:signaturestatus/', function(req, res) {
+TSCRouter.get('/orders/:orderID/:signaturestatus/', function(req, res) {
   console.log('get route for order status hit');
-  var authSig = sha1(hybridSecret + hybridKey + req.params.orderID);
+  var authSig = sha1(TSCSecret + TSCKey + req.params.orderID);
   if (authSig != req.params.signature) {
     console.log('request not accepted - invalid credentials and signature');
     var hybridErrorRes = {
@@ -317,6 +319,6 @@ artGunRouter.get('/orders/:orderID/:signaturestatus/', function(req, res) {
 
 
 
-module.exports = artGunRouter;
+module.exports = TSCRouter;
 
 

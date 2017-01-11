@@ -66,7 +66,8 @@ var persistNewOrder = function (newOrderJSON) {
   Order.create({
     OrderID: newOrderJSON.orderJSON.xid,
     isProcessed: false,
-    Body: newOrderJSON
+    Body: newOrderJSON,
+    Method: "artgun"
   }).then(function(newOrderRecord) {
     console.log('new order persisted');
   });
@@ -139,20 +140,20 @@ var persistArtGunShipment = function (shipmentJSON) {
   var orderReceiptID = "";
   var orderPrimaryKey = "";
   Order.findOne({
-    where: {OrderID: shipmentJSON.xid} })
+    where: {OrderID: shipmentJSON.data.xid} })
   .then(function(order){
     orderReceiptID = order.EndpointResponseID;
     orderPrimaryKey = order.id;
     console.log('heres the order receipt id... ' + orderReceiptID);
     Shipment.create({
       order_id: orderPrimaryKey,
-      status: shipmentJSON.status,
-      tracking_number: shipmentJSON.tracking_number,
+      status: shipmentJSON.data.status,
+      tracking_number: shipmentJSON.data.tracking_number,
       body: shipmentJSON
     }).then(function(shipment) {
       resJSON.res = "success";
       resJSON.time = shipment.createdAt;
-      resJSON.xid = shipmentJSON.xid;
+      resJSON.xid = shipmentJSON.data.xid;
       resJSON.receipt_id = orderReceiptID;
       console.log('shipment req reeceived and persisted' + resJSON);
       res.status(200).send(resJSON);
@@ -336,37 +337,18 @@ artGunRouter.get('/orders/:orderID/status/:signature', function(req, res) {
       responseJSON.OrderID = order.OrderID;
       responseJSON.ArtGunResponseBody = order.EndpointResponseBody;
       if (order.shipments[0]) {    
-          responseJSON.isShipped = JSON.parse(order.shipments[0].body.data).status;
-          responseJSON.trackingNumber = JSON.parse(order.shipments[0].body.data).tracking_number;
-          responseJSON.billOfLading = JSON.parse(order.shipments[0].body.data).bol;
+        responseJSON.isShipped = JSON.parse(order.shipments[0].body.data).status;
+        responseJSON.trackingNumber = JSON.parse(order.shipments[0].body.data).tracking_number;
+        responseJSON.billOfLading = JSON.parse(order.shipments[0].body.data).bol;
+      } else {
+        responseJSON.isShipped = false;
+        responseJSON.trackingNumber = "";
+        responseJSON.billOfLading = "";
       };
       res.send(responseJSON).status(200);
     });  
   }
 });
 
-
-// artGunRouter.get('/shipments/testchange/:shipID', function(req, res) {
-//   Shipment.findOne({
-//     where: {id: req.params.shipID}
-//   }).then(function(shipment) {
-//     Order.findOne({
-//       where: {OrderID: JSON.parse(shipment.body.data).xid}
-//     }).then(function(order) {
-//       var updateOrderAssociate = order.id;
-//       var updateStatus = JSON.parse(shipment.body.data).status;
-//       shipment.update({
-//         orderID: updateOrderAssociate,
-//         status: updateStatus
-//       }).then(function(updatedShipment) {
-//         res.send(updatedShipment);
-//       });
-//     });
-//   });
-// });
-
-
-
 module.exports = artGunRouter;
-
 

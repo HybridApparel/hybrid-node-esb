@@ -6,6 +6,7 @@ var application_root 	= __dirname,
     logger           	= require('morgan'),
     models              = require('./models'),
     artGunRouter    	= require('./routers/artgun_router.js'),
+    tscRouter  	        = require('./routers/tsc_router'),
     Sequelize           = require('sequelize');
 
 
@@ -21,5 +22,7 @@ app.use( express.static( path.join( application_root, 'public' )));
 app.use( express.static( path.join( application_root, 'browser' )));
 
 app.use('/artgun', artGunRouter);
+app.use('/tsc', tscRouter);
+
 
 module.exports = app;
