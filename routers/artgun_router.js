@@ -204,7 +204,6 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
         merchTotal = merchTotal + (parseFloat(sourceBodyJSON.orderJSON.items[i].unit_amount) * parseFloat(sourceBodyJSON.orderJSON.items[i].quantity));
         templateSourceJSON.items.push(lineItem);
       };
-      console.log('gift message is ' + sourceBodyJSON.orderJSON.giftnote_comment);
       templateSourceJSON.giftMessage = sourceBodyJSON.orderJSON.giftnote_comment;
       templateSourceJSON.merchandiseTotal = Globalize.currencyFormatter("USD")(parseFloat(merchTotal));
       templateSourceJSON.shippingCharge = Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.shippingCharge));
