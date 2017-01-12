@@ -200,6 +200,7 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
         lineItem.index = i + 1;
         lineItem.UPC = sourceBodyJSON.orderJSON.items[i].UPC;
         lineItem.quantity = sourceBodyJSON.orderJSON.items[i].quantity;
+        console.log(sourceBodyJSON.orderJSON.items[i].unit_amount);
         lineItem.unit_amount = Globalize.currencyFormatter("USD")(sourceBodyJSON.orderJSON.items[i].unit_amount);
         lineItem.lineItemTotal = Globalize.currencyFormatter( "USD" )(sourceBodyJSON.orderJSON.items[i].unit_amount * sourceBodyJSON.orderJSON.items[i].quantity)
         merchTotal = merchTotal + (sourceBodyJSON.orderJSON.items[i].unit_amount * sourceBodyJSON.orderJSON.items[i].quantity)
