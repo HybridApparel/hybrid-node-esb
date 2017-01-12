@@ -209,7 +209,7 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.merchandiseTotal = Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.orderJSON.items_amount));
       templateSourceJSON.shippingCharge = Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.shippingCharge));
       templateSourceJSON.items_tax = Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.items_tax));
-      templateSourceJSON.orderTotal.Globalize.currencyFormatter("USD")(templateSourceJSON.merchandiseTotal + templateSourceJSON.shippingCharge + parseFloat(sourceBodyJSON.items_tax));
+      templateSourceJSON.orderTotal = Globalize.currencyFormatter("USD")(templateSourceJSON.merchandiseTotal + templateSourceJSON.shippingCharge + parseFloat(sourceBodyJSON.items_tax));
       templateSourceJSON.cardType = sourceBodyJSON.cardType;
       templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
       var testBarcodeValue = sourceBodyJSON.barcodeValue;
