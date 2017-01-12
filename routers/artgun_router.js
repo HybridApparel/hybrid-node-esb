@@ -339,6 +339,13 @@ artGunRouter.get('/orders/:orderID/status/:signature', function(req, res) {
       where: {OrderID: req.params.orderID},
       include: Shipment
     }).then(function(order) {
+      if (!order) {
+        var noOrderError = {
+          "error": "404 - order not found",
+          "message": "Cannot find this order number"
+        };
+        res.send(noOrderError).status(404);
+      };
       responseJSON.isProcessed = order.isProcessed;
       responseJSON.OrderID = order.OrderID;
       responseJSON.ArtGunResponseBody = order.EndpointResponseBody;
