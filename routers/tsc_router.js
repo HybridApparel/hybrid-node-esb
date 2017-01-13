@@ -14,7 +14,6 @@ var compPackSlipHTML = Handlebars.compile(packSlipHTML);
 var moment           = require('moment');
 var Globalize        = require("globalize");
 var pdf2img          = require('pdf2img');
-var pdftoimage       = require('pdftoimage');
 Globalize.load(require( "cldr-data").entireSupplemental() );
 Globalize.load(require( "cldr-data").entireMainFor("en") );
 Globalize.locale( "en" );
@@ -278,7 +277,7 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
 
       var html = compPackSlipHTML(templateSourceJSON);
       var options = {
-        "type": "pdf",
+        "type": "jpeg",
         "base": 'http://tranquil-fortress-90513.herokuapp.com/',
         "format": "Letter",
         "orientation": "portrait"
@@ -286,16 +285,7 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
       var fileNameWrite = 'packSlip_' + orderXID + '.pdf';
       pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
         if (err) return console.log(err);
-        pdftoimage(file.filename, {
-          format: 'jpeg',  // png, jpeg, tiff or svg, defaults to png
-        })
-        .then(function(){
-          console.log('Conversion done');
-          res.download('packSlip_' + orderXID + '.jpeg');
-        })
-        .catch(function(err){
-          console.log(err);
-        });
+        res.download(file.filename);
       });
     });
   console.log('heres the end of the pack slip route');
