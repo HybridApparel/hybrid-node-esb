@@ -276,17 +276,21 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
       };
 
       var html = compPackSlipHTML(templateSourceJSON);
-      var options = {
-        "type": "pdf",
-        "base": 'http://tranquil-fortress-90513.herokuapp.com/',
-        "format": "Letter",
-        "orientation": "portrait"
-      };
       var fileNameWrite = 'packSlip_' + orderXID + '.pdf';
-      pdf.create(html, options).toBuffer(function(err, buffer) {
-        if (err) return console.log(err);
-        res.download(wkhtmltoimage.generate(buffer));
-      });
+      wkhtmltoimage.generate(html, {output: fileNameWrite});
+      console.log(fileNameWrite);
+      res.download(fileNameWrite);
+
+      // var options = {
+      //   "type": "pdf",
+      //   "base": 'http://tranquil-fortress-90513.herokuapp.com/',
+      //   "format": "Letter",
+      //   "orientation": "portrait"
+      // };
+      // pdf.create(html, options).toBuffer(function(err, buffer) {
+      //   if (err) return console.log(err);
+      //   res.download();
+      // });
     });
   console.log('heres the end of the pack slip route');
 });
