@@ -39,7 +39,7 @@ var authTSCReq = function (TSCReq) {
       "code": "1",
       "message": "signature does not match sha1(secret + key + data)"
     };
-    return errorRes;
+    return false;
   } else if (hashedSig == TSCReq.signature) {
     console.log('valid creds');
     return true;
@@ -135,6 +135,26 @@ var newTSCPostReq = function (orderDataJSON) {
       console.log('error processing order to TSC - please check TSC error... ' + JSON.stringify(TSCResBody));
     };
   });
+};
+
+var cancelTSCOrder = function(orderID) {
+  var options = {
+    method: 'POST',
+    url: 'http:/apptest.tscmiami.com/api/order/cancelorder',
+    headers: {
+      'cache-control': 'no-cache',
+      'content-type': 'application/x-www-form-urlencoded',
+    },
+    body: {
+      'time': Globalize.dateFormatter({ datetime: "medium"})(new Date()),
+      'xid': orderID,
+      'mode': 'debug',
+      'event': {
+        'name': 'cancel_order',
+        'description': 'cancel order request'
+      }
+    }
+  }
 };
 
 // receive POST from ArtGun with shipment notification, associate with existing order_id and persist to shipments table
@@ -289,7 +309,7 @@ TSCRouter.post('/shipments/update', function(req,res) {
   };
 });
 
-TSCRouter.get('/orders/:orderID/:signaturestatus/', function(req, res) {
+TSCRouter.get('/orders/:orderID/:signature/status/', function(req, res) {
   console.log('get route for order status hit');
   var authSig = sha1(TSCSecret + TSCKey + req.params.orderID);
   if (authSig != req.params.signature) {
@@ -318,6 +338,12 @@ TSCRouter.get('/orders/:orderID/:signaturestatus/', function(req, res) {
     });  
   }
 });
+
+TSCRouter.post('/orders/:orderID/cancel', function(req, res) {
+  console.log('cancel TSC order route hit');
+  var cancelOrderJSON = req.body;
+  var authSig = sha1(TSCSecret + TSCKey + req.params.orderID);
+})
 
 
 
