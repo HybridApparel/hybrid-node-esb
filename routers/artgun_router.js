@@ -213,7 +213,8 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.cardType = sourceBodyJSON.cardType;
       templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
       var testBarcodeValue = sourceBodyJSON.barcodeValue;
-      templateSourceJSON.reservationNumber = testBarcodeValue;
+      templateSourceJSON.reservationNumber = sourceBodyJSON.reservationNumber;
+      templateSourceJSON.PONumber = sourceBodyJSON.PONumber;
       templateSourceJSON.barcodeValue1 = '<script>JsBarcode("#barcode1", "' + testBarcodeValue + '",  {format:"CODE39", height:40, width:2, fontSize:12});</script>';      
       
       var macysReturnCodeN = "- Visit www.macys.com/easyreturn to create and print your free return label.";
