@@ -194,7 +194,7 @@ var persistTSCShipment = function (shipmentJSON) {
 
 // GET route to download Packing Slip
 
-TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
+TSCRouter.get('/orders/:orderID/packslip', function(req, resp) {
   console.log('get pack slip endpoint hit');
   var orderXID = req.params.orderID;
   var sourceBodyJSON = {};
@@ -286,11 +286,7 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
       pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
         if (err) return console.log(err);
         console.log(file);
-        wkhtmltoimage.generate(file.filename, { output: 'downloadThis.jpg' }, function(code, signal) {
-          console.log('mystery code is ' + code);
-          console.log('mystery signal is ' + signal);
-          res.download('downloadThis.jpg');
-        });
+        wkhtmltoimage.generate(file.filename).pipe(resp.download(res));
       });
     });
   console.log('heres the end of the pack slip route');
