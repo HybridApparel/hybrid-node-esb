@@ -285,17 +285,15 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
       var fileNameWrite = 'packSlip_' + orderXID + '.pdf';
       pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
         if (err) return console.log(err);
-        // console.log(file);
-        // res.download(file.filename);
         pdf2img.setOptions({
-          type: 'jpeg',                      // png or jpeg, default png 
-          size: 1024,                       // default 1024 
-          density: 600,                     // default 600 
-          outputdir: __dirname + '/output' // mandatory, outputdir must be absolute path 
+          type: 'jpeg',
+          size: 1024,
+          density: 600,
+          outputdir: __dirname + '/output'
         });
         pdf2img.convert(file.filename, function(err, info) {
           if (err) console.log(err)
-          else res.download(info[0].path);
+          else res.download(info[0].name);
         });
       });
     });
