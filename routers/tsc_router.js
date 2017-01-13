@@ -292,8 +292,8 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
           outputdir: __dirname + '/output'
         });
         pdf2img.convert(file.filename, function(err, info) {
-          if (err) console.log(err)
-          else res.download(info[0].name);
+          if (err) console.log(err);
+          else console.log(info);
         });
       });
     });
