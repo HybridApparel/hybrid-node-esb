@@ -57,7 +57,7 @@ var authHybridReq = function (hybridOrderReq) {
       "code": "1",
       "message": "signature does not match"
     };
-    return hybridErrorRes;
+    return false;
   } else if (hybridSig == hybridOrderReq.signature) {
     console.log('valid creds');
     return true;
@@ -137,25 +137,31 @@ var newTSCPostReq = function (orderDataJSON) {
   });
 };
 
-var cancelTSCOrder = function(orderID) {
-  var options = {
-    method: 'POST',
-    url: 'http:/apptest.tscmiami.com/api/order/cancelorder',
-    headers: {
-      'cache-control': 'no-cache',
-      'content-type': 'application/x-www-form-urlencoded',
-    },
-    body: {
-      'time': Globalize.dateFormatter({ datetime: "medium"})(new Date()),
-      'xid': orderID,
-      'mode': 'debug',
-      'event': {
-        'name': 'cancel_order',
-        'description': 'cancel order request'
-      }
-    }
-  }
-};
+// var cancelTSCOrder = function(orderID) {
+//   var options = {
+//     method: 'POST',
+//     url: 'http:/apptest.tscmiami.com/api/order/cancelorder',
+//     headers: {
+//       'cache-control': 'no-cache',
+//       'content-type': 'application/x-www-form-urlencoded',
+//     },
+//     body: {
+//       'time': Globalize.dateFormatter({ datetime: "medium"})(new Date()),
+//       'xid': orderID,
+//       'mode': 'debug',
+//       'event': {
+//         'name': 'cancel_order',
+//         'description': 'cancel order request'
+//       }
+//     }
+//   };
+//   request(options, function(error, response, body) {
+//     var TSCResBody = JSON.parse(response.body);
+//     if (TSCResBody.res == "success") {
+//       persist
+//     }
+//   });
+// };
 
 // receive POST from ArtGun with shipment notification, associate with existing order_id and persist to shipments table
 
@@ -246,8 +252,6 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
       var options = {
         "type": "jpg",
         "base": 'http://tranquil-fortress-90513.herokuapp.com/',
-        "format": "Letter",
-        "orientation": "portrait"
       };
       var fileNameWrite = 'packSlip_' + orderXID + '.jpg';
       pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
@@ -309,7 +313,7 @@ TSCRouter.post('/shipments/update', function(req,res) {
   };
 });
 
-TSCRouter.get('/orders/:orderID/:signature/status/', function(req, res) {
+TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
   console.log('get route for order status hit');
   var authSig = sha1(TSCSecret + TSCKey + req.params.orderID);
   if (authSig != req.params.signature) {
@@ -339,11 +343,23 @@ TSCRouter.get('/orders/:orderID/:signature/status/', function(req, res) {
   }
 });
 
-TSCRouter.post('/orders/:orderID/cancel', function(req, res) {
-  console.log('cancel TSC order route hit');
-  var cancelOrderJSON = req.body;
-  var authSig = sha1(TSCSecret + TSCKey + req.params.orderID);
-})
+// TSCRouter.post('/orders/:orderID/cancel', function(req, res) {
+//   console.log('cancel TSC order route hit');
+//   if (authHybridReq(req.body) == false) {
+//     console.log('request not accepted - invalid credentials and signature');
+//     var hybridErrorRes = {
+//       "error": "403 - authentication failed, invalid signature - request not received",
+//       "code": "1",
+//       "message": "signature does not match"
+//     };
+//     res.send(hybridErrorRes).status(403);
+//   } else if (authHybridReq(req.body) == true) {
+//     console.log("hybrid sig verified");
+//     cancelTSCOrder(req.params.orderID);
+
+//   }
+
+// });
 
 
 
