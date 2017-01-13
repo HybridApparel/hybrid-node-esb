@@ -277,10 +277,7 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
 
       var html = compPackSlipHTML(templateSourceJSON);
       var fileNameWrite = 'packSlip_' + orderXID + '.jpg';
-      wkhtmltoimage.generate(html, {output: '/app/outTest.jpg'}, function () {
-        console.log('outTest.jpg');
-        res.download('outTest.jpg');
-      });
+      wkhtmltoimage.generate(html).pipe(res);
 
       // var options = {
       //   "type": "pdf",
