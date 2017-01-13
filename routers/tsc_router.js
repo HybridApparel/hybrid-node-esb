@@ -283,10 +283,9 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
         "orientation": "portrait"
       };
       var fileNameWrite = 'packSlip_' + orderXID + '.pdf';
-      pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
+      pdf.create(html, options).toBuffer(function(err, buffer) {
         if (err) return console.log(err);
-        console.log('the filename is ' + file.filename);
-        res.download(wkhtmltoimage.generate(file));
+        res.download(wkhtmltoimage.generate(buffer));
       });
     });
   console.log('heres the end of the pack slip route');
