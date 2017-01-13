@@ -278,9 +278,7 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
       var html = compPackSlipHTML(templateSourceJSON);
       var options = {
         "type": "jpeg",
-        "base": 'http://tranquil-fortress-90513.herokuapp.com/',
-        "format": "Letter",
-        "orientation": "portrait"
+        "base": 'http://tranquil-fortress-90513.herokuapp.com/'
       };
       var fileNameWrite = 'packSlip_' + orderXID + '.jpeg';
       pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
