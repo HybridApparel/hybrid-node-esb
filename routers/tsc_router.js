@@ -13,8 +13,7 @@ var packSlipHTML     = fs.readFileSync('./public/artGunPackSlipTemplate.html', '
 var compPackSlipHTML = Handlebars.compile(packSlipHTML);
 var moment           = require('moment');
 var Globalize        = require("globalize");
-var wkhtmltoimage    = require('wkhtmltoimage');
-var PDFImage         = require("pdf-image").PDFImage;
+var pdf2img          = require('pdf2img');
 Globalize.load(require( "cldr-data").entireSupplemental() );
 Globalize.load(require( "cldr-data").entireMainFor("en") );
 Globalize.locale( "en" );
@@ -288,11 +287,15 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
         if (err) return console.log(err);
         // console.log(file);
         // res.download(file.filename);
-        var pdfImage = new PDFImage(file.filename);
-        pdfImage.convertPage(0).then(function (imagePath) {
-          res.download(imagePath);
-        }, function (err) {
-          res.send(err, 500);
+        pdf2img.setOptions({
+          type: 'jpeg',                      // png or jpeg, default png 
+          size: 1024,                       // default 1024 
+          density: 600,                     // default 600 
+          outputdir: __dirname + '/output' // mandatory, outputdir must be absolute path 
+        });
+        pdf2img.convert(file.filename, function(err, info) {
+          if (err) console.log(err)
+          else console.log(info);
         });
       });
     });
