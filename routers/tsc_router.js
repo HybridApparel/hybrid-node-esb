@@ -14,6 +14,7 @@ var compPackSlipHTML = Handlebars.compile(packSlipHTML);
 var moment           = require('moment');
 var Globalize        = require("globalize");
 var pdf2img          = require('pdf2img');
+var pdftoimage       = require('pdftoimage');
 Globalize.load(require( "cldr-data").entireSupplemental() );
 Globalize.load(require( "cldr-data").entireMainFor("en") );
 Globalize.locale( "en" );
@@ -285,15 +286,15 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
       var fileNameWrite = 'packSlip_' + orderXID + '.pdf';
       pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
         if (err) return console.log(err);
-        pdf2img.setOptions({
-          type: 'jpeg',
-          size: 1024,
-          density: 600,
-          outputdir: __dirname + '/output'
-        });
-        pdf2img.convert(file.filename, function(err, info) {
-          if (err) console.log(err);
-          else res.download(info[0].path);
+        pdftoimage(file, {
+          format: 'jpeg',  // png, jpeg, tiff or svg, defaults to png
+        })
+        .then(function(){
+          console.log('Conversion done');
+          res.download('packSlip_' + orderXID + '.jpeg');
+        })
+        .catch(function(err){
+          console.log(err);
         });
       });
     });

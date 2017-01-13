@@ -26,6 +26,7 @@
     "path": "^0.12.7",
     "pdf-image": "^1.1.0",
     "pdf2img": "^0.2.0",
+    "pdftoimage": "^1.0.0",
     "pg": "6.1.0",
     "pg-hstore": "^2.3.2",
     "request": "^2.74.0",
