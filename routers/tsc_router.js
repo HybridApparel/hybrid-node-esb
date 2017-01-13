@@ -282,7 +282,7 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
         "format": "Letter",
         "orientation": "portrait"
       };
-      var fileNameWrite = 'packSlip_' + orderXID + '.pdf';
+      var fileNameWrite = 'packSlip_' + orderXID + '.jpeg';
       pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
         if (err) return console.log(err);
         res.download(file.filename);
