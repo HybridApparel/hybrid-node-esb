@@ -286,10 +286,10 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
       pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
         if (err) return console.log(err);
         console.log(file);
-        wkhtmltoimage.generate(file.filename, { output: 'packSlip_' + orderXID + '.jpg' }, function(code, signal) {
+        wkhtmltoimage.generate(file.filename, { output: downloadThis }, function(code, signal) {
           console.log('mystery code is ' + code);
           console.log('mystery signal is ' + signal);
-          res.download('packSlip_' + orderXID + '.jpg');
+          res.download(downloadThis);
         });
       });
     });
