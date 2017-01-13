@@ -9,10 +9,11 @@ var fs               = require('fs');
 var pdf              = require('html-pdf');
 var path             = require('path');
 var Handlebars       = require('handlebars');
-var packSlipHTML     = fs.readFileSync('./public/TSCpackSlipTemplate.html', 'utf8');
+var packSlipHTML     = fs.readFileSync('./public/artGunPackSlipTemplate.html', 'utf8');
 var compPackSlipHTML = Handlebars.compile(packSlipHTML);
 var moment           = require('moment');
 var Globalize        = require("globalize");
+var wkhtmltoimage    = require('wkhtmltoimage');
 Globalize.load(require( "cldr-data").entireSupplemental() );
 Globalize.load(require( "cldr-data").entireMainFor("en") );
 Globalize.locale( "en" );
@@ -276,17 +277,20 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
 
       var html = compPackSlipHTML(templateSourceJSON);
       var options = {
-        "type": "jpeg",
+        "type": "pdf",
         "base": 'http://tranquil-fortress-90513.herokuapp.com/',
-        "quality": "100",
-        "zoomFactor": "0.55",
+        "format": "Letter",
         "orientation": "portrait"
       };
-      var fileNameWrite = 'packSlip_' + orderXID + '.jpeg';
+      var fileNameWrite = 'packSlip_' + orderXID + '.pdf';
       pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
         if (err) return console.log(err);
         console.log(file);
-        res.download(file.filename);
+        wkhtmltoimage.generate(file.filename, { output: 'packSlip_' + orderXID + '.jpg' }, function(code, signal) {
+          console.log('mystery code is ' + code);
+          console.log('mystery signal is ' + signal);
+          res.download('packSlip_' + orderXID + '.jpg');
+        });
       });
     });
   console.log('heres the end of the pack slip route');
