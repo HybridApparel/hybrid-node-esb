@@ -276,10 +276,11 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
       };
 
       var html = compPackSlipHTML(templateSourceJSON);
-      var fileNameWrite = 'packSlip_' + orderXID + '.pdf';
-      wkhtmltoimage.generate(html, {output: fileNameWrite});
-      console.log(fileNameWrite);
-      res.download(fileNameWrite);
+      var fileNameWrite = 'packSlip_' + orderXID + '.jpg';
+      wkhtmltoimage.generate(html, {output: 'outTest.jpg'}, function () {
+        console.log('outTest.jpg');
+        res.download('outTest.jpg');
+      });
 
       // var options = {
       //   "type": "pdf",
