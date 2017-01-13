@@ -286,7 +286,7 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
       var fileNameWrite = 'packSlip_' + orderXID + '.pdf';
       pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
         if (err) return console.log(err);
-        pdftoimage(file, {
+        pdftoimage(file.filename, {
           format: 'jpeg',  // png, jpeg, tiff or svg, defaults to png
         })
         .then(function(){
