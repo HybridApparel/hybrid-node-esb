@@ -281,7 +281,7 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
         "quality": "100",
         "orientation": "portrait"
       };
-      var fileNameWrite = 'packSlip_' + orderXID + '.jpg';
+      var fileNameWrite = 'packSlip_' + orderXID + '.jpeg';
       pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
         if (err) return console.log(err);
         console.log(file);
