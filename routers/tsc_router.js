@@ -194,7 +194,6 @@ var persistTSCShipment = function (shipmentJSON) {
 // GET route to download Packing Slip
 
 TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
-  Globalize.locale("en");
   console.log('get pack slip endpoint hit');
   var orderXID = req.params.orderID;
   var sourceBodyJSON = {};
@@ -216,7 +215,7 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.shipping_city = sourceBodyJSON.orderJSON.shipping_city;
       templateSourceJSON.shipping_state = sourceBodyJSON.orderJSON.shipping_state;
       templateSourceJSON.shipping_zipcode = sourceBodyJSON.orderJSON.shipping_zipcode;
-      templateSourceJSON.date = sourceBodyJSON.orderJSON.time;
+      templateSourceJSON.date = Globalize.dateFormatter({ skeleton: "yMd" })(order.createdAt);
       templateSourceJSON.xid = sourceBodyJSON.orderJSON.xid;
       templateSourceJSON.items = [];
       var merchTotal = 0;
@@ -226,28 +225,55 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
         lineItem.index = i + 1;
         lineItem.UPC = sourceBodyJSON.orderJSON.items[i].UPC;
         lineItem.quantity = sourceBodyJSON.orderJSON.items[i].quantity;
-        console.log(parseFloat(sourceBodyJSON.orderJSON.items[i].unit_amount));
         lineItem.unit_amount = Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.orderJSON.items[i].unit_amount));
-        lineItem.lineItemTotal = Globalize.currencyFormatter( "USD" )(sourceBodyJSON.orderJSON.items[i].unit_amount * sourceBodyJSON.orderJSON.items[i].quantity)
-        merchTotal = merchTotal + (sourceBodyJSON.orderJSON.items[i].unit_amount * sourceBodyJSON.orderJSON.items[i].quantity)
+        lineItem.lineItemTotal = Globalize.currencyFormatter( "USD" )(parseFloat(sourceBodyJSON.orderJSON.items[i].unit_amount) * parseFloat(sourceBodyJSON.orderJSON.items[i].quantity));
+        merchTotal = merchTotal + (parseFloat(sourceBodyJSON.orderJSON.items[i].unit_amount) * parseFloat(sourceBodyJSON.orderJSON.items[i].quantity));
         templateSourceJSON.items.push(lineItem);
       };
-      templateSourceJSON.merchandiseTotal = Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.orderJSON.items_amount));
+      templateSourceJSON.giftMessage = sourceBodyJSON.orderJSON.giftnote_comment;
+      templateSourceJSON.merchandiseTotal = Globalize.currencyFormatter("USD")(parseFloat(merchTotal));
       templateSourceJSON.shippingCharge = Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.shippingCharge));
-      templateSourceJSON.items_tax = Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.items_tax));
-      templateSourceJSON.orderTotal = Globalize.currencyFormatter("USD")(parseFloat(templateSourceJSON.merchandiseTotal) + parseFloat(templateSourceJSON.shippingCharge) + parseFloat(templateSourceJSON.items_tax));
+      templateSourceJSON.items_tax = Globalize.currencyFormatter("USD")(parseFloat(sourceBodyJSON.orderJSON.items_tax));
+      var sumOrderTotal = ( parseFloat(merchTotal) + parseFloat(sourceBodyJSON.shippingCharge) + parseFloat(sourceBodyJSON.orderJSON.items_tax) );
+      templateSourceJSON.orderTotal = Globalize.currencyFormatter("USD")(sumOrderTotal);
       templateSourceJSON.cardType = sourceBodyJSON.cardType;
       templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
       var testBarcodeValue = sourceBodyJSON.barcodeValue;
-      templateSourceJSON.barcodeValue1 = '<script>JsBarcode("#barcode1", "' + testBarcodeValue + '",  {format:"CODE39", height:30, width:1, fontSize:12});</script>';      
+      templateSourceJSON.reservationNumber = testBarcodeValue;
+      templateSourceJSON.barcodeValue1 = '<script>JsBarcode("#barcode1", "' + testBarcodeValue + '",  {format:"CODE39", height:40, width:2, fontSize:12});</script>';      
+      
       var macysReturnCodeN = "- Visit www.macys.com/easyreturn to create and print your free return label.";
       var macysReturnCodeNX = "- If you have any questions or would like assistance with a return, please refer to the CONTACT US information at the top of this page.";
       var macysReturnCodeS = "- Visit www.macys.com/easyreturn to create and print your free return label.<br>IN STORE     Most purchases can be returned to your local Macy's store:<br>- Take your merchandise and this invoice (make sure the barcode is attached) to your local store.<br>- Any sales associate can process your return.";
+      
       var bloomReturnCodeN = "- Visit www.bloomingdales.com/easyreturn to create and print your free return label.";
       var bloomReturnCodeNX = "- If you have any questions or would like assistance with a return, please refer to the CONTACT US information at the top of this page.";
       var bloomReturnCodeS = "- Visit www.bloomingdales.com/easyreturn to create and print your free return label.<br>IN STORE     Most purchases can be returned to your local Bloomingdale's store:<br>- Take your merchandise and this invoice (make sure the barcode is attached) to your local store.<br>- Any sales associate can process your return."
+      
+      if (sourceBodyJSON.brand == 11 || sourceBodyJSON.brand == 13) {
+        templateSourceJSON.logo = '<img src="https://cdn.shopify.com/s/files/1/0641/9285/files/MacysLogo.png?12072762125356310521" alt="" style="max-width:40%;">';
+        templateSourceJSON.contactInfo = "www.macys.com/contactus<br>1-800-289-6229<br>customerservice@macys.com";  
+      } else if (sourceBodyJSON.brand == 21 || sourceBodyJSON.brand == 23) {
+        templateSourceJSON.logo = '<img src="https://cdn.shopify.com/s/files/1/0641/9285/files/BloomingdalesLogo.png?16454377556678490292" alt="" style="max-width:40%;">';
+        templateSourceJSON.contactInfo = 'www.bloomingdales.com/contactus<br>1-800-777-0000<br>customerservice@bloomingdales.com';
+      };
 
+      if ((sourceBodyJSON.brand == 11 || sourceBodyJSON.brand == 13) && ["NV", "NE", "NN", "NM", "NJ", "NW", "NP", "NG"].indexOf(sourceBodyJSON.returnCode) > -1) {
+        templateSourceJSON.returnInstructions = macysReturnCodeN;
+      } else if ((sourceBodyJSON.brand == 11 || sourceBodyJSON.brand == 13) && sourceBodyJSON.returnCode == "NX") {
+        templateSourceJSON.returnInstructions = macysReturnCodeNX;
+      } else if ((sourceBodyJSON.brand == 11 || sourceBodyJSON.brand == 13) && ["SE", "SM", "SN", "SJ", "SW", "SP", "SG", "SX", "SV"].indexOf(sourceBodyJSON.returnCode) > -1) {
+        templateSourceJSON.returnInstructions = macysReturnCodeS;
+      };
 
+      if ((sourceBodyJSON.brand == 21 || sourceBodyJSON.brand == 23) && ["NV", "NE", "NN", "NM", "NJ", "NW", "NP", "NG"].indexOf(sourceBodyJSON.returnCode) > -1) {
+        templateSourceJSON.returnInstructions = bloomReturnCodeN;
+      } else if ((sourceBodyJSON.brand == 21 || sourceBodyJSON.brand == 23) && sourceBodyJSON.returnCode == "NX") {
+        templateSourceJSON.returnInstructions = bloomReturnCodeNX;
+      } else if ((sourceBodyJSON.brand == 21 || sourceBodyJSON.brand == 23) && ["SE", "SM", "SN", "SJ", "SW", "SP", "SG", "SX", "SV"].indexOf(sourceBodyJSON.returnCode) > -1) {
+        templateSourceJSON.returnInstructions = bloomReturnCodeS;
+      };
+      
       var html = compPackSlipHTML(templateSourceJSON);
       var options = {
         "type": "jpg",
