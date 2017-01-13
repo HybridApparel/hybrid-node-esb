@@ -286,7 +286,7 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
       pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
         if (err) return console.log(err);
         console.log('the filename is ' + file.filename);
-        res.download(wkhtmltoimage.generate(file.filename.toString()));
+        res.download(wkhtmltoimage.generate(file));
       });
     });
   console.log('heres the end of the pack slip route');
