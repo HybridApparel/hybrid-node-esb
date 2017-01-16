@@ -69,6 +69,7 @@ var authHybridReq = function (hybridOrderReq) {
 var persistNewOrder = function (newOrderJSON) {
   Order.create({
     OrderID: newOrderJSON.orderJSON.xid,
+    OrderXrefUid: newOrderJSON.OrderID,
     isProcessed: false,
     Body: newOrderJSON,
     Method: "artgun"
@@ -193,7 +194,7 @@ artGunRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.shipping_zipcode = sourceBodyJSON.orderJSON.shipping_zipcode;
       // templateSourceJSON.date = Globalize.dateFormatter({ skeleton: "yMd" })(sourceBodyJSON.orderJSON.time.substr(0,str.indexOf(' '));
       templateSourceJSON.date = sourceBodyJSON.orderJSON.time.substr(0,sourceBodyJSON.orderJSON.time.indexOf(' '));
-      templateSourceJSON.xid = sourceBodyJSON.orderJSON.xid;
+      templateSourceJSON.xid = sourceBodyJSON.OrderID;
       templateSourceJSON.items = [];
       var merchTotal = 0;
       for (var i=0; i<sourceBodyJSON.orderJSON.items.length; i++) {
