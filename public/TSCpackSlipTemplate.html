@@ -147,7 +147,6 @@
 	</head>
 
 	<body>
-		<div class="container-fluid">
 			<div class="col-xs-12 pad-top-15">	
 				<div class="col-xs-3">
 					{{{logo}}}	
@@ -158,7 +157,7 @@
 				</div>
 			</div>
 
-			<div class="col-xs-12">
+			<div class="col-xs-12 container">
 				<div class="col-xs-6 ship_det font-140" id="ship_det">
 					SHIPPING DETAILS
 				</div>
@@ -166,7 +165,7 @@
 				</div>
 			</div>
 
-			<div class="col-xs-12">
+			<div class="col-xs-12 container">
 				<div class="col-xs-3 font-120 pad-left-60">
 					BILLING ADDRESS
 				</div>
@@ -176,7 +175,7 @@
 				<div class="col-xs-6"></div>
 			</div>
 
-			<div class="col-xs-12">
+			<div class="col-xs-12 container">
 				<div class="col-xs-3 ship_det font-110 pad-top-15 pad-left-60">
 					<p id="bill_address">
 						{{billing_name}}<br>
@@ -208,7 +207,7 @@
 				</div>
 			</div>
 
-			<div class="col-xs-12 line-item-headers">
+			<div class="col-xs-12 line-item-headers container">
 				<div class="col-xs-6 zero-LR-margin-padding vert-align-test-2">
 					<div class="col-xs-1 font-100 zero-LR-margin-padding right-justify">
 						<b>LINE</b>
@@ -242,7 +241,7 @@
 			<div class="col-xs-12">&nbsp;</div>
 
 			{{#each items}}
-			<div class="col-xs-12 vert-align line-items-list font-90">
+			<div class="col-xs-12 vert-align line-items-list font-90 container">
 				<div class="col-xs-6 zero-LR-margin-padding font-90">
 					<div class="col-xs-1 font-100 zero-LR-margin-padding right-justify">
 						{{index}}
@@ -294,7 +293,7 @@
 			<div class="col-xs-12">&nbsp;</div>
 			<div class="col-xs-12">&nbsp;</div>
 
-			<div class="col-xs-12">
+			<div class="col-xs-12 container">
 				<div class="col-xs-7  gift-message">
 					{{breaklines giftMessage}}
 					&nbsp;
@@ -323,7 +322,7 @@
 				</div>
 			</div>
 
-			<div class="col-xs-12 vert-align-test font-100">
+			<div class="col-xs-12 vert-align-test font-100 container">
 				<div class="col-xs-1"></div>
 				<div class="col-xs-11">
 					<b>Easy Returns - Follow these easy steps to return your purchase</b> <br>
@@ -351,7 +350,7 @@
 			<div class="col-xs-12">&nbsp;</div>
 			<div class="col-xs-12">&nbsp;</div>
 
-			<div class="col-xs-12 font-100">
+			<div class="col-xs-12 font-100 container">
 				<div class="col-xs-3">
 					<b>Store Associate Instructions:</b> <br>
 					1. Press T2 Return/Exchange <br>
@@ -365,7 +364,6 @@
 				</div>
 				<div class="col-xs-3">&nbsp;</div>	
 			</div>
-		</div>
 	</body>
 </html>
 
