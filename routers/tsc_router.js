@@ -279,10 +279,9 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
       var options = {
         "type": "jpeg",
         "base": 'http://tranquil-fortress-90513.herokuapp.com/',
-        "height": "22in",
-        "width": "17in",
         "border": "0",
-        "quality": "100"
+        "quality": "100",
+        "format": "letter"
       };
       var fileNameWrite = 'packSlip_' + orderXID + '.jpeg';
       pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
