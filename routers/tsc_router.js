@@ -18,7 +18,7 @@ Globalize.load(require( "cldr-data").entireSupplemental() );
 Globalize.load(require( "cldr-data").entireMainFor("en") );
 Globalize.locale( "en" );
 
-var TSCRKey          = process.env.ARTGUN_KEY;
+var TSCKey           = process.env.ARTGUN_KEY;
 var TSCSecret        = process.env.ARTGUN_SECRET;
 var hybridKey        = process.env.HYBRID_KEY;
 var hybridSecret     = process.env.HYBRID_SECRET;
