@@ -306,16 +306,31 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
 
       var html = compPackSlipHTML(templateSourceJSON);
       var options = {
-        "type": "jpeg",
+        "type": "pdf",
         "base": 'http://tranquil-fortress-90513.herokuapp.com/',
         "border": "0",
         "quality": "100",
         "format": "letter"
       };
-      var fileNameWrite = 'packSlip_' + orderXID + '.jpeg';
+      var fileNameWrite = 'packSlip_' + orderXID + '.pdf';
       pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
         if (err) return console.log(err);
-        res.download(file.filename);
+        pdf2img.setOptions({
+          type: 'jpeg',                      // png or jpeg, default png 
+          size: 1024,                       // default 1024 
+          density: 600,                     // default 600 
+          outputdir: __dirname,            // mandatory, outputdir must be absolute path 
+          targetname: 'test'                // the prefix for the generated files, optional 
+        });
+
+        pdf2img.convert(input, function(err, info) {
+          if (err) {
+            console.log(err);
+          } else {
+            var testJPEG = info[0].path;
+            res.download(testJPEG);
+          };
+        });
       });
     });
   console.log('heres the end of the pack slip route');
