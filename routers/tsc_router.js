@@ -301,9 +301,9 @@ TSCRouter.post('/orders/new', function(req, res) {
   if (authHybridReq(req.body) == true) {
     console.log("hybrid sig verified");
     persistNewOrder(req.body);
-    var artGunSig = sha1(artGunSecret + artGunKey + JSON.stringify(orderReqBody));
-    var artGunPostBody = "Key=" + artGunKey + "&data=" + JSON.stringify(orderReqBody) + "&signature=" + artGunSig;
-    newArtGunPostReq(artGunPostBody);
+    var TSCSig = sha1(TSCSecret + TSCKey + JSON.stringify(orderReqBody));
+    var TSCPostBody = "Key=" + TSCKey + "&data=" + JSON.stringify(orderReqBody) + "&signature=" + TSCSig;
+    newTSCPostReq(TSCPostBody);
     res.status(200).send('order received and will be processed');
   } else if (authHybridReq(req.body) != true) {
     console.log("invalid signature");
