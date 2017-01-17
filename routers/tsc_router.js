@@ -306,6 +306,7 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
 // to persist the order data, then calls newArtGunPostReq to send the order data to ArtGun
 
 TSCRouter.post('/orders/new', function(req, res) {
+  console.log('full req is  ' + JSON.stringify(req));
   var orderReqBody = req.body.orderJSON;
   authHybridReq(req.body);
   if (authHybridReq(req.body) == true) {
