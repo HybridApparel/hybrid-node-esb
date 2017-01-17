@@ -428,6 +428,7 @@ TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
 TSCRouter.post('/orders/:orderID/cancel/', function(req, res) {
   console.log('cancel TSC order route hit');
   if (authHybridReq(req.body) == false) {
+    console.log(req.body);
     console.log('request not accepted - invalid credentials and signature');
     var hybridErrorRes = {
       "error": "403 - authentication failed, invalid signature - request not received",
