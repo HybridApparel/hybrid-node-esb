@@ -181,7 +181,7 @@ var cancelTSCOrder = function(xid) {
       'cache-control': 'no-cache',
       'content-type': 'application/x-www-form-urlencoded',
     },
-    body: TSCPostBody;
+    body: TSCPostBody
   };
   request(options, function(error, response, body) {
     var TSCResBody = JSON.parse(response.body);
