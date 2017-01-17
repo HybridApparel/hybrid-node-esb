@@ -120,7 +120,7 @@ var newTSCPostReq = function (orderDataJSON) {
   
   var options = { 
     method: 'POST',
-    url: 'http:/apptest.tscmiami.com/api/order/create',
+    url: 'http://apptest.tscmiami.com/api/order/create',
     headers: 
     { 'cache-control': 'no-cache',
       'content-type': 'application/x-www-form-urlencoded' },
