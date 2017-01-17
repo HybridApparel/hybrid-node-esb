@@ -457,6 +457,11 @@ TSCRouter.post('/orders/:orderID/cancel/', function(req, res) {
   };
 });
 
+TSCRouter.get('/dynowake/uptimecheck/', function (req, res) {
+  console.log('uptime robot hit route to check status and prevent server sleep');
+  res.status(200).send('thanks for checking...');
+});
+
 // TSCRouter.post('/orders/cancel/confirm', function(req, res) {
 //   console.log('confirm cancel from TSC route hit');
 //   var resJSON = {};
