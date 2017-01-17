@@ -205,7 +205,7 @@ var persistTSCShipment = function (shipmentJSON) {
 
 TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
   console.log('get pack slip endpoint hit');
-  console.log("full req is " + req);
+  console.log("full req is " + JSON.stringify(req));
   var orderXID = req.params.orderID;
   var sourceBodyJSON = {};
   var templateSourceJSON = {};
