@@ -68,10 +68,10 @@ var authHybridReq = function (hybridOrderReq) {
 
 // logs all incoming requests
 
-var persistRequest = function (request) {
-  // Communication.create({
-
-  // })
+var persistCommunication = function (request) {
+  Communication.create(request).then(function(newCommunication) {
+    console.log('new communication logged');
+  });
 };
 
 // logs an incoming order to postgres
@@ -126,7 +126,6 @@ var persistTSCResError = function(TSCRes) {
 // makes a POST req to the TSC API, call functions to persist response
 
 var newTSCPostReq = function (orderDataJSON) {
-  
   var options = { 
     method: 'POST',
     url: 'http://apptest.tscmiami.com/api/order/create',
@@ -139,39 +138,60 @@ var newTSCPostReq = function (orderDataJSON) {
     var TSCResBody = JSON.parse(response.body);
     if (TSCResBody.res == "success") {
       persistTSCResSuccess(TSCResBody);
+      persistCommunication({
+        endpoint: options.url,
+        reqType: "new order",
+        esbReqBody: orderDataJSON,
+        esbResBody: TSCResBody,
+        status: "received",
+        xid: JSON.parse(orderDataJSON).xid
+      });
       console.log('successfully processed new TSC order... ' + JSON.stringify(TSCResBody));
     } else if (TSCResBody.res == "error") {
+      persistCommunication({
+        endpoint: options.url,
+        reqType: "new order",
+        esbReqBody: orderDataJSON,
+        esbResBody: TSCResBody,
+        status: "error",
+        xid: JSON.parse(orderDataJSON).xid
+      });
       persistTSCResError(TSCResBody);
       console.log('error processing order to TSC - please check TSC error... ' + JSON.stringify(TSCResBody));
     };
   });
 };
 
-// var cancelTSCOrder = function(orderID) {
-//   var options = {
-//     method: 'POST',
-//     url: 'http:/apptest.tscmiami.com/api/order/cancelorder',
-//     headers: {
-//       'cache-control': 'no-cache',
-//       'content-type': 'application/x-www-form-urlencoded',
-//     },
-//     body: {
-//       'time': Globalize.dateFormatter({ datetime: "medium"})(new Date()),
-//       'xid': orderID,
-//       'mode': 'debug',
-//       'event': {
-//         'name': 'cancel_order',
-//         'description': 'cancel order request'
-//       }
-//     }
-//   };
-//   request(options, function(error, response, body) {
-//     var TSCResBody = JSON.parse(response.body);
-//     if (TSCResBody.res == "success") {
-//       persist
-//     }
-//   });
-// };
+var cancelTSCOrder = function(xid) {
+  var cancelBody = {
+    'time': Globalize.dateFormatter({ datetime: "medium"})(new Date()),
+    'xid': xid,
+    'mode': 'debug',
+    'event': {
+      'name': 'cancel_order',
+      'description': 'cancel order request'
+    }
+  };
+  var TSCSig = sha1(TSCSecret + TSCKey + JSON.stringify(cancelBody));
+  var TSCPostBody = "Key=" + TSCKey + "&data=" + JSON.stringify(cancelBody) + "&signature=" + TSCSig;
+  var options = {
+    method: 'POST',
+    url: 'http:/apptest.tscmiami.com/api/order/cancelorder',
+    headers: {
+      'cache-control': 'no-cache',
+      'content-type': 'application/x-www-form-urlencoded',
+    },
+    body: TSCPostBody;
+  };
+  request(options, function(error, response, body) {
+    var TSCResBody = JSON.parse(response.body);
+    if (TSCResBody.res == "success") {
+      console.log('cancel order to tsc success');
+    } else if (TSCResBody.res == "error") {
+      console.log('cancel order to tsc error, please check error message - ' + response.body);
+    };
+  });
+};
 
 // receive POST from ArtGun with shipment notification, associate with existing order_id and persist to shipments table
 
@@ -205,9 +225,6 @@ var persistTSCShipment = function (shipmentJSON) {
 
 TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
   console.log('get pack slip endpoint hit');
-  console.log("req.route is " + JSON.stringify(req.route));
-  console.log("req.body is " + JSON.stringify(req.body));
-  console.log('req.query is ' + JSON.stringify(req.query));
   var orderXID = req.params.orderID;
   var sourceBodyJSON = {};
   var templateSourceJSON = {};
@@ -313,14 +330,37 @@ TSCRouter.post('/orders/new', function(req, res) {
   authHybridReq(req.body);
   if (authHybridReq(req.body) == true) {
     console.log("hybrid sig verified");
+    persistCommunication({
+      endpoint: req.route.path,
+      status: "received",
+      hybridReqBody: req.body,
+      hybridResBody: {status: "200", message: 'order received and will be processed'},
+      reqType: "new order",
+      xid: req.body.orderJSON.xid,
+      orderID: req.body.OrderID
+    });
     persistNewOrder(req.body);
     var TSCSig = sha1(TSCSecret + TSCKey + JSON.stringify(orderReqBody));
     var TSCPostBody = "Key=" + TSCKey + "&data=" + JSON.stringify(orderReqBody) + "&signature=" + TSCSig;
     newTSCPostReq(TSCPostBody);
     res.status(200).send('order received and will be processed');
   } else if (authHybridReq(req.body) != true) {
+    var hybridErrorRes = {
+      "error": "403 - authentication failed, invalid signature - request not received",
+      "code": "1",
+      "message": "signature does not match"
+    };
+    persistCommunication({
+      endpoint: req.route.path,
+      status: "not received",
+      hybridReqBody: req.body,
+      hybridResBody: hybridErrorRes,
+      reqType: "new order",
+      xid: req.body.orderJSON.xid,
+      orderID: req.body.OrderID
+    });
     console.log("invalid signature");
-    res.status(403).send("invalid credentials, signature does not match");
+    res.status(403).send(hybridErrorRes);
   };
 });
 
@@ -385,23 +425,21 @@ TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
   }
 });
 
-// TSCRouter.post('/orders/:orderID/cancel', function(req, res) {
-//   console.log('cancel TSC order route hit');
-//   if (authHybridReq(req.body) == false) {
-//     console.log('request not accepted - invalid credentials and signature');
-//     var hybridErrorRes = {
-//       "error": "403 - authentication failed, invalid signature - request not received",
-//       "code": "1",
-//       "message": "signature does not match"
-//     };
-//     res.send(hybridErrorRes).status(403);
-//   } else if (authHybridReq(req.body) == true) {
-//     console.log("hybrid sig verified");
-//     cancelTSCOrder(req.params.orderID);
-
-//   }
-
-// });
+TSCRouter.post('/orders/:orderID/cancel/', function(req, res) {
+  console.log('cancel TSC order route hit');
+  if (authHybridReq(req.body) == false) {
+    console.log('request not accepted - invalid credentials and signature');
+    var hybridErrorRes = {
+      "error": "403 - authentication failed, invalid signature - request not received",
+      "code": "1",
+      "message": "signature does not match"
+    };
+    res.send(hybridErrorRes).status(403);
+  } else if (authHybridReq(req.body) == true) {
+    cancelTSCOrder(req.params.orderID);
+    console.log("hybrid sig verified, order will be cancelled");
+  };
+});
 
 
 
