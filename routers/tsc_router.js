@@ -323,7 +323,7 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
           targetname: 'test'                // the prefix for the generated files, optional 
         });
 
-        pdf2img.convert(input, function(err, info) {
+        pdf2img.convert(file.filename, function(err, info) {
           if (err) {
             console.log(err);
           } else {
