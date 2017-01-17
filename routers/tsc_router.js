@@ -340,7 +340,7 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
 // to persist the order data, then calls newArtGunPostReq to send the order data to ArtGun
 
 TSCRouter.post('/orders/new', function(req, res) {
-  console.log('full req is  ' + JSON.stringify(req));
+  console.log('full req is  ' + req.body);
   var orderReqBody = req.body.orderJSON;
   authHybridReq(req.body);
   if (authHybridReq(req.body) == true) {
@@ -456,6 +456,42 @@ TSCRouter.post('/orders/:orderID/cancel/', function(req, res) {
     console.log("hybrid sig verified, order will be cancelled");
   };
 });
+
+// TSCRouter.post('/orders/cancel/confirm', function(req, res) {
+//   console.log('confirm cancel from TSC route hit');
+//   var resJSON = {};
+//   authTSCReq(req.body);
+//   if (authTSCReq(req.body) == true) {
+//     var orderReceiptID = "";
+//     var orderPrimaryKey = "";    
+//     Order.findOne({
+//       where: {OrderID: JSON.parse(req.body).xid} })
+//     .then(function(order){
+
+
+
+
+
+
+//       orderReceiptID = order.EndpointResponseID;
+//       orderPrimaryKey = order.id;
+//       console.log('heres the order receipt id... ' + orderReceiptID);
+//       Shipment.findOne({
+//         where: {orderID: order.id}
+//       }).then(function(shipment) {
+//         if (shipment) {
+
+//         }
+//         resJSON.res = "success";
+//         resJSON.time = shipment.createdAt;
+//         resJSON.xid = req.body.xid;
+//         resJSON.receipt_id = orderReceiptID;
+//         console.log('shipment req reeceived and persisted' + resJSON);
+//         res.status(200).send(resJSON);
+//       });
+//     });  
+//   };
+// });
 
 
 
