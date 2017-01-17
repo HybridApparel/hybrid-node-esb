@@ -129,7 +129,7 @@ var newTSCPostReq = function (orderDataJSON) {
   request(options, function (error, response, body) {
     var TSCResBody = JSON.parse(response.body);
     if (TSCResBody.res == "success") {
-      persistTSCResResSuccess(artGunResBody);
+      persistTSCResSuccess(artGunResBody);
       console.log('successfully processed new TSC order... ' + JSON.stringify(TSCResBody));
     } else if (TSCResBody.res == "error") {
       persistTSCResError(TSCResBody);
