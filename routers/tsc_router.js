@@ -5,6 +5,7 @@ var sha1             = require('js-sha1');
 var models           = require('../models');
 var Order            = models.orders;
 var Shipment         = models.shipments;
+var Communication    = models.communications;
 var fs               = require('fs');
 var pdf              = require('html-pdf');
 var path             = require('path');
@@ -63,6 +64,14 @@ var authHybridReq = function (hybridOrderReq) {
     console.log('valid creds');
     return true;
   };
+};
+
+// logs all incoming requests
+
+var persistRequest = function (request) {
+  // Communication.create({
+
+  // })
 };
 
 // logs an incoming order to postgres
@@ -196,6 +205,7 @@ var persistTSCShipment = function (shipmentJSON) {
 
 TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
   console.log('get pack slip endpoint hit');
+  console.log("full req is " + req);
   var orderXID = req.params.orderID;
   var sourceBodyJSON = {};
   var templateSourceJSON = {};
