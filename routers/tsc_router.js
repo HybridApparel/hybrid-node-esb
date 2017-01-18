@@ -131,32 +131,32 @@ var newTSCPostReq = function (orderDataJSON) {
     url: 'http://apptest.tscmiami.com/api/order/create',
     headers: 
     { 'cache-control': 'no-cache',
-      'content-type': 'application/x-www-form-urlencoded' },
+      'content-type': 'application/json' },
     body: orderDataJSON
   };
   request(options, function (error, response, body) {
     console.log(response);
-    var TSCResBody = JSON.parse(response.body);
+    var TSCResBody = response.body;
     if (TSCResBody.res == "success") {
       persistTSCResSuccess(TSCResBody);
-      persistCommunication({
-        endpoint: options.url,
-        reqType: "new order",
-        esbReqBody: orderDataJSON,
-        esbResBody: TSCResBody,
-        status: "received",
-        xid: JSON.parse(orderDataJSON).xid
-      });
+      // persistCommunication({
+      //   endpoint: options.url,
+      //   reqType: "new order",
+      //   esbReqBody: orderDataJSON,
+      //   esbResBody: TSCResBody,
+      //   status: "received",
+      //   xid: JSON.parse(orderDataJSON).xid
+      // });
       console.log('successfully processed new TSC order... ' + JSON.stringify(TSCResBody));
     } else if (TSCResBody.res == "error") {
-      persistCommunication({
-        endpoint: options.url,
-        reqType: "new order",
-        esbReqBody: orderDataJSON,
-        esbResBody: TSCResBody,
-        status: "error",
-        xid: JSON.parse(orderDataJSON).xid
-      });
+      // persistCommunication({
+      //   endpoint: options.url,
+      //   reqType: "new order",
+      //   esbReqBody: orderDataJSON,
+      //   esbResBody: TSCResBody,
+      //   status: "error",
+      //   xid: JSON.parse(orderDataJSON).xid
+      // });
       persistTSCResError(TSCResBody);
       console.log('error processing order to TSC - please check TSC error... ' + JSON.stringify(TSCResBody));
     };
