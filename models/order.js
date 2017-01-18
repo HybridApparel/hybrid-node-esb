@@ -10,12 +10,12 @@ module.exports = function(sequelize, DataTypes) {
     isProcessed: DataTypes.BOOLEAN,
     EndpointResponseID: DataTypes.STRING,
     EndpointResponseBody: DataTypes.JSONB,
-    OrderStatus: DataTypes.STRING
+    OrderStatusID: DataTypes.STRING
   }, {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
-        orders.hasMany(models.shipments, {foreignKey: 'orderID'});
+        orders.hasMany(models.shipments, {foreignKey: 'orderID'});ID
       }
     }
   });
