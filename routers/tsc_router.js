@@ -135,6 +135,7 @@ var newTSCPostReq = function (orderDataJSON) {
     body: orderDataJSON
   };
   request(options, function (error, response, body) {
+    console.log(response);
     var TSCResBody = JSON.parse(response.body);
     if (TSCResBody.res == "success") {
       persistTSCResSuccess(TSCResBody);
