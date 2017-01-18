@@ -177,7 +177,7 @@ var cancelTSCOrder = function(xid) {
   //var TSCPostBody = "Key=" + TSCKey + "&data=" + JSON.stringify(cancelBody) + "&signature=" + TSCSig;
   var TSCPostBody = {
     key: TSCKey,
-    data: cancelBody,
+    data: JSON.stringify(cancelBody),
     signature: TSCSig
   };
   var options = {
