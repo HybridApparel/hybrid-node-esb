@@ -17,25 +17,16 @@ module.exports = {
       endpoint: {
         type: Sequelize.STRING
       },
+      reqOrigin: {
+        type: Sequelize.STRING
+      },
       status: {
         type: Sequelize.STRING
       },
-      esbReqBody: {
+      reqBody: {
         type: Sequelize.JSONB
       },
-      esbResBody: {
-        type: Sequelize.JSONB
-      },
-      vendorReqBody: {
-        type: Sequelize.JSONB
-      },
-      vendorResBody: {
-        type: Sequelize.JSONB
-      },
-      hybridReqBody: {
-        type: Sequelize.JSONB
-      },
-      hybridResBody: {
+      resBody: {
         type: Sequelize.JSONB
       },
       reqType: {

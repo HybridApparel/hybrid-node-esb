@@ -4,13 +4,10 @@ module.exports = function(sequelize, DataTypes) {
     orderID: DataTypes.STRING,
     xid: DataTypes.STRING,
     endpoint: DataTypes.STRING,
+    reqOrigin: DataTypes.STRING,
     status: DataTypes.STRING,
-    esbReqBody: DataTypes.JSONB,
-    esbResBody: DataTypes.JSONB,
-    vendorReqBody: DataTypes.JSONB,
-    vendorResBody: DataTypes.JSONB,
-    hybridReqBody: DataTypes.JSONB,
-    hybridResBody: DataTypes.JSONB,
+    reqBody: DataTypes.JSONB,
+    resBody: DataTypes.JSONB,
     reqType: DataTypes.STRING
   }, {
     classMethods: {
