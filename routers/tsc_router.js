@@ -135,7 +135,7 @@ var newTSCPostReq = function (orderDataJSON) {
     body: orderDataJSON
   };
   request(options, function (error, response, body) {
-    console.log(response);
+    console.log(response.body);
     var TSCResBody = response.body;
     if (TSCResBody.res == "success") {
       persistTSCResSuccess(TSCResBody);
@@ -175,14 +175,19 @@ var cancelTSCOrder = function(xid) {
   };
   var TSCSig = sha1(TSCSecret + TSCKey + JSON.stringify(cancelBody));
   var TSCPostBody = "Key=" + TSCKey + "&data=" + JSON.stringify(cancelBody) + "&signature=" + TSCSig;
+  var TSCPostBody = {
+    key: TSCKey,
+    data: JSON.stringify(cancelBody),
+    signature: TSCSig
+  };
   var options = {
     method: 'POST',
     url: 'http:/apptest.tscmiami.com/api/order/cancelorder',
     headers: {
       'cache-control': 'no-cache',
-      'content-type': 'application/x-www-form-urlencoded',
+      'content-type': 'application/json',
     },
-    body: TSCPostBody
+    body: JSON.stringify(TSCPostBody)
   };
   request(options, function(error, response, body) {
     var TSCResBody = JSON.parse(response.body);
