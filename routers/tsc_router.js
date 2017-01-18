@@ -177,7 +177,7 @@ var cancelTSCOrder = function(xid) {
   //var TSCPostBody = "Key=" + TSCKey + "&data=" + JSON.stringify(cancelBody) + "&signature=" + TSCSig;
   var TSCPostBody = {
     key: TSCKey,
-    data: JSON.stringify(cancelBody),
+    data: cancelBody,
     signature: TSCSig
   };
   var options = {
@@ -187,9 +187,9 @@ var cancelTSCOrder = function(xid) {
       'cache-control': 'no-cache',
       'content-type': 'application/json',
     },
-    body: JSON.stringify(TSCPostBody)
+    body: TSCPostBody
   };
-  console.log('full req to tsc is - ' + optoins);
+  console.log('full req to tsc is - ' + options);
   request(options, function(error, response, body) {
     console.log(response.body);
     var TSCResBody = response.body;
