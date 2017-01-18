@@ -187,9 +187,9 @@ var cancelTSCOrder = function(xid) {
       'cache-control': 'no-cache',
       'content-type': 'application/json',
     },
-    body: TSCPostBody
+    body: JSON.stringify(TSCPostBody)
   };
-  console.log('full req to tsc is - ' + options);
+  console.log('full req to tsc is - ' + JSON.stringify(options));
   request(options, function(error, response, body) {
     console.log(response.body);
     var TSCResBody = response.body;
