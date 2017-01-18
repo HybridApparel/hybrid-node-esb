@@ -190,7 +190,8 @@ var cancelTSCOrder = function(xid) {
     body: JSON.stringify(TSCPostBody)
   };
   request(options, function(error, response, body) {
-    var TSCResBody = JSON.parse(response.body);
+    console.log(response.body);
+    var TSCResBody = response.body;
     if (TSCResBody.res == "success") {
       console.log('cancel order to tsc success');
     } else if (TSCResBody.res == "error") {
