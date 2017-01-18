@@ -426,7 +426,7 @@ TSCRouter.post('/shipments/update', function(req,res) {
 
 TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
   console.log('get route for order status hit');
-  var authSig = sha1(TSCSecret + TSCKey + req.params.orderID);
+  var authSig = sha1(hybridSecret + hybridKey + req.params.orderID);
   if (authSig != req.params.signature) {
     console.log('request not accepted - invalid credentials and signature');
     var hybridErrorRes = {

@@ -10,7 +10,7 @@ module.exports = function(sequelize, DataTypes) {
     isProcessed: DataTypes.BOOLEAN,
     EndpointResponseID: DataTypes.STRING,
     EndpointResponseBody: DataTypes.JSONB,
-    OrderStatusID: DataTypes.STRING
+    OrderStatus: DataTypes.STRING
   }, {
     classMethods: {
       associate: function(models) {
