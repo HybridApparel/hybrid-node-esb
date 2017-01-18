@@ -364,7 +364,7 @@ TSCRouter.post('/orders/new', function(req, res) {
       data: JSON.stringify(orderReqBody),
       signature: TSCSig
     }
-    newTSCPostReq(TSCPostBody);
+    newTSCPostReq(JSON.stringify(TSCPostBody));
     res.status(200).send('order received and will be processed');
   } else if (authHybridReq(req.body) != true) {
     var hybridErrorRes = {
