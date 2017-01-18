@@ -1,7 +1,8 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var communications = sequelize.define('communications', {
-    orderID: DataTypes.STRING,
+    orderID: DataTypes.INTEGER,
+    shipmentID: DataTypes.INTEGER,
     xid: DataTypes.STRING,
     endpoint: DataTypes.STRING,
     reqOrigin: DataTypes.STRING,

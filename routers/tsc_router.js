@@ -345,18 +345,24 @@ TSCRouter.post('/orders/new', function(req, res) {
   authHybridReq(req.body);
   if (authHybridReq(req.body) == true) {
     console.log("hybrid sig verified");
-    persistCommunication({
-      endpoint: req.route.path,
-      status: "received",
-      hybridReqBody: req.body,
-      hybridResBody: {status: "200", message: 'order received and will be processed'},
-      reqType: "new order",
-      xid: req.body.orderJSON.xid,
-      orderID: req.body.OrderID
-    });
+    // persistCommunication({
+    //   endpoint: req.route.path,
+    //   status: "received",
+    //   reqOrigin: req.host,
+    //   reqBody: req.body,
+    //   resBody: {status: "200", message: 'order received and will be processed'},
+    //   reqType: "new order",
+    //   xid: req.body.orderJSON.xid,
+    //   orderID: req.body.OrderID
+    // });
     persistNewOrder(req.body);
     var TSCSig = sha1(TSCSecret + TSCKey + JSON.stringify(orderReqBody));
-    var TSCPostBody = "Key=" + TSCKey + "&data=" + JSON.stringify(orderReqBody) + "&signature=" + TSCSig;
+    // var TSCPostBody = "Key=" + TSCKey + "&data=" + JSON.stringify(orderReqBody) + "&signature=" + TSCSig;
+    var TSCPostBody = {
+      key: TSCKey,
+      data: JSON.stringify(orderReqBody),
+      signature: TSCSig
+    }
     newTSCPostReq(TSCPostBody);
     res.status(200).send('order received and will be processed');
   } else if (authHybridReq(req.body) != true) {
@@ -365,15 +371,15 @@ TSCRouter.post('/orders/new', function(req, res) {
       "code": "1",
       "message": "signature does not match"
     };
-    persistCommunication({
-      endpoint: req.route.path,
-      status: "not received",
-      hybridReqBody: req.body,
-      hybridResBody: hybridErrorRes,
-      reqType: "new order",
-      xid: req.body.orderJSON.xid,
-      orderID: req.body.OrderID
-    });
+    // persistCommunication({
+    //   endpoint: req.route.path,
+    //   status: "not received",
+    //   reqBody: req.body,
+    //   resBody: hybridErrorRes,
+    //   reqType: "new order",
+    //   xid: req.body.orderJSON.xid,
+    //   orderID: req.body.OrderID
+    // });
     console.log("invalid signature");
     res.status(403).send(hybridErrorRes);
   };
