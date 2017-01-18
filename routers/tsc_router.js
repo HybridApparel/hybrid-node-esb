@@ -182,7 +182,7 @@ var cancelTSCOrder = function(xid) {
   };
   var options = {
     method: 'POST',
-    url: 'http:/apptest.tscmiami.com/api/order/cancelorder',
+    url: 'http://apptest.tscmiami.com/api/order/cancelorder',
     headers: {
       'cache-control': 'no-cache',
       'content-type': 'application/json',
