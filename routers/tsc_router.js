@@ -174,7 +174,7 @@ var cancelTSCOrder = function(xid) {
     }
   };
   var TSCSig = sha1(TSCSecret + TSCKey + JSON.stringify(cancelBody));
-  var TSCPostBody = "Key=" + TSCKey + "&data=" + JSON.stringify(cancelBody) + "&signature=" + TSCSig;
+  //var TSCPostBody = "Key=" + TSCKey + "&data=" + JSON.stringify(cancelBody) + "&signature=" + TSCSig;
   var TSCPostBody = {
     key: TSCKey,
     data: JSON.stringify(cancelBody),
