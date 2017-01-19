@@ -253,7 +253,7 @@ var getTscOrderStatus = function (xid) {
     }
   };
   request(options, function(error, response, body) {
-    console.log(response.body);
+    console.log("response body is " + response.body);
     var TSCResBody = response.body;
     return response.body;
     /*if (TSCResBody.res !== "error") {
@@ -268,7 +268,7 @@ var getTscOrderStatus = function (xid) {
 TSCRouter.get('/orders/:xid/teststatus', function(req, res) {
   console.log('new check status route hit');
   var tscStatusRes = getTscOrderStatus(req.params.xid);
-  console.log(tscStatusRes);
+  console.log("tsc res from router is " + tscStatusRes);
   res.status(200).send(tscStatusRes);
 });
 
