@@ -239,6 +239,7 @@ var genPackSlip = function() {
 
 var getTscOrderStatus = function (xid) {
   var timeStamp = Globalize.dateFormatter({ datetime: "medium"})(new Date());
+  console.log('timestamp is ' + timeStamp);
   var sig = sha1(TSCKey + timeStamp + TSCSecret);
 
   var options = {
