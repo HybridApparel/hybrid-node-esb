@@ -235,8 +235,39 @@ var genPackSlip = function() {
   var sourceBodyJSON = {};
   var templateSourceJSON = {};
   Globalize.locale("en");
-
 };
+
+var getTscOrderStatus = function (xid) {
+  var timeStamp = Globalize.dateFormatter({ datetime: "medium"})(new Date());
+  var sig = sha1(TSCKey + timeStamp + TSCSecret);
+
+  var options = {
+    method: 'GET',
+    url: 'http://apptest.tscmiami.com/api/order/GetOrderStatus?xid=' + xid + '&timestamp=' + timeStamp,
+    headers: {
+      'cache-control': 'no-cache',
+      'content-type': 'application/json',
+      'apikey': TSCKey,
+      'signature': sig
+    }
+  };
+  request(options, function(error, response, body) {
+    console.log(response.body);
+    var TSCResBody = response.body;
+    return response.body;
+    /*if (TSCResBody.res !== "error") {
+      console.log('get order status success and res is - ' + TSCResBody);
+    } else if (TSCResBody.res == "error") {
+      console.log('tsc order status failed, please check error message - ' + response.body);
+    };*/
+  });
+
+}
+
+TSCRouter.get('orders/:xid/teststatus', function(req, res) {
+  var tscStatusRes = getTscOrderStatus(req.params.xid);
+  res.status(200).send(tscStatusRes);
+});
 
 // GET route to download Packing Slip
 
