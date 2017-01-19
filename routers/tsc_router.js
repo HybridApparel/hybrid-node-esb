@@ -237,33 +237,6 @@ var genPackSlip = function() {
   Globalize.locale("en");
 };
 
-var getTscOrderStatus = function (xid) {
-  var timeStamp = Globalize.dateFormatter({ datetime: "medium"})(new Date());
-  console.log('timestamp is ' + timeStamp);
-  var sig = sha1(TSCKey + timeStamp + TSCSecret);
-
-  var options = {
-    method: 'GET',
-    url: 'http://apptest.tscmiami.com/api/order/GetOrderStatus?xid=' + xid + '&timestamp=' + timeStamp,
-    headers: {
-      'cache-control': 'no-cache',
-      'content-type': 'application/json',
-      'apikey': TSCKey,
-      'signature': sig
-    }
-  };
-  request(options, function(error, response, body) {
-    console.log("response body is " + response.body);
-    var TSCResBody = response.body;
-    return response.body;
-    /*if (TSCResBody.res !== "error") {
-      console.log('get order status success and res is - ' + TSCResBody);
-    } else if (TSCResBody.res == "error") {
-      console.log('tsc order status failed, please check error message - ' + response.body);
-    };*/
-  });
-
-}
 
 TSCRouter.get('/orders/:xid/teststatus', function(req, res) {
   console.log('new check status route hit');
@@ -455,18 +428,24 @@ TSCRouter.post('/shipments/update', function(req,res) {
     Order.findOne({
       where: {OrderID: JSON.parse(req.body.data).xid} })
     .then(function(order){
+      if (!order) {
+        res.status(404).send({
+          error: 'Order not found',
+          code: '404',
+          message: 'the order with target xid does not exist'
+        });
+      };
       orderReceiptID = order.EndpointResponseID;
       orderPrimaryKey = order.id;
-      console.log('heres the order receipt id... ' + orderReceiptID);
       Shipment.create({
-        order_id: orderPrimaryKey,
-        status: req.body.status,
-        tracking_number: JSON.parse(req.body.data).tracking_number,
+        orderID: orderPrimaryKey,
+        status: JSON.parse(req.body.data).event.name,
+        tracking_number: JSON.parse(req.body.data).event.meta.packages[0].tracking_number,
         body: req.body
       }).then(function(shipment) {
         resJSON.res = "success";
         resJSON.time = shipment.createdAt;
-        resJSON.xid = req.body.xid;
+        resJSON.xid = JSON.parse(req.body.data).xid;
         resJSON.receipt_id = orderReceiptID;
         console.log('shipment req reeceived and persisted' + resJSON);
         res.status(200).send(resJSON);
@@ -482,7 +461,7 @@ TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
     console.log('request not accepted - invalid credentials and signature');
     var hybridErrorRes = {
       "error": "403 - authentication failed, invalid signature - request not received",
-      "code": "1",
+      "code": "403",
       "message": "signature does not match"
     };
     res.send(hybridErrorRes).status(403);  
@@ -492,6 +471,13 @@ TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
       where: {OrderID: req.params.orderID},
       include: Shipment
     }).then(function(order) {
+      if (!order) {
+        res.send({
+          "error": "404 - order not found",
+          "code": "404",
+          "message": "no order found matching target xid"
+        }).status(404);
+      };
       responseJSON.isProcessed = order.isProcessed;
       responseJSON.OrderID = order.OrderID;
       responseJSON.ArtGunResponseBody = order.EndpointResponseBody;
@@ -499,6 +485,7 @@ TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
           responseJSON.isShipped = JSON.parse(order.shipments[0].body).status;
           responseJSON.trackingNumber = JSON.parse(order.shipments[0].body).tracking_number;
           responseJSON.billOfLading = JSON.parse(order.shipments[0].body).bol;
+          responseJSON.shipmentUpdateBody = order.shipments[0].body;
       };
       res.send(responseJSON).status(200);
     });  
@@ -519,6 +506,7 @@ TSCRouter.post('/orders/:orderID/cancel/', function(req, res) {
   } else if (authHybridReq(req.body) == true) {
     cancelTSCOrder(req.params.orderID);
     console.log("hybrid sig verified, order will be cancelled");
+
   };
 });
 
