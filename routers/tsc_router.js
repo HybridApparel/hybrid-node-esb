@@ -267,9 +267,7 @@ var getTscOrderStatus = function (xid) {
 
 TSCRouter.get('/orders/:xid/teststatus', function(req, res) {
   console.log('new check status route hit');
-  var tscStatusRes = getTscOrderStatus(req.params.xid);
-  console.log("tsc res from router is " + tscStatusRes);
-  res.status(200).send(tscStatusRes);
+  res.status(200).send(getTscOrderStatus(req.params.xid));
 });
 
 // GET route to download Packing Slip
