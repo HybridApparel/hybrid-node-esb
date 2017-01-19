@@ -240,7 +240,7 @@ TSCRouter.get('/orders/:xid/teststatus', function(req, res) {
   }).then(function(order) {
     order.createCommunication({
       xid: req.params.xid,
-      endpoint: req.host + req.route.path,
+      endpoint: req.hostname + req.route.path,
       reqType: "order status",
       reqBody: req.body,
       status: "order status req received",
