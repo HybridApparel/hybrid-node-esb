@@ -323,7 +323,8 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
       var fileNameWrite = 'packSlip_' + orderXID + '.pdf';
       pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
         if (err) return console.log(err);
-        pdf2img.setOptions({
+        else {res.download(file.filename);}
+/*        pdf2img.setOptions({
           type: 'jpeg',                      // png or jpeg, default png 
           size: 1024,                       // default 1024 
           density: 600,                     // default 600 
@@ -338,7 +339,7 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
             var testJPEG = info[0].path;
             res.download(testJPEG);
           };
-        });
+        });*/
       });
     });
   console.log('heres the end of the pack slip route');
