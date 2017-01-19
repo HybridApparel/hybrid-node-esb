@@ -238,6 +238,7 @@ TSCRouter.get('/orders/:xid/teststatus', function(req, res) {
   console.log(JSON.stringify(req.headers));
   console.log('all req params ' + JSON.stringify(req.params));
   console.log('all query is ' + JSON.stringify(req.query));
+  console.log('trying new url thing is ' + url.href);
   Order.findOne({
     where: {OrderID: req.params.xid}
   }).then(function(order) {
