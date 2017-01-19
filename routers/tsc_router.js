@@ -240,6 +240,21 @@ var genPackSlip = function() {
 
 TSCRouter.get('/orders/:xid/teststatus', function(req, res) {
   console.log('new check status route hit');
+  Order.findOne({
+    where: {OrderID: req.params.xid}
+  }).then(function(order) {
+    order.createCommunication({
+      xid: req.params.xid,
+      endpoint: req.route.path,
+      reqType: "order status",
+      reqBody: req.body,
+      status: "order status req received",
+      reqOrigin: req.host
+    }).then(function(newLoggedCom) {
+      console.log('new com logged - ' + newLoggedCom);
+    })
+  });
+
   var timeStamp = Globalize.dateFormatter({ datetime: "medium"})(new Date());
   var sig = sha1(TSCKey + timeStamp + TSCSecret);
   var xid = req.params.xid;
