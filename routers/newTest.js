@@ -1200,5 +1200,75 @@ var testOrder60 =
 };
 
 
+var tscController = {
+  var self = this;
+  var resJSON = {};
+  var options = {};
+  makeTscSig: function(data) {
+    return sha1(TSCSecret + TSCKey + data);
+  },
+  authTscReq: function(TSCReq) {
+    if (self.makeTscSig(TSCReq.data) !== TSCReq.signature) {
+      console.log('Vendor req not accepted - invalid credentials and signature');
+      return false;
+    } else if (self.makeTscSig(TSCReq.data) == TSCReq.signature) {
+      console.log('valid credentials - processing request');
+      return true;
+    };
+  },
+  persistTscOrderRes: function (TSCRes) {
+    var isProcessedBool;
+    var logMessage = "";
+    if (TSCRes.res == "success") {
+      isProcessedBool = true;
+      logMessage = 'TSC success res to db is ...  ' + JSON.stringify(TSCRes);
+    } else if (TSCRes.res == "error") {
+      isProcessedBool = false;
+      logMessage = 'TSC error res to db is ...  ' + JSON.stringify(TSCRes);
+    };
+    Order.findOne({
+      where:{OrderID: TSCRes.xid}
+    }).then(function (order) {
+      console.log('TSC res to db is ...  ' + JSON.stringify(TSCRes));
+      order.update({
+        EndpointResponseID: TSCRes.receipt_id,
+        EndpointResponseBody: TSCRes,
+        isProcessed: isProcessedBool
+      }).then(function () {
+        return console.log('new TSC res persisted');
+      });
+    })
+  },
+  tscPostReq: function (url, postData, callback) {
+    var postBody = {};
+    var postSig = self.makeTscSig(postData);
+    postBody.key = TSCKey;
+    postBody.signature = sig;
+    postBody.data = postData;
+    options = { 
+      method: 'POST',
+      url: url,
+      headers: 
+      { 'cache-control': 'no-cache',
+        'content-type': 'application/json' },
+      body: postBody
+    };
+    request(options, function (error, response, body) {
+      var TSCResBody = response.body;
+      if (url == 'http://apptest.tscmiami.com/api/order/create') {self.persistTscOrderRes(TSCResBody)};
+
+    });
+  },
+  
+
+
+};
+
+var esbController = {};
+
+var hybridController = {};
+
+
+
 
 

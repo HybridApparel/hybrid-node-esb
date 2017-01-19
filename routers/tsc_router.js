@@ -30,6 +30,8 @@ Handlebars.registerHelper('breaklines', function(text) {
     return new Handlebars.SafeString(text);
 });
 
+
+
 // verifies shipment notification from ArtGun with SHA1 hashed sum of shared secret, key, and data object
 
 var authTSCReq = function (TSCReq) {
@@ -105,7 +107,7 @@ var persistTSCResSuccess = function (TSCRes) {
   })
 };
 
-// after artGunPostReq() is called, the ArtGun res is logged if error
+// // after artGunPostReq() is called, the ArtGun res is logged if error
 
 
 var persistTSCResError = function(TSCRes) {
@@ -229,6 +231,13 @@ var persistTSCShipment = function (shipmentJSON) {
   });
 };
 
+var genPackSlip = function() {
+  var sourceBodyJSON = {};
+  var templateSourceJSON = {};
+  Globalize.locale("en");
+
+};
+
 // GET route to download Packing Slip
 
 TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
@@ -324,22 +333,6 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
       pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
         if (err) return console.log(err);
         else {res.download(file.filename);}
-/*        pdf2img.setOptions({
-          type: 'jpeg',                      // png or jpeg, default png 
-          size: 1024,                       // default 1024 
-          density: 600,                     // default 600 
-          outputdir: __dirname,            // mandatory, outputdir must be absolute path 
-          targetname: 'test'                // the prefix for the generated files, optional 
-        });
-
-        pdf2img.convert(file.filename, function(err, info) {
-          if (err) {
-            console.log(err);
-          } else {
-            var testJPEG = info[0].path;
-            res.download(testJPEG);
-          };
-        });*/
       });
     });
   console.log('heres the end of the pack slip route');
@@ -354,6 +347,7 @@ TSCRouter.post('/orders/new', function(req, res) {
   authHybridReq(req.body);
   if (authHybridReq(req.body) == true) {
     console.log("hybrid sig verified");
+    orderReqBody.pack_url = "http://tranquil-fortress-90513.herokuapp.com/tsc/orders/"
     // persistCommunication({
     //   endpoint: req.route.path,
     //   status: "received",
@@ -367,6 +361,8 @@ TSCRouter.post('/orders/new', function(req, res) {
     persistNewOrder(req.body);
     var TSCSig = sha1(TSCSecret + TSCKey + JSON.stringify(orderReqBody));
     // var TSCPostBody = "Key=" + TSCKey + "&data=" + JSON.stringify(orderReqBody) + "&signature=" + TSCSig;
+    
+
     var TSCPostBody = {
       key: TSCKey,
       data: JSON.stringify(orderReqBody),
