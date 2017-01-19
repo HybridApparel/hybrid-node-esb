@@ -267,6 +267,7 @@ var getTscOrderStatus = function (xid) {
 
 TSCRouter.get('orders/:xid/teststatus', function(req, res) {
   var tscStatusRes = getTscOrderStatus(req.params.xid);
+  console.log(tscStatusRes);
   res.status(200).send(tscStatusRes);
 });
 
