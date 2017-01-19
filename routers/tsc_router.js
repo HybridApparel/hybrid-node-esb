@@ -15,6 +15,7 @@ var compPackSlipHTML = Handlebars.compile(packSlipHTML);
 var moment           = require('moment');
 var Globalize        = require("globalize");
 var pdf2img          = require('pdf2img');
+var url              = require('url');
 Globalize.load(require( "cldr-data").entireSupplemental() );
 Globalize.load(require( "cldr-data").entireMainFor("en") );
 Globalize.locale( "en" );
@@ -32,8 +33,8 @@ Handlebars.registerHelper('breaklines', function(text) {
 
 
 
-// verifies shipment notification from ArtGun with SHA1 hashed sum of shared secret, key, and data object
-
+/**verifies shipment notification from ArtGun with SHA1 hashed sum of shared secret, key, and data object
+*/
 var authTSCReq = function (TSCReq) {
   var hashedSig = sha1(TSCSecret + TSCKey + TSCReq.data);
   if (hashedSig !== TSCReq.signature) {
@@ -50,8 +51,8 @@ var authTSCReq = function (TSCReq) {
   };
 };
 
-// verifies new order requests from Hybrid
-
+/**verifies new order requests from Hybrid
+*/
 var authHybridReq = function (hybridOrderReq) {
   var hybridSig = sha1(hybridSecret + hybridKey + JSON.stringify(hybridOrderReq.orderJSON) );
   if (hybridSig !== hybridOrderReq.signature) {
@@ -68,16 +69,16 @@ var authHybridReq = function (hybridOrderReq) {
   };
 };
 
-// logs all incoming requests
-
+/**logs all incoming requests
+*/
 var persistCommunication = function (request) {
   Communication.create(request).then(function(newCommunication) {
     console.log('new communication logged');
   });
 };
 
-// logs an incoming order to postgres
-
+/**logs an incoming order to postgres
+*/
 var persistNewOrder = function (newOrderJSON) {
   Order.create({
     OrderID: newOrderJSON.orderJSON.xid,
@@ -89,8 +90,8 @@ var persistNewOrder = function (newOrderJSON) {
   });
 };
 
-// after artGunPostReq() is called, the ArtGun res is logged if success
-// separated success and error functions for potential future notifications 
+/** after artGunPostReq() is called, the ArtGun res is logged if success
+separated success and error functions for potential future notifications */
 
 var persistTSCResSuccess = function (TSCRes) {
   Order.findOne({
@@ -107,8 +108,8 @@ var persistTSCResSuccess = function (TSCRes) {
   })
 };
 
-// // after artGunPostReq() is called, the ArtGun res is logged if error
-
+/** after artGunPostReq() is called, the ArtGun res is logged if error
+*/
 
 var persistTSCResError = function(TSCRes) {
   Order.findOne({
@@ -125,8 +126,8 @@ var persistTSCResError = function(TSCRes) {
   })
 };
 
-// makes a POST req to the TSC API, call functions to persist response
-
+/**makes a POST req to the TSC API, call functions to persist response
+*/
 var newTSCPostReq = function (orderDataJSON) {
   var options = { 
     method: 'POST',
@@ -203,8 +204,8 @@ var cancelTSCOrder = function(xid) {
   });
 };
 
-// receive POST from ArtGun with shipment notification, associate with existing order_id and persist to shipments table
-
+/** receive POST from ArtGun with shipment notification, associate with existing order_id and persist to shipments table
+*/
 var persistTSCShipment = function (shipmentJSON) {
   var resJSON = {};
   var orderReceiptID = "";
@@ -236,6 +237,7 @@ TSCRouter.get('/orders/:xid/teststatus', function(req, res) {
   console.log('new check status route hit');
   console.log(JSON.stringify(req.headers));
   console.log('all req params ' + JSON.stringify(req.params));
+  console.log('all query is ' + JSON.stringify(req.query));
   Order.findOne({
     where: {OrderID: req.params.xid}
   }).then(function(order) {
@@ -275,8 +277,8 @@ TSCRouter.get('/orders/:xid/teststatus', function(req, res) {
   });
 });
 
-// GET route to download Packing Slip
-
+/**GET route to download Packing Slip
+*/
 TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
   console.log('get pack slip endpoint hit');
   var orderXID = req.params.orderID;
@@ -375,8 +377,8 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
   console.log('heres the end of the pack slip route');
 });
 
-// POST route to create a new order to send to ArtGun; calls authHybridReq to authorize, then persistNewOrder
-// to persist the order data, then calls newArtGunPostReq to send the order data to ArtGun
+/**POST route to create a new order to send to ArtGun; calls authHybridReq to authorize, then persistNewOrder
+to persist the order data, then calls newArtGunPostReq to send the order data to ArtGun*/
 
 TSCRouter.post('/orders/new', function(req, res) {
   console.log('full req is  ' + req.body);
@@ -427,8 +429,8 @@ TSCRouter.post('/orders/new', function(req, res) {
   };
 });
 
-// POST route for ArtGun shipment updates
-
+/**POST route for ArtGun shipment updates
+*/
 TSCRouter.post('/shipments/update', function(req,res) {
   var resJSON = {};
   authTSCReq(req.body);
@@ -464,6 +466,8 @@ TSCRouter.post('/shipments/update', function(req,res) {
   };
 });
 
+/**GET route to see status of an order
+*/
 TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
   console.log('get route for order status hit');
   var authSig = sha1(hybridSecret + hybridKey + req.params.orderID);
@@ -502,6 +506,8 @@ TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
   }
 });
 
+/**POST route to cancel an order
+*/
 TSCRouter.post('/orders/:orderID/cancel/', function(req, res) {
   console.log('cancel TSC order route hit');
   if (authHybridReq(req.body) == false) {
