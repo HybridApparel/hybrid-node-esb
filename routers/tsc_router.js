@@ -267,7 +267,29 @@ var getTscOrderStatus = function (xid) {
 
 TSCRouter.get('/orders/:xid/teststatus', function(req, res) {
   console.log('new check status route hit');
-  res.status(200).send(getTscOrderStatus(req.params.xid));
+  var timeStamp = Globalize.dateFormatter({ datetime: "medium"})(new Date());
+  var sig = sha1(TSCKey + timeStamp + TSCSecret);
+  var xid = req.params.xid;
+  var options = {
+    method: 'GET',
+    url: 'http://apptest.tscmiami.com/api/order/GetOrderStatus?xid=' + xid + '&timestamp=' + timeStamp,
+    headers: {
+      'cache-control': 'no-cache',
+      'content-type': 'application/json',
+      'apikey': TSCKey,
+      'signature': sig
+    }
+  };
+  request(options, function(error, response, body) {
+    console.log("response body is " + response.body);
+    var TSCResBody = response.body;
+    res.send(TSCResBody).status(200);
+    /*if (TSCResBody.res !== "error") {
+      console.log('get order status success and res is - ' + TSCResBody);
+    } else if (TSCResBody.res == "error") {
+      console.log('tsc order status failed, please check error message - ' + response.body);
+    };*/
+  });
 });
 
 // GET route to download Packing Slip
