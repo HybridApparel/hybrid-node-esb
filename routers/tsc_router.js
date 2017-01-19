@@ -235,8 +235,7 @@ var persistTSCShipment = function (shipmentJSON) {
 TSCRouter.get('/orders/:xid/teststatus', function(req, res) {
   console.log('new check status route hit');
   console.log(JSON.stringify(req.headers));
-  console.log('with the app get is ' + req.get('path'));
-  console.log('with the app get is ' + req.get('route'));
+  console.log('all req params ' + JSON.stringify(req.params));
   Order.findOne({
     where: {OrderID: req.params.xid}
   }).then(function(order) {
