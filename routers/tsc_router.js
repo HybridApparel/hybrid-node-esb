@@ -327,7 +327,7 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
       templateSourceJSON.cardDigits = sourceBodyJSON.cardDigits;
       var testBarcodeValue = sourceBodyJSON.barcodeValue;
       templateSourceJSON.reservationNumber = testBarcodeValue;
-      templateSourceJSON.barcodeValue1 = '<script>JsBarcode("#barcode1", "' + testBarcodeValue + '",  {format:"CODE39", height:20, width:1, fontSize:10});</script>';      
+      templateSourceJSON.barcodeValue1 = '<script>JsBarcode("#barcode1", "' + testBarcodeValue + '",  {format:"CODE39", height:30, width:1, fontSize:10});</script>';      
       
       var macysReturnCodeN = "- Visit www.macys.com/easyreturn to create and print your free return label.";
       var macysReturnCodeNX = "- If you have any questions or would like assistance with a return, please refer to the CONTACT US information at the top of this page.";
