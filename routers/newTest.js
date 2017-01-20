@@ -662,16 +662,18 @@
 
 
 
+
+
 var testOrder1 = 
 {
   "orderJSON":{        
     "type": "ORDER",
-    "time": "Thurs, 22 Dec 2016 11:48:13 ­0600",
+    "time": "01/20/2016 12:00:00 AM",
     "method": "create",
     "mode": "auto",
     "status": "In Production",
     "status_code": "6",
-    "xid": "PROD0500",
+    "xid": "PROD0800",
     "notes": "Hybrid Order",
     "shiplabel_url": "",
     "pack_url": "",
@@ -747,7 +749,7 @@ var testOrder2 = {
     "mode": "auto",
     "status": "In Production",
     "status_code": "6",
-    "xid": "PROD0501",
+    "xid": "PROD0801",
     "notes": "Hybrid Order",
     "shiplabel_url": "",
     "pack_url": "",
@@ -823,7 +825,7 @@ var testOrder3 =
     "mode": "auto",
     "status": "In Production",
     "status_code": "6",
-    "xid": "PROD0502",
+    "xid": "PROD0802",
     "notes": "Hybrid Order",
     "shiplabel_url": "",
     "pack_url": "",
@@ -900,7 +902,7 @@ var testOrder4 =
     "mode": "auto",
     "status": "In Production",
     "status_code": "6",
-    "xid": "PROD0503",
+    "xid": "PROD0803",
     "notes": "Hybrid Order",
     "shiplabel_url": "",
     "pack_url": "",
@@ -977,7 +979,7 @@ var testOrder5 =
     "mode": "auto",
     "status": "In Production",
     "status_code": "6",
-    "xid": "PROD0504",
+    "xid": "PROD0804",
     "notes": "Hybrid Order",
     "shiplabel_url": "",
     "pack_url": "",
@@ -1054,7 +1056,7 @@ var testOrder6 =
     "mode": "auto",
     "status": "In Production",
     "status_code": "6",
-    "xid": "PROD0505",
+    "xid": "PROD0805",
     "notes": "Hybrid Order",
     "shiplabel_url": "",
     "pack_url": "",
@@ -1120,6 +1122,13 @@ var testOrder6 =
 "key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
 "signature": "f2b10e07dadd9b9569e066860d12b8b2f4a9c107"
 };
+
+
+
+
+
+
+
 
 
 
