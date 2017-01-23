@@ -10,7 +10,7 @@ var fs               = require('fs');
 var pdf              = require('html-pdf');
 var path             = require('path');
 var Handlebars       = require('handlebars');
-var packSlipHTML     = fs.readFileSync('./public/artGunPackSlipTemplate.html', 'utf8');
+var packSlipHTML     = fs.readFileSync('./public/newPackSlipTemplate.html', 'utf8');
 var compPackSlipHTML = Handlebars.compile(packSlipHTML);
 var moment           = require('moment');
 var Globalize        = require("globalize");
@@ -71,8 +71,8 @@ var authHybridReq = function (hybridOrderReq) {
 
 /**logs all incoming requests
 */
-var persistCommunication = function (request) {
-  Communication.create(request).then(function(newCommunication) {
+var persistCommunication = function (comJSON) {
+  Communication.create(comJSON).then(function(newCommunication) {
     console.log('new communication logged');
   });
 };
@@ -129,6 +129,7 @@ var persistTSCResError = function(TSCRes) {
 /**makes a POST req to the TSC API, call functions to persist response
 */
 var newTSCPostReq = function (orderDataJSON) {
+
   var options = { 
     method: 'POST',
     url: 'http://apptest.tscmiami.com/api/order/create',
@@ -142,24 +143,24 @@ var newTSCPostReq = function (orderDataJSON) {
     var TSCResBody = response.body;
     if (TSCResBody.res == "success") {
       persistTSCResSuccess(TSCResBody);
-      // persistCommunication({
-      //   endpoint: options.url,
-      //   reqType: "new order",
-      //   esbReqBody: orderDataJSON,
-      //   esbResBody: TSCResBody,
-      //   status: "received",
-      //   xid: JSON.parse(orderDataJSON).xid
-      // });
+      persistCommunication({
+        endpoint: options.url,
+        reqType: "new order",
+        reqBody: orderDataJSON,
+        resBody: TSCResBody,
+        status: "received",
+        xid: JSON.parse(orderDataJSON).xid
+      });
       console.log('successfully processed new TSC order... ' + JSON.stringify(TSCResBody));
     } else if (TSCResBody.res == "error") {
-      // persistCommunication({
-      //   endpoint: options.url,
-      //   reqType: "new order",
-      //   esbReqBody: orderDataJSON,
-      //   esbResBody: TSCResBody,
-      //   status: "error",
-      //   xid: JSON.parse(orderDataJSON).xid
-      // });
+      persistCommunication({
+        endpoint: options.url,
+        reqType: "new order",
+        reqBody: orderDataJSON,
+        resBody: TSCResBody,
+        status: "error",
+        xid: JSON.parse(orderDataJSON).xid
+      });
       persistTSCResError(TSCResBody);
       console.log('error processing order to TSC - please check TSC error... ' + JSON.stringify(TSCResBody));
     };
@@ -239,43 +240,54 @@ TSCRouter.get('/orders/:xid/teststatus', function(req, res) {
   console.log('all req params ' + JSON.stringify(req.params));
   console.log('all query is ' + JSON.stringify(req.query));
   console.log('trying new url thing is ' + url.href);
-  Order.findOne({
-    where: {OrderID: req.params.xid}
-  }).then(function(order) {
-    order.createCommunication({
+  var newComsJSON = {
       xid: req.params.xid,
       endpoint: req.hostname + req.route.path,
       reqType: "order status",
       reqBody: req.body,
       status: "order status req received",
       reqOrigin: req.headers.origin
-    }).then(function(newLoggedCom) {
-      console.log('new com logged - ' + newLoggedCom);
-    })
-  });
-  var timeStamp = Globalize.dateFormatter({ datetime: "medium"})(new Date());
-  var sig = sha1(TSCKey + timeStamp + TSCSecret);
-  var xid = req.params.xid;
-  var options = {
-    method: 'GET',
-    url: 'http://apptest.tscmiami.com/api/order/GetOrderStatus?xid=' + xid + '&timestamp=' + timeStamp,
-    headers: {
-      'cache-control': 'no-cache',
-      'content-type': 'application/json',
-      'apikey': TSCKey,
-      'signature': sig
-    }
   };
-  request(options, function(error, response, body) {
-    console.log("response body is " + response.body);
-    var TSCResBody = response.body;
-    res.send(TSCResBody).status(200);
+  Order.findOne({
+    where: {OrderID: req.params.xid}
+  }).then(function(order) {
+    var timeStamp = Globalize.dateFormatter({ datetime: "medium"})(new Date());
+    var sig = sha1(TSCKey + timeStamp + TSCSecret);
+    var xid = req.params.xid;
+    var options = {
+      method: 'GET',
+      url: 'http://apptest.tscmiami.com/api/order/GetOrderStatus?xid=' + xid + '&timestamp=' + timeStamp,
+      headers: {
+        'cache-control': 'no-cache',
+        'content-type': 'application/json',
+        'apikey': TSCKey,
+        'signature': sig
+      }
+    };
+    request(options, function(error, response, body) {
+      console.log("response body is " + response.body);
+      var TSCResBody = response.body;
+      var newComsJSON = {
+        xid: req.params.xid,
+        endpoint: options.url,
+        reqType: "order status",
+        reqBody: JSON.stringify(options),
+        status: "order status req received",
+        resBody: TSCResBody
+      };
+      order.createCommunication(newComsJSON).then(function(newLoggedCom) {
+        console.log('new com logged - ' + newLoggedCom);
+      });
+      res.send(TSCResBody).status(200);
     /*if (TSCResBody.res !== "error") {
       console.log('get order status success and res is - ' + TSCResBody);
     } else if (TSCResBody.res == "error") {
       console.log('tsc order status failed, please check error message - ' + response.body);
     };*/
   });
+    
+  });
+  
 });
 
 /**GET route to download Packing Slip
@@ -361,6 +373,17 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
         templateSourceJSON.returnInstructions = bloomReturnCodeS;
       };
 
+      order.createCommunication(
+        {
+          xid: req.params.orderID,
+          endpoint: req.hostname + req.route.path,
+          reqType: "pack slip",
+          reqBody: req.body,
+          status: "pack slip generated",
+          reqOrigin: req.headers.origin 
+      }).then(function(newCom) {
+        console.log('new pack slip req logged');
+      });
       var html = compPackSlipHTML(templateSourceJSON);
       var options = {
         "type": "pdf",
@@ -372,8 +395,9 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
       };
       var fileNameWrite = 'packSlip_' + orderXID + '.pdf';
       pdf.create(html, options).toFile(fileNameWrite, function(err, file) {
-        if (err) return console.log(err);
-        else {res.download(file.filename);}
+        if (err) {
+          return console.log(err)
+        } else {res.download(file.filename);}
       });
     });
   console.log('heres the end of the pack slip route');
@@ -388,28 +412,26 @@ TSCRouter.post('/orders/new', function(req, res) {
   authHybridReq(req.body);
   if (authHybridReq(req.body) == true) {
     console.log("hybrid sig verified");
-    orderReqBody.pack_url = "http://tranquil-fortress-90513.herokuapp.com/tsc/orders/"
-    // persistCommunication({
-    //   endpoint: req.route.path,
-    //   status: "received",
-    //   reqOrigin: req.host,
-    //   reqBody: req.body,
-    //   resBody: {status: "200", message: 'order received and will be processed'},
-    //   reqType: "new order",
-    //   xid: req.body.orderJSON.xid,
-    //   orderID: req.body.OrderID
-    // });
+    orderReqBody.pack_url = "http://tranquil-fortress-90513.herokuapp.com/tsc/orders/" + req.body.orderJSON.xid + '/packslip'
+    persistCommunication({
+      endpoint: req.route.path,
+      status: "received",
+      reqOrigin: req.host,
+      reqBody: req.body,
+      resBody: {status: "200", message: 'order received and will be processed'},
+      reqType: "new order",
+      xid: req.body.orderJSON.xid,
+      orderID: req.body.OrderID
+    });
     persistNewOrder(req.body);
-    var TSCSig = sha1(TSCSecret + TSCKey + JSON.stringify(orderReqBody));
-    // var TSCPostBody = "Key=" + TSCKey + "&data=" + JSON.stringify(orderReqBody) + "&signature=" + TSCSig;
-    
-
+    var TSCSig = sha1(TSCSecret + TSCKey + JSON.stringify(orderReqBody));    
     var TSCPostBody = {
       key: TSCKey,
       data: JSON.stringify(orderReqBody),
       signature: TSCSig
     }
     newTSCPostReq(JSON.stringify(TSCPostBody));
+    
     res.status(200).send('order received and will be processed');
   } else if (authHybridReq(req.body) != true) {
     var hybridErrorRes = {
@@ -417,15 +439,15 @@ TSCRouter.post('/orders/new', function(req, res) {
       "code": "1",
       "message": "signature does not match"
     };
-    // persistCommunication({
-    //   endpoint: req.route.path,
-    //   status: "not received",
-    //   reqBody: req.body,
-    //   resBody: hybridErrorRes,
-    //   reqType: "new order",
-    //   xid: req.body.orderJSON.xid,
-    //   orderID: req.body.OrderID
-    // });
+    persistCommunication({
+      endpoint: req.route.path,
+      status: "not received",
+      reqBody: req.body,
+      resBody: hybridErrorRes,
+      reqType: "new order",
+      xid: req.body.orderJSON.xid,
+      orderID: req.body.OrderID
+    });
     console.log("invalid signature");
     res.status(403).send(hybridErrorRes);
   };
@@ -467,6 +489,8 @@ TSCRouter.post('/shipments/update', function(req,res) {
     });  
   };
 });
+
+
 
 /**GET route to see status of an order
 */
