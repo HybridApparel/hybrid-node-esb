@@ -142,7 +142,7 @@ var newArtGunPostReq = function (orderDataJSON) {
         endpoint: options.url,
         reqType: "new order",
         reqBody: orderDataJSON,
-        resBody: TSCResBody,
+        resBody: artGunResBody,
         status: "received",
         xid: JSON.parse(orderDataJSON).xid
       });
@@ -153,7 +153,7 @@ var newArtGunPostReq = function (orderDataJSON) {
         endpoint: options.url,
         reqType: "new order",
         reqBody: orderDataJSON,
-        resBody: TSCResBody,
+        resBody: artGunResBody,
         status: "error",
         xid: JSON.parse(orderDataJSON).xid
       });
