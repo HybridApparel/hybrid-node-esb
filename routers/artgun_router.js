@@ -143,8 +143,7 @@ var newArtGunPostReq = function (orderDataJSON) {
         reqType: "new order",
         reqBody: orderDataJSON,
         resBody: artGunResBody,
-        status: "received",
-        xid: JSON.parse(orderDataJSON).xid
+        status: "received"
       });
       console.log('successfully processed new ArtGun order... ' + JSON.stringify(artGunResBody));
     } else if (artGunResBody.res == "error") {
@@ -154,8 +153,7 @@ var newArtGunPostReq = function (orderDataJSON) {
         reqType: "new order",
         reqBody: orderDataJSON,
         resBody: artGunResBody,
-        status: "error",
-        xid: JSON.parse(orderDataJSON).xid
+        status: "error"
       });
       console.log('error processing order to ArtGun - please check ArtGun error... ' + JSON.stringify(artGunResBody));
     };
