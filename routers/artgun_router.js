@@ -5,6 +5,7 @@ var sha1             = require('js-sha1');
 var models           = require('../models');
 var Order            = models.orders;
 var Shipment         = models.shipments;
+var Communication    = models.communications;
 var fs               = require('fs');
 var pdf              = require('html-pdf');
 var path             = require('path');
@@ -44,6 +45,13 @@ var authArtGunReq = function (artGunShipReq) {
     console.log('valid creds');
     return true;
   };
+};
+
+// persists esb communictation
+var persistCommunication = function (comJSON) {
+  Communication.create(comJSON).then(function(newCommunication) {
+    console.log('new communication logged');
+  });
 };
 
 // verifies new order requests from Hybrid
@@ -130,9 +138,25 @@ var newArtGunPostReq = function (orderDataJSON) {
     var artGunResBody = JSON.parse(response.body);
     if (artGunResBody.res == "success") {
       persistArtGunResSuccess(artGunResBody);
+      persistCommunication({
+        endpoint: options.url,
+        reqType: "new order",
+        reqBody: orderDataJSON,
+        resBody: TSCResBody,
+        status: "received",
+        xid: JSON.parse(orderDataJSON).xid
+      });
       console.log('successfully processed new ArtGun order... ' + JSON.stringify(artGunResBody));
     } else if (artGunResBody.res == "error") {
       persistArtGunResError(artGunResBody);
+      persistCommunication({
+        endpoint: options.url,
+        reqType: "new order",
+        reqBody: orderDataJSON,
+        resBody: TSCResBody,
+        status: "error",
+        xid: JSON.parse(orderDataJSON).xid
+      });
       console.log('error processing order to ArtGun - please check ArtGun error... ' + JSON.stringify(artGunResBody));
     };
   });
@@ -278,14 +302,32 @@ artGunRouter.post('/orders/new', function(req, res) {
   authHybridReq(req.body);
   if (authHybridReq(req.body) == true) {
     console.log("hybrid sig verified");
-    orderReqBody.orderJSON.pack_url = "http://tranquil-fortress-90513.herokuapp.com/orders/" + orderReqBody.orderJSON.xid + "/packslip"
+    // orderReqBody.orderJSON.pack_url = "http://tranquil-fortress-90513.herokuapp.com/orders/" + orderReqBody.orderJSON.xid + "/packslip"
     persistNewOrder(orderReqBody);
+    persistCommunication({
+      endpoint: req.route.path,
+      status: "received",
+      reqOrigin: req.hostname,
+      reqBody: req.body,
+      resBody: {status: "200", message: 'order received and will be processed'},
+      reqType: "new order",
+      xid: req.body.orderJSON.xid,
+    });
     var artGunSig = sha1( artGunSecret + artGunKey + JSON.stringify(orderReqBody.orderJSON) );
     var artGunPostBody = "Key=" + artGunKey + "&data=" + JSON.stringify(orderReqBody.orderJSON) + "&signature=" + artGunSig;
     newArtGunPostReq(artGunPostBody);
     res.status(200).send('order received and will be processed');
   } else if (authHybridReq(req.body) != true) {
     console.log("invalid signature");
+    persistCommunication({
+      endpoint: req.route.path,
+      status: "not received",
+      reqBody: req.body,
+      resBody: hybridErrorRes,
+      reqType: "new order",
+      xid: req.body.orderJSON.xid,
+      orderID: req.body.OrderID
+    });
     res.status(403).send("invalid credentials, signature does not match");
   };
 });

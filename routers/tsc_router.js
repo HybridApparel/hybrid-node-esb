@@ -416,12 +416,11 @@ TSCRouter.post('/orders/new', function(req, res) {
     persistCommunication({
       endpoint: req.route.path,
       status: "received",
-      reqOrigin: req.host,
+      reqOrigin: req.hostname,
       reqBody: req.body,
       resBody: {status: "200", message: 'order received and will be processed'},
       reqType: "new order",
       xid: req.body.orderJSON.xid,
-      orderID: req.body.OrderID
     });
     persistNewOrder(req.body);
     var TSCSig = sha1(TSCSecret + TSCKey + JSON.stringify(orderReqBody));    
@@ -431,7 +430,7 @@ TSCRouter.post('/orders/new', function(req, res) {
       signature: TSCSig
     }
     newTSCPostReq(JSON.stringify(TSCPostBody));
-    
+
     res.status(200).send('order received and will be processed');
   } else if (authHybridReq(req.body) != true) {
     var hybridErrorRes = {
