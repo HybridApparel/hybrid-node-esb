@@ -660,7 +660,85 @@
 // };
 
 
-
+var testOrder1 = 
+{
+  "orderJSON":{        
+    "type": "ORDER",
+    "time": "01/23/2016 12:00:00 AM",
+    "method": "create",
+    "mode": "auto",
+    "status": "In Production",
+    "status_code": "6",
+    "xid": "PROD0900",
+    "notes": "Hybrid Order",
+    "shiplabel_url": "",
+    "pack_url": "https://tranquil-fortress-90513.herokuapp.com/tsc/orders/PROD0900/packslip",
+    "giftnote_comment": "",
+    "shipping_carrier": "MI",
+    "shipping_priority": "4272",
+    "shipping_account": "",
+    "billing_name": "Andrew Carton",
+    "billing_address1": "960 Willoughby Ave",
+    "billing_address2": "Apt 3F",
+    "billing_city": "Brooklyn",
+    "billing_state": "NY",
+    "billing_country": "US",
+    "billing_zipcode": "11221",
+    "shipping_name": "Andrew Carton",
+    "shipping_address1": "960 Willoughby Ave",
+    "shipping_address2": "Apt 3F",
+    "shipping_city": "Brooklyn",
+    "shipping_state": "NY",
+    "shipping_country": "US",
+    "shipping_zipcode": "11221",
+    "shipping_phone": "8473220990",
+    "shipping_email": "andrew.carton1@gmail.com",
+    "items_quantity": "1",
+    "items_amount": "90.00",
+    "items_tax": "0.05",
+    "items": [{
+      "name": "PRISM FLOCK",          
+      "sku": "10290103",
+      "UPC": "190344757828",           
+      "quantity": "2",    
+      "unit_amount": "15.00",            
+      "subtotal_amount": "30.00",
+      "necklabel_binid": "",       
+      "hangtag_binid": "",         
+      "attributes": [      
+      {           
+        "type": "DigitalPrint",
+        "location": "CF",
+        "thumbnail": "https://s3-us-west-2.amazonaws.com/hybridapparel/Product/Macys/2PF368V2C_THUMB.png",
+        "preview": "https://s3-us-west-2.amazonaws.com/hybridapparel/Product/Macys/2PF368V2C_PREVIEW.png",
+        "file_url": "https://s3-us-west-2.amazonaws.com/hybridapparel/Product/Macys/2PF368V2C_PRINT.png",
+        "file_extension": "png"
+      },
+      {           
+        "type": "DigitalPrint",
+        "location": "FB",
+        "thumbnail": "https://s3-us-west-2.amazonaws.com/hybridapparel/Product/Macys/2PF368V2C_THUMB.png",
+        "preview": "https://s3-us-west-2.amazonaws.com/hybridapparel/Product/Macys/2PF368V2C_PREVIEW.png",
+        "file_url": "https://s3-us-west-2.amazonaws.com/hybridapparel/Product/Macys/2PF368V2C_PRINT.png",
+        "file_extension": "png"
+      }
+     ]           
+ }]         
+},
+"shippingCharge": "5.00",
+"cardType": "AMEX",
+"cardDigits": "4321",
+"barcodeValue": "932013322",
+"brand": "11",
+"returnCode": "SW",
+"OrderID":"MACYS0900",
+"PONumber": "46084695",
+"coBillingName": "",
+"coShippingName": "",
+"key": "UMJ4fTq0cc90Y3mOwvsn8eFohAn6Y6Er",
+"reservationNumber": "932013322",
+"signature": "58a045d7de31e804211a729312fc46c5db44d616"
+};
 
 
 
@@ -673,7 +751,7 @@ var testOrder1 =
     "mode": "auto",
     "status": "In Production",
     "status_code": "6",
-    "xid": "PROD0800",
+    "xid": "PROD0900",
     "notes": "Hybrid Order",
     "shiplabel_url": "",
     "pack_url": "https://tranquil-fortress-90513.herokuapp.com/tsc/orders/PROD0800/packslip",

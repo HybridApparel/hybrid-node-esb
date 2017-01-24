@@ -256,7 +256,7 @@ TSCRouter.get('/orders/:xid/teststatus', function(req, res) {
     var xid = req.params.xid;
     var options = {
       method: 'GET',
-      url: 'http://apptest.tscmiami.com/api/order/GetOrderStatus?xid=' + xid + '&timestamp=' + timeStamp,
+      url: 'http://app.tscmiami.com/api/order/GetOrderStatus?xid=' + xid + '&timestamp=' + timeStamp,
       headers: {
         'cache-control': 'no-cache',
         'content-type': 'application/json',
