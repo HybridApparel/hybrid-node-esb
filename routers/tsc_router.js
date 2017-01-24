@@ -25,12 +25,12 @@ var TSCSecret        = process.env.ARTGUN_SECRET;
 var hybridKey        = process.env.HYBRID_KEY;
 var hybridSecret     = process.env.HYBRID_SECRET;
 
+
 Handlebars.registerHelper('breaklines', function(text) {
     text = Handlebars.Utils.escapeExpression(text);
     text = text.replace(/(\r\n|\n|\r)/gm, '<br>');
     return new Handlebars.SafeString(text);
 });
-
 
 
 /**verifies shipment notification from ArtGun with SHA1 hashed sum of shared secret, key, and data object
@@ -132,7 +132,7 @@ var newTSCPostReq = function (orderDataJSON) {
 
   var options = { 
     method: 'POST',
-    url: 'http://apptest.tscmiami.com/api/order/create',
+    url: 'http://app.tscmiami.com/api/order/create',
     headers: 
     { 'cache-control': 'no-cache',
       'content-type': 'application/json' },
