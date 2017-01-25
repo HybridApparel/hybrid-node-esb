@@ -239,6 +239,41 @@ var persistTSCShipment = function (shipmentJSON) {
 };
 
 
+
+var getTSCOrderStatus = function(xid) {
+  var timeStamp = Globalize.dateFormatter({ datetime: "medium"})(new Date());
+  var sig = sha1(TSCKey + timeStamp + TSCSecret);
+  var options = {
+    method: 'GET',
+    url: 'http://app.tscmiami.com/api/order/GetOrderStatus?xid=' + xid + '&timestamp=' + timeStamp,
+    headers: {
+      'cache-control': 'no-cache',
+      'content-type': 'application/json',
+      'apikey': TSCKey,
+      'signature': sig
+    }
+  };
+  request(options, function(error, response, body) {
+    console.log("response body is " + response.body);
+    if (error) { return {tscError: error, tscErrorRes: response} };
+    var TSCResBodyReturn = response.body;
+    var newComsJSON = {
+      xid: req.params.xid,
+      endpoint: options.url,
+      reqType: "order status",
+      reqBody: JSON.stringify(options),
+      status: "order status req received",
+      resBody: TSCResBody
+    };
+    order.createCommunication(newComsJSON).then(function(newLoggedCom) {
+      console.log('new com logged - ' + newLoggedCom);
+    });
+    responseJSON.printerStatusJSON = TSCResBody;
+    return TSCResBody;
+  });
+};
+
+
 TSCRouter.get('/orders/:xid/teststatus', function(req, res) {
   console.log('new check status route hit');
   console.log(JSON.stringify(req.headers));
@@ -524,35 +559,7 @@ TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
           "message": "no order found matching target xid"
         }).status(404);
       };
-      var timeStamp = Globalize.dateFormatter({ datetime: "medium"})(new Date());
-      var sig = sha1(TSCKey + timeStamp + TSCSecret);
-      var xid = req.params.xid;
-      var options = {
-        method: 'GET',
-        url: 'http://app.tscmiami.com/api/order/GetOrderStatus?xid=' + xid + '&timestamp=' + timeStamp,
-        headers: {
-          'cache-control': 'no-cache',
-          'content-type': 'application/json',
-          'apikey': TSCKey,
-          'signature': sig
-        }
-      };
-      request(options, function(error, response, body) {
-        console.log("response body is " + response.body);
-        var TSCResBody = response.body;
-        var newComsJSON = {
-          xid: req.params.xid,
-          endpoint: options.url,
-          reqType: "order status",
-          reqBody: JSON.stringify(options),
-          status: "order status req received",
-          resBody: TSCResBody
-        };
-        order.createCommunication(newComsJSON).then(function(newLoggedCom) {
-          console.log('new com logged - ' + newLoggedCom);
-        });
-        responseJSON.printerStatusJSON = TSCResBody;
-      });
+      responseJSON.tscStatusRes = getTSCOrderStatus(req.params.orderID);
       responseJSON.isProcessed = order.isProcessed;
       responseJSON.OrderID = order.OrderID;
       responseJSON.ArtGunResponseBody = order.EndpointResponseBody;
@@ -592,11 +599,6 @@ TSCRouter.get('/dynowake/uptimecheck/', function (req, res) {
   res.status(200).send('thanks for checking...');
 });
 
-TSCRouter.get('/test/allorders/', function (req, res) {
-  Order.findAll().then(function(orders) {
-    res.status(200).send(orders);
-  })
-});
 
 // TSCRouter.post('/orders/cancel/confirm', function(req, res) {
 //   console.log('confirm cancel from TSC route hit');
