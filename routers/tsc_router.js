@@ -419,9 +419,7 @@ TSCRouter.post('/orders/new', function(req, res) {
   if (authHybridReq(req.body) == true) {
     console.log("hybrid sig verified");
     orderReqBody.pack_url = "http://tranquil-fortress-90513.herokuapp.com/tsc/orders/" + req.body.orderJSON.xid + '/packslip'
-    if () {
 
-    }
     persistCommunication({
       endpoint: req.route.path,
       status: "received",
