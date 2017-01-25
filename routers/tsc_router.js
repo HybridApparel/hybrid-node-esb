@@ -565,24 +565,6 @@ TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
       res.send(responseJSON).status(200);
     });  
   };
-
-
-    request(options, function(error, response, body) {
-      console.log("response body is " + response.body);
-      var TSCResBody = response.body;
-      var newComsJSON = {
-        xid: req.params.xid,
-        endpoint: options.url,
-        reqType: "order status",
-        reqBody: JSON.stringify(options),
-        status: "order status req received",
-        resBody: TSCResBody
-      };
-      order.createCommunication(newComsJSON).then(function(newLoggedCom) {
-        console.log('new com logged - ' + newLoggedCom);
-      });
-      res.send(TSCResBody).status(200);
-  });
     
 
 /**POST route to cancel an order
