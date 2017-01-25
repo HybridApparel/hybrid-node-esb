@@ -256,7 +256,7 @@ var getTSCOrderStatus = function(xid) {
   request(options, function(error, response, body) {
     console.log("response body is " + response.body);
     if (error) { return {tscError: error, tscErrorRes: response} };
-    var TSCResBodyReturn = response.body;
+    var TSCResBody = response.body;
     var newComsJSON = {
       xid: xid,
       endpoint: options.url,
