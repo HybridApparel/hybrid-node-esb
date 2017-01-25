@@ -2,7 +2,10 @@
 module.exports = function(sequelize, DataTypes) {
   var orders = sequelize.define('orders', {
     OrderXrefUid: DataTypes.STRING,
-    OrderID: DataTypes.STRING,
+    OrderID: {
+      type: DataTypes.STRING,
+      unique: {msg: 'An order already exists with this xid'}
+    },
     OrderDetailUid: DataTypes.STRING,
     Method: DataTypes.STRING,
     ESBResponseID: DataTypes.STRING,

@@ -87,6 +87,11 @@ var persistNewOrder = function (newOrderJSON) {
     Method: "tsc"
   }).then(function(newOrderRecord) {
     console.log('new order persisted');
+  }, function (err) {
+    var errors = err.errors.map(function(error) {
+        return error.path + ' - ' + error.message;
+      });
+
   });
 };
 
@@ -414,6 +419,9 @@ TSCRouter.post('/orders/new', function(req, res) {
   if (authHybridReq(req.body) == true) {
     console.log("hybrid sig verified");
     orderReqBody.pack_url = "http://tranquil-fortress-90513.herokuapp.com/tsc/orders/" + req.body.orderJSON.xid + '/packslip'
+    if () {
+
+    }
     persistCommunication({
       endpoint: req.route.path,
       status: "received",
@@ -554,6 +562,12 @@ TSCRouter.post('/orders/:orderID/cancel/', function(req, res) {
 
 TSCRouter.get('/dynowake/uptimecheck/', function (req, res) {
   res.status(200).send('thanks for checking...');
+});
+
+TSCRouter.get('/test/allorders/', function (req, res) {
+  Order.findAll().then(function(orders) {
+    res.status(200).send(orders);
+  })
 });
 
 // TSCRouter.post('/orders/cancel/confirm', function(req, res) {
