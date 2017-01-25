@@ -258,7 +258,7 @@ var getTSCOrderStatus = function(xid) {
     if (error) { return {tscError: error, tscErrorRes: response} };
     var TSCResBodyReturn = response.body;
     var newComsJSON = {
-      xid: req.params.xid,
+      xid: xid,
       endpoint: options.url,
       reqType: "order status",
       reqBody: JSON.stringify(options),
