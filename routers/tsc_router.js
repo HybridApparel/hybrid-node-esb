@@ -246,12 +246,12 @@ TSCRouter.get('/orders/:xid/teststatus', function(req, res) {
   console.log('all query is ' + JSON.stringify(req.query));
   console.log('trying new url thing is ' + url.href);
   var newComsJSON = {
-      xid: req.params.xid,
-      endpoint: req.hostname + req.route.path,
-      reqType: "order status",
-      reqBody: req.body,
-      status: "order status req received",
-      reqOrigin: req.headers.origin
+    xid: req.params.xid,
+    endpoint: req.hostname + req.route.path,
+    reqType: "order status",
+    reqBody: req.body,
+    status: "order status req received",
+    reqOrigin: req.headers.origin
   };
   Order.findOne({
     where: {OrderID: req.params.xid}
@@ -292,7 +292,7 @@ TSCRouter.get('/orders/:xid/teststatus', function(req, res) {
   });
     
   });
-  
+
 });
 
 /**GET route to download Packing Slip
@@ -524,6 +524,35 @@ TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
           "message": "no order found matching target xid"
         }).status(404);
       };
+      var timeStamp = Globalize.dateFormatter({ datetime: "medium"})(new Date());
+      var sig = sha1(TSCKey + timeStamp + TSCSecret);
+      var xid = req.params.xid;
+      var options = {
+        method: 'GET',
+        url: 'http://app.tscmiami.com/api/order/GetOrderStatus?xid=' + xid + '&timestamp=' + timeStamp,
+        headers: {
+          'cache-control': 'no-cache',
+          'content-type': 'application/json',
+          'apikey': TSCKey,
+          'signature': sig
+        }
+      };
+      request(options, function(error, response, body) {
+        console.log("response body is " + response.body);
+        var TSCResBody = response.body;
+        var newComsJSON = {
+          xid: req.params.xid,
+          endpoint: options.url,
+          reqType: "order status",
+          reqBody: JSON.stringify(options),
+          status: "order status req received",
+          resBody: TSCResBody
+        };
+        order.createCommunication(newComsJSON).then(function(newLoggedCom) {
+          console.log('new com logged - ' + newLoggedCom);
+        });
+        responseJSON.printerStatusJSON = TSCResBody;
+      });
       responseJSON.isProcessed = order.isProcessed;
       responseJSON.OrderID = order.OrderID;
       responseJSON.ArtGunResponseBody = order.EndpointResponseBody;
@@ -535,8 +564,26 @@ TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
       };
       res.send(responseJSON).status(200);
     });  
-  }
-});
+  };
+
+
+    request(options, function(error, response, body) {
+      console.log("response body is " + response.body);
+      var TSCResBody = response.body;
+      var newComsJSON = {
+        xid: req.params.xid,
+        endpoint: options.url,
+        reqType: "order status",
+        reqBody: JSON.stringify(options),
+        status: "order status req received",
+        resBody: TSCResBody
+      };
+      order.createCommunication(newComsJSON).then(function(newLoggedCom) {
+        console.log('new com logged - ' + newLoggedCom);
+      });
+      res.send(TSCResBody).status(200);
+  });
+    
 
 /**POST route to cancel an order
 */
