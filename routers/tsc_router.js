@@ -136,16 +136,17 @@ var persistTSCResError = function(TSCRes) {
 var newTSCPostReq = function (orderDataJSON) {
   var options = { 
     method: 'POST',
-    url: 'http://app.tscmiami.com/api/order/create',
+    url: 'http://apptest.tscmiami.com/api/order/create',
     headers: 
     { 'cache-control': 'no-cache',
       'content-type': 'application/json' },
     body: orderDataJSON
   };
   request(options, function (error, response, body) {
-    var TSCResBody = response.body;
-    console.log('the tsc new order res is - ' + response.body);
+    var TSCResBody = JSON.parse(response.body);
+    console.log('the tsc new order res is - ' + TSCResBody);
     if (TSCResBody.res == "success") {
+      console.log('success res condition hit');
       persistTSCResSuccess(response.body);
       persistCommunication({
         endpoint: options.url,
@@ -157,6 +158,7 @@ var newTSCPostReq = function (orderDataJSON) {
       });
       console.log('successfully processed new TSC order... ' + JSON.stringify(TSCResBody));
     } else if (TSCResBody.res == "error") {
+      console.log('error res condition hit');
       persistCommunication({
         endpoint: options.url,
         reqType: "new order",
@@ -244,7 +246,7 @@ var getTSCOrderStatus = function(xid) {
   var sig = sha1(TSCKey + timeStamp + TSCSecret);
   var options = {
     method: 'GET',
-    url: 'http://app.tscmiami.com/api/order/GetOrderStatus?xid=' + xid + '&timestamp=' + timeStamp,
+    url: 'http://apptest.tscmiami.com/api/order/GetOrderStatus?xid=' + xid + '&timestamp=' + timeStamp,
     headers: {
       'cache-control': 'no-cache',
       'content-type': 'application/json',
@@ -298,7 +300,7 @@ TSCRouter.get('/orders/:xid/teststatus', function(req, res) {
     var xid = req.params.xid;
     var options = {
       method: 'GET',
-      url: 'http://app.tscmiami.com/api/order/GetOrderStatus?xid=' + xid + '&timestamp=' + timeStamp,
+      url: 'http://apptest.tscmiami.com/api/order/GetOrderStatus?xid=' + xid + '&timestamp=' + timeStamp,
       headers: {
         'cache-control': 'no-cache',
         'content-type': 'application/json',
@@ -475,6 +477,7 @@ TSCRouter.post('/orders/new', function(req, res) {
         });
       };
     });
+    orderReqBody.orderJSON.pack_url = "http://tranquil-fortress-90513.herokuapp.com/tsc/orders/" + orderReqBody.orderJSON.xid + "/packslip"
     persistCommunication({
       endpoint: req.route.path,
       status: "received",
