@@ -134,7 +134,6 @@ var persistTSCResError = function(TSCRes) {
 /**makes a POST req to the TSC API, call functions to persist response
 */
 var newTSCPostReq = function (orderDataJSON) {
-
   var options = { 
     method: 'POST',
     url: 'http://app.tscmiami.com/api/order/create',
@@ -144,10 +143,10 @@ var newTSCPostReq = function (orderDataJSON) {
     body: orderDataJSON
   };
   request(options, function (error, response, body) {
-    console.log(response.body);
     var TSCResBody = response.body;
+    console.log('the tsc new order res is - ' + response.body);
     if (TSCResBody.res == "success") {
-      persistTSCResSuccess(TSCResBody);
+      persistTSCResSuccess(response.body);
       persistCommunication({
         endpoint: options.url,
         reqType: "new order",
@@ -272,7 +271,6 @@ var getTSCOrderStatus = function(xid) {
         console.log('new com logged - ' + newLoggedCom);
       });
     }); 
-    responseJSON.printerStatusJSON = TSCResBody;
     return TSCResBody;
   });
 };
@@ -461,6 +459,15 @@ TSCRouter.post('/orders/new', function(req, res) {
       where: {OrderID: req.body.orderJSON.xid}
     }).then(function(order){
       if (order) {
+        persistCommunication({
+          endpoint: req.route.path,
+          status: "not received",
+          reqOrigin: req.hostname,
+          reqBody: req.body,
+          resBody: {error: 'Duplicate Order', code: '400', message: 'the order with target xid does not exist'},
+          reqType: "new order",
+          xid: req.body.orderJSON.xid
+        });
         res.status(404).send({
           error: 'Duplicate Order',
           code: '400',
