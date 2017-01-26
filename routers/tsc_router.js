@@ -454,7 +454,6 @@ to persist the order data, then calls newArtGunPostReq to send the order data to
 TSCRouter.post('/orders/new', function(req, res) {
   console.log('full req is  ' + req.body);
   var orderReqBody = req.body.orderJSON;
-  authHybridReq(req.body);
   if (authHybridReq(req.body) == true) {
     console.log("hybrid sig verified");
     Order.findOne({
@@ -476,29 +475,29 @@ TSCRouter.post('/orders/new', function(req, res) {
           code: '400',
           message: 'the order with target xid already exists'
         });
+      } else if (!order) {
+        orderReqBody.pack_url = "http://tranquil-fortress-90513.herokuapp.com/tsc/orders/" + orderReqBody.xid + "/packslip";
+        persistCommunication({
+          endpoint: req.route.path,
+          status: "received",
+          reqOrigin: req.hostname,
+          reqBody: req.body,
+          resBody: {status: "200", message: 'order received and will be processed'},
+          reqType: "new order",
+          xid: req.body.orderJSON.xid,
+        });
+        persistNewOrder(req.body);
+        var TSCSig = sha1(TSCSecret + TSCKey + JSON.stringify(orderReqBody));    
+        var TSCPostBody = {
+          key: TSCKey,
+          data: JSON.stringify(orderReqBody),
+          signature: TSCSig
+        };
+        newTSCPostReq(JSON.stringify(TSCPostBody));
+        res.status(200).send('order received and will be processed');
       };
     });
-  };
-    orderReqBody.pack_url = "http://tranquil-fortress-90513.herokuapp.com/tsc/orders/" + orderReqBody.xid + "/packslip"
-    persistCommunication({
-      endpoint: req.route.path,
-      status: "received",
-      reqOrigin: req.hostname,
-      reqBody: req.body,
-      resBody: {status: "200", message: 'order received and will be processed'},
-      reqType: "new order",
-      xid: req.body.orderJSON.xid,
-    });
-    persistNewOrder(req.body);
-    var TSCSig = sha1(TSCSecret + TSCKey + JSON.stringify(orderReqBody));    
-    var TSCPostBody = {
-      key: TSCKey,
-      data: JSON.stringify(orderReqBody),
-      signature: TSCSig
-    };
-    newTSCPostReq(JSON.stringify(TSCPostBody));
-    res.status(200).send('order received and will be processed');
-  } else if (authHybridReq(req.body) !== true) {
+  } else if (authHybridReq(req.body) != true) {
     var hybridErrorRes = {
       "error": "403 - authentication failed, invalid signature - request not received",
       "code": "1",
