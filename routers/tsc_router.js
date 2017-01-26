@@ -589,6 +589,7 @@ TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
       responseJSON.isProcessed = order.isProcessed;
       responseJSON.OrderID = order.OrderID;
       responseJSON.ArtGunResponseBody = order.EndpointResponseBody;
+      console.log('order ships are ' + order.shipments);
       if (order.shipments[0]) {    
         responseJSON.isShipped = order.shipments[0].body.status;
         responseJSON.trackingNumber = order.shipments[0].body.tracking_number;
