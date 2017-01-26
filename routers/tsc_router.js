@@ -477,7 +477,7 @@ TSCRouter.post('/orders/new', function(req, res) {
         });
       };
     });
-    orderReqBody.orderJSON.pack_url = "http://tranquil-fortress-90513.herokuapp.com/tsc/orders/" + orderReqBody.orderJSON.xid + "/packslip"
+    orderReqBody.orderJSON.pack_url = "http://tranquil-fortress-90513.herokuapp.com/tsc/orders/" + orderReqBody.xid + "/packslip"
     persistCommunication({
       endpoint: req.route.path,
       status: "received",
