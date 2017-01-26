@@ -560,7 +560,7 @@ TSCRouter.post('/shipments/update', function(req,res) {
 
 /**GET route to see status of an order
 */
-TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
+TSCRouter.get('/orders/:OrderID/status/:signature/', function(req, res) {
   console.log('get route for order status hit');
   var authSig = sha1(hybridSecret + hybridKey + req.params.orderID);
   var tscStatusCallRes = getTSCOrderStatus(req.params.orderID);
@@ -575,7 +575,7 @@ TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
   } else if (authSig === req.params.signature) {
     var responseJSON = {};
     Order.findOne({
-      where: {OrderID: req.params.orderID},
+      where: {OrderID: req.params.OrderID},
       include: Shipment
     }).then(function(order) {
       if (!order) {
