@@ -467,14 +467,14 @@ TSCRouter.post('/orders/new', function(req, res) {
           status: "not received",
           reqOrigin: req.hostname,
           reqBody: req.body,
-          resBody: {error: 'Duplicate Order', code: '400', message: 'the order with target xid does not exist'},
+          resBody: {error: 'Duplicate Order', code: '400', message: 'the order with target xid already exists'},
           reqType: "new order",
           xid: req.body.orderJSON.xid
         });
         return res.status(404).send({
           error: 'Duplicate Order',
           code: '400',
-          message: 'the order with target xid does not exist'
+          message: 'the order with target xid already exists'
         });
       };
     });
