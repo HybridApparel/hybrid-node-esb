@@ -102,7 +102,7 @@ var persistTSCResSuccess = function (TSCRes) {
   Order.findOne({
     where:{OrderID: TSCRes.xid}
   }).then(function (order) {
-    console.log('TSC res to db is ...  ' + JSON.stringify(TSCRes));
+    console.log('TSC res to db is ...  ' + JSON.stringify(TSCRes) + ' and ' + TSCRes);
     order.update({
       EndpointResponseID: TSCRes.receipt_id,
       EndpointResponseBody: TSCRes,
@@ -494,7 +494,7 @@ TSCRouter.post('/orders/new', function(req, res) {
           signature: TSCSig
         };
         newTSCPostReq(JSON.stringify(TSCPostBody));
-        res.status(200).send('order received and will be processed');
+        return res.status(200).send('order received and will be processed');
       };
     });
   } else if (authHybridReq(req.body) != true) {
@@ -513,7 +513,7 @@ TSCRouter.post('/orders/new', function(req, res) {
       orderID: req.body.OrderID
     });
     console.log("invalid signature");
-    res.status(403).send(hybridErrorRes);
+    return res.status(403).send(hybridErrorRes);
   };
 });
 
