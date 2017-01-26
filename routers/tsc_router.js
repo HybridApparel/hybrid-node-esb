@@ -458,15 +458,16 @@ TSCRouter.post('/orders/new', function(req, res) {
   if (authHybridReq(req.body) == true) {
     console.log("hybrid sig verified");
     Order.findOne({
-      where: {OrderID: req.body.orderJSON.xid} })
-    .then(function(order){
-      if (!order) {
+      where: {OrderID: req.body.orderJSON.xid}
+    }).then(function(order){
+      if (order) {
         res.status(404).send({
-          error: 'Order not found',
-          code: '404',
+          error: 'Duplicate Order',
+          code: '400',
           message: 'the order with target xid does not exist'
         });
       };
+    });
     persistCommunication({
       endpoint: req.route.path,
       status: "received",
