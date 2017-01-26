@@ -136,7 +136,7 @@ var persistTSCResError = function(TSCRes) {
 var newTSCPostReq = function (orderDataJSON) {
   var options = { 
     method: 'POST',
-    url: 'http://apptest.tscmiami.com/api/order/create',
+    url: 'http://app.tscmiami.com/api/order/create',
     headers: 
     { 'cache-control': 'no-cache',
       'content-type': 'application/json' },
@@ -192,7 +192,7 @@ var cancelTSCOrder = function(xid) {
   };
   var options = {
     method: 'POST',
-    url: 'http://apptest.tscmiami.com/api/order/cancelorder',
+    url: 'http://app.tscmiami.com/api/order/cancelorder',
     headers: {
       'cache-control': 'no-cache',
       'content-type': 'application/json',
@@ -246,7 +246,7 @@ var getTSCOrderStatus = function(xid) {
   var sig = sha1(TSCKey + timeStamp + TSCSecret);
   var options = {
     method: 'GET',
-    url: 'http://apptest.tscmiami.com/api/order/GetOrderStatus?xid=' + xid + '&timestamp=' + timeStamp,
+    url: 'http://app.tscmiami.com/api/order/GetOrderStatus?xid=' + xid + '&timestamp=' + timeStamp,
     headers: {
       'cache-control': 'no-cache',
       'content-type': 'application/json',
@@ -300,7 +300,7 @@ TSCRouter.get('/orders/:xid/teststatus', function(req, res) {
     var xid = req.params.xid;
     var options = {
       method: 'GET',
-      url: 'http://apptest.tscmiami.com/api/order/GetOrderStatus?xid=' + xid + '&timestamp=' + timeStamp,
+      url: 'http://app.tscmiami.com/api/order/GetOrderStatus?xid=' + xid + '&timestamp=' + timeStamp,
       headers: {
         'cache-control': 'no-cache',
         'content-type': 'application/json',
