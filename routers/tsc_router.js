@@ -418,8 +418,7 @@ TSCRouter.get('/orders/:orderID/packslip', function(req, res) {
         templateSourceJSON.returnInstructions = bloomReturnCodeS;
       };
 
-      order.createCommunication(
-        {
+      order.createCommunication({
           xid: req.params.orderID,
           endpoint: req.hostname + req.route.path,
           reqType: "pack slip",
@@ -564,6 +563,7 @@ TSCRouter.post('/shipments/update', function(req,res) {
 TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
   console.log('get route for order status hit');
   var authSig = sha1(hybridSecret + hybridKey + req.params.orderID);
+  var tscStatusCallRes = getTSCOrderStatus(req.params.orderID);
   if (authSig != req.params.signature) {
     console.log('request not accepted - invalid credentials and signature');
     var hybridErrorRes = {
@@ -585,7 +585,7 @@ TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
           "message": "no order found matching target xid"
         }).status(404);
       };
-      responseJSON.tscStatusRes = getTSCOrderStatus(req.params.orderID);
+      responseJSON.tscStatusRes = tscStatusCallRes;
       responseJSON.isProcessed = order.isProcessed;
       responseJSON.OrderID = order.OrderID;
       responseJSON.ArtGunResponseBody = order.EndpointResponseBody;
@@ -617,7 +617,7 @@ TSCRouter.post('/orders/:orderID/cancel/', function(req, res) {
   } else if (authHybridReq(req.body) == true) {
     cancelTSCOrder(req.params.orderID);
     console.log("hybrid sig verified, order will be cancelled");
-
+    res.send('order will be cancelled');
   };
 });
 
