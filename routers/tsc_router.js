@@ -595,8 +595,8 @@ TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
         responseJSON.trackingNumber = order.shipments[0].body.tracking_number;
         responseJSON.billOfLading = order.shipments[0].body.bol;
         responseJSON.shipmentUpdateBody = order.shipments[0].body;
-      };
-      res.send(responseJSON).status(200);
+        res.send(responseJSON).status(200);
+      } else {res.send(responseJSON).status(200)};
     });  
 };
 });
