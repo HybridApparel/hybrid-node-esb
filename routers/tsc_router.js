@@ -482,11 +482,10 @@ TSCRouter.post('/orders/new', function(req, res) {
       key: TSCKey,
       data: JSON.stringify(orderReqBody),
       signature: TSCSig
-    }
+    };
     newTSCPostReq(JSON.stringify(TSCPostBody));
-
     res.status(200).send('order received and will be processed');
-  } else if (authHybridReq(req.body) != true) {
+  } else if (authHybridReq(req.body) !== true) {
     var hybridErrorRes = {
       "error": "403 - authentication failed, invalid signature - request not received",
       "code": "1",
