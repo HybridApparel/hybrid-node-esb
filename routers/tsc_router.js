@@ -267,7 +267,7 @@ var getTSCOrderStatus = function(xid) {
       resBody: TSCResBody
     };
     Order.findOne({
-      where: {orderID: xid}
+      where: {OrderID: xid}
     }).then(function(order) {
       order.createCommunication(newComsJSON).then(function(newLoggedCom) {
         console.log('new com logged - ' + newLoggedCom);
