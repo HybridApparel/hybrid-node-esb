@@ -461,6 +461,7 @@ TSCRouter.post('/orders/new', function(req, res) {
       where: {OrderID: req.body.orderJSON.xid}
     }).then(function(order){
       if (order) {
+        console.log('found duplicate order');
         persistCommunication({
           endpoint: req.route.path,
           status: "not received",
@@ -470,7 +471,7 @@ TSCRouter.post('/orders/new', function(req, res) {
           reqType: "new order",
           xid: req.body.orderJSON.xid
         });
-        res.status(404).send({
+        return res.status(404).send({
           error: 'Duplicate Order',
           code: '400',
           message: 'the order with target xid does not exist'
@@ -515,6 +516,9 @@ TSCRouter.post('/orders/new', function(req, res) {
     res.status(403).send(hybridErrorRes);
   };
 });
+
+
+
 
 /**POST route for ArtGun shipment updates
 */
@@ -622,41 +626,36 @@ TSCRouter.get('/dynowake/uptimecheck/', function (req, res) {
 });
 
 
-TSCRouter.post('/orders/cancel/confirm', function(req, res) {
-  console.log('confirm cancel from TSC route hit');
-  var resJSON = {};
-  authTSCReq(req.body);
-  if (authTSCReq(req.body) == true) {
-    var orderReceiptID = "";
-    var orderPrimaryKey = "";    
-    Order.findOne({
-      where: {OrderID: JSON.parse(req.body).xid} })
-    .then(function(order){
+// TSCRouter.post('/orders/cancel/confirm', function(req, res) {
+//   console.log('confirm cancel from TSC route hit');
+//   var resJSON = {};
+//   authTSCReq(req.body);
+//   if (authTSCReq(req.body) == true) {
+//     var orderReceiptID = "";
+//     var orderPrimaryKey = "";    
+//     Order.findOne({
+//       where: {OrderID: JSON.parse(req.body).xid} })
+//     .then(function(order){
 
+//       orderReceiptID = order.EndpointResponseID;
+//       orderPrimaryKey = order.id;
+//       console.log('heres the order receipt id... ' + orderReceiptID);
+//       Shipment.findOne({
+//         where: {orderID: order.id}
+//       }).then(function(shipment) {
+//         if (shipment) {
 
-
-
-
-
-      orderReceiptID = order.EndpointResponseID;
-      orderPrimaryKey = order.id;
-      console.log('heres the order receipt id... ' + orderReceiptID);
-      Shipment.findOne({
-        where: {orderID: order.id}
-      }).then(function(shipment) {
-        if (shipment) {
-
-        }
-        resJSON.res = "success";
-        resJSON.time = shipment.createdAt;
-        resJSON.xid = req.body.xid;
-        resJSON.receipt_id = orderReceiptID;
-        console.log('shipment req reeceived and persisted' + resJSON);
-        res.status(200).send(resJSON);
-      });
-    });  
-  };
-});
+//         }
+//         resJSON.res = "success";
+//         resJSON.time = shipment.createdAt;
+//         resJSON.xid = req.body.xid;
+//         resJSON.receipt_id = orderReceiptID;
+//         console.log('shipment req reeceived and persisted' + resJSON);
+//         res.status(200).send(resJSON);
+//       });
+//     });  
+//   };
+// });
 
 
 
