@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes) {
     OrderXrefUid: DataTypes.STRING,
     OrderID: {
       type: DataTypes.STRING,
-      unique: {msg: 'An order already exists with this xid'}
+      unique: true
     },
     OrderDetailUid: DataTypes.STRING,
     Method: DataTypes.STRING,
