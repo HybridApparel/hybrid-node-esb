@@ -265,9 +265,13 @@ var getTSCOrderStatus = function(xid) {
       status: "order status req received",
       resBody: TSCResBody
     };
-    order.createCommunication(newComsJSON).then(function(newLoggedCom) {
-      console.log('new com logged - ' + newLoggedCom);
-    });
+    Order.findOne({
+      where: {orderID: xid}
+    }).then(function(order) {
+      order.createCommunication(newComsJSON).then(function(newLoggedCom) {
+        console.log('new com logged - ' + newLoggedCom);
+      });
+    }); 
     responseJSON.printerStatusJSON = TSCResBody;
     return TSCResBody;
   });
@@ -453,8 +457,16 @@ TSCRouter.post('/orders/new', function(req, res) {
   authHybridReq(req.body);
   if (authHybridReq(req.body) == true) {
     console.log("hybrid sig verified");
-    orderReqBody.pack_url = "http://tranquil-fortress-90513.herokuapp.com/tsc/orders/" + req.body.orderJSON.xid + '/packslip'
-
+    Order.findOne({
+      where: {OrderID: req.body.orderJSON.xid} })
+    .then(function(order){
+      if (!order) {
+        res.status(404).send({
+          error: 'Order not found',
+          code: '404',
+          message: 'the order with target xid does not exist'
+        });
+      };
     persistCommunication({
       endpoint: req.route.path,
       status: "received",
@@ -600,41 +612,41 @@ TSCRouter.get('/dynowake/uptimecheck/', function (req, res) {
 });
 
 
-// TSCRouter.post('/orders/cancel/confirm', function(req, res) {
-//   console.log('confirm cancel from TSC route hit');
-//   var resJSON = {};
-//   authTSCReq(req.body);
-//   if (authTSCReq(req.body) == true) {
-//     var orderReceiptID = "";
-//     var orderPrimaryKey = "";    
-//     Order.findOne({
-//       where: {OrderID: JSON.parse(req.body).xid} })
-//     .then(function(order){
+TSCRouter.post('/orders/cancel/confirm', function(req, res) {
+  console.log('confirm cancel from TSC route hit');
+  var resJSON = {};
+  authTSCReq(req.body);
+  if (authTSCReq(req.body) == true) {
+    var orderReceiptID = "";
+    var orderPrimaryKey = "";    
+    Order.findOne({
+      where: {OrderID: JSON.parse(req.body).xid} })
+    .then(function(order){
 
 
 
 
 
 
-//       orderReceiptID = order.EndpointResponseID;
-//       orderPrimaryKey = order.id;
-//       console.log('heres the order receipt id... ' + orderReceiptID);
-//       Shipment.findOne({
-//         where: {orderID: order.id}
-//       }).then(function(shipment) {
-//         if (shipment) {
+      orderReceiptID = order.EndpointResponseID;
+      orderPrimaryKey = order.id;
+      console.log('heres the order receipt id... ' + orderReceiptID);
+      Shipment.findOne({
+        where: {orderID: order.id}
+      }).then(function(shipment) {
+        if (shipment) {
 
-//         }
-//         resJSON.res = "success";
-//         resJSON.time = shipment.createdAt;
-//         resJSON.xid = req.body.xid;
-//         resJSON.receipt_id = orderReceiptID;
-//         console.log('shipment req reeceived and persisted' + resJSON);
-//         res.status(200).send(resJSON);
-//       });
-//     });  
-//   };
-// });
+        }
+        resJSON.res = "success";
+        resJSON.time = shipment.createdAt;
+        resJSON.xid = req.body.xid;
+        resJSON.receipt_id = orderReceiptID;
+        console.log('shipment req reeceived and persisted' + resJSON);
+        res.status(200).send(resJSON);
+      });
+    });  
+  };
+});
 
 
 
