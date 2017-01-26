@@ -147,7 +147,7 @@ var newTSCPostReq = function (orderDataJSON) {
     console.log('the tsc new order res is - ' + TSCResBody);
     if (TSCResBody.res == "success") {
       console.log('success res condition hit');
-      persistTSCResSuccess(response.body);
+      persistTSCResSuccess(TSCResBody);
       persistCommunication({
         endpoint: options.url,
         reqType: "new order",
@@ -477,7 +477,7 @@ TSCRouter.post('/orders/new', function(req, res) {
         });
       };
     });
-    orderReqBody.orderJSON.pack_url = "http://tranquil-fortress-90513.herokuapp.com/tsc/orders/" + orderReqBody.xid + "/packslip"
+    orderReqBody.pack_url = "http://tranquil-fortress-90513.herokuapp.com/tsc/orders/" + orderReqBody.xid + "/packslip"
     persistCommunication({
       endpoint: req.route.path,
       status: "received",
