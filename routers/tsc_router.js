@@ -564,6 +564,7 @@ TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
   console.log('get route for order status hit');
   var authSig = sha1(hybridSecret + hybridKey + req.params.orderID);
   var tscStatusCallRes = getTSCOrderStatus(req.params.orderID);
+  console.log('tsc status call res is - ' + tscStatusCallRes);
   if (authSig != req.params.signature) {
     console.log('request not accepted - invalid credentials and signature');
     var hybridErrorRes = {
@@ -589,12 +590,14 @@ TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
       responseJSON.isProcessed = order.isProcessed;
       responseJSON.OrderID = order.OrderID;
       responseJSON.ArtGunResponseBody = order.EndpointResponseBody;
-      if (order.shipments[0]) { 
-        console.log('found a shipment condition hit - ' + JSON.stringify(order.shipments));   
-        responseJSON.isShipped = order.shipments[0].body.status;
-        responseJSON.trackingNumber = order.shipments[0].body.tracking_number;
-        responseJSON.billOfLading = order.shipments[0].body.bol;
+      if (order.shipments[0]) {
+        var shipJsonData = JSON.parse(order.shipments[0].body.data).event.meta.packages[0]; 
+        console.log(shipJsonData);
+        responseJSON.isShipped = shipJsonData.status;
+        responseJSON.trackingNumber = shipJsonData.tracking_number;
+        responseJSON.billOfLading = shipJsonData.bol;
         responseJSON.shipmentUpdateBody = order.shipments[0].body;
+        console.log(JSON.stringify(shipJsonData));
         res.send(responseJSON).status(200);
       } else {res.send(responseJSON).status(200)};
     });  
