@@ -269,18 +269,16 @@ var getTSCOrderStatus = function(xid) {
     }).then(function(order) {
       order.createCommunication(newComsJSON).then(function(newLoggedCom) {
         console.log('new com logged - ' + newLoggedCom);
+        return TSCResBody;
       });
     }); 
-    return TSCResBody;
   });
 };
 
 
 TSCRouter.get('/orders/:xid/teststatus', function(req, res) {
-  console.log('new check status route hit');
-  var tscStatusCallRes = getTSCOrderStatus(req.params.xid);
-  console.log('tsc status call res is - ' + tscStatusCallRes);
-  res.send(tscStatusCallRes);
+  console.log('tests status route hit');  
+  res.send(getTSCOrderStatus(req.params.xid));
   // var newComsJSON = {
   //   xid: req.params.xid,
   //   endpoint: req.hostname + req.route.path,
