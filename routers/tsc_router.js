@@ -280,57 +280,55 @@ var getTSCOrderStatus = function(xid) {
 
 TSCRouter.get('/orders/:xid/teststatus', function(req, res) {
   console.log('new check status route hit');
-  console.log(JSON.stringify(req.headers));
-  console.log('all req params ' + JSON.stringify(req.params));
-  console.log('all query is ' + JSON.stringify(req.query));
-  console.log('trying new url thing is ' + url.href);
-  var newComsJSON = {
-    xid: req.params.xid,
-    endpoint: req.hostname + req.route.path,
-    reqType: "order status",
-    reqBody: req.body,
-    status: "order status req received",
-    reqOrigin: req.headers.origin
-  };
-  Order.findOne({
-    where: {OrderID: req.params.xid}
-  }).then(function(order) {
-    var timeStamp = Globalize.dateFormatter({ datetime: "medium"})(new Date());
-    var sig = sha1(TSCKey + timeStamp + TSCSecret);
-    var xid = req.params.xid;
-    var options = {
-      method: 'GET',
-      url: 'http://app.tscmiami.com/api/order/GetOrderStatus?xid=' + xid + '&timestamp=' + timeStamp,
-      headers: {
-        'cache-control': 'no-cache',
-        'content-type': 'application/json',
-        'apikey': TSCKey,
-        'signature': sig
-      }
-    };
-    request(options, function(error, response, body) {
-      console.log("response body is " + response.body);
-      var TSCResBody = response.body;
-      var newComsJSON = {
-        xid: req.params.xid,
-        endpoint: options.url,
-        reqType: "order status",
-        reqBody: JSON.stringify(options),
-        status: "order status req received",
-        resBody: TSCResBody
-      };
-      order.createCommunication(newComsJSON).then(function(newLoggedCom) {
-        console.log('new com logged - ' + newLoggedCom);
-      });
-      res.send(TSCResBody).status(200);
-    /*if (TSCResBody.res !== "error") {
-      console.log('get order status success and res is - ' + TSCResBody);
-    } else if (TSCResBody.res == "error") {
-      console.log('tsc order status failed, please check error message - ' + response.body);
-    };*/
-  });
+  var tscStatusCallRes = getTSCOrderStatus(req.params.xid);
+  console.log('tsc status call res is - ' + tscStatusCallRes);
+  // var newComsJSON = {
+  //   xid: req.params.xid,
+  //   endpoint: req.hostname + req.route.path,
+  //   reqType: "order status",
+  //   reqBody: req.body,
+  //   status: "order status req received",
+  //   reqOrigin: req.headers.origin
+  // };
+  // Order.findOne({
+  //   where: {OrderID: req.params.xid}
+  // }).then(function(order) {
+  //   var timeStamp = Globalize.dateFormatter({ datetime: "medium"})(new Date());
+  //   var sig = sha1(TSCKey + timeStamp + TSCSecret);
+  //   var xid = req.params.xid;
+  //   var options = {
+  //     method: 'GET',
+  //     url: 'http://app.tscmiami.com/api/order/GetOrderStatus?xid=' + xid + '&timestamp=' + timeStamp,
+  //     headers: {
+  //       'cache-control': 'no-cache',
+  //       'content-type': 'application/json',
+  //       'apikey': TSCKey,
+  //       'signature': sig
+  //     }
+  //   };
+  //   request(options, function(error, response, body) {
+  //     console.log("response body is " + response.body);
+  //     var TSCResBody = response.body;
+  //     var newComsJSON = {
+  //       xid: req.params.xid,
+  //       endpoint: options.url,
+  //       reqType: "order status",
+  //       reqBody: JSON.stringify(options),
+  //       status: "order status req received",
+  //       resBody: TSCResBody
+  //     };
+  //     order.createCommunication(newComsJSON).then(function(newLoggedCom) {
+  //       console.log('new com logged - ' + newLoggedCom);
+  //     });
+  //     res.send(TSCResBody).status(200);
+  //   /*if (TSCResBody.res !== "error") {
+  //     console.log('get order status success and res is - ' + TSCResBody);
+  //   } else if (TSCResBody.res == "error") {
+  //     console.log('tsc order status failed, please check error message - ' + response.body);
+  //   };*/
+  // });
     
-  });
+  // });
 
 });
 
