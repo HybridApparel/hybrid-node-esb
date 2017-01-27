@@ -1,4 +1,3 @@
-require('@risingstack/trace');
 
 var application_root 	= __dirname,
     express          	= require('express'),

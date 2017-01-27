@@ -14,8 +14,6 @@ var packSlipHTML     = fs.readFileSync('./public/newPackSlipTemplate.html', 'utf
 var compPackSlipHTML = Handlebars.compile(packSlipHTML);
 var moment           = require('moment');
 var Globalize        = require("globalize");
-var pdf2img          = require('pdf2img');
-var url              = require('url');
 Globalize.load(require( "cldr-data").entireSupplemental() );
 Globalize.load(require( "cldr-data").entireMainFor("en") );
 Globalize.locale( "en" );
@@ -282,6 +280,7 @@ TSCRouter.get('/orders/:xid/teststatus', function(req, res) {
   console.log('new check status route hit');
   var tscStatusCallRes = getTSCOrderStatus(req.params.xid);
   console.log('tsc status call res is - ' + tscStatusCallRes);
+  res.send(tscStatusCallRes);
   // var newComsJSON = {
   //   xid: req.params.xid,
   //   endpoint: req.hostname + req.route.path,
@@ -506,8 +505,7 @@ TSCRouter.post('/orders/new', function(req, res) {
       reqBody: req.body,
       resBody: hybridErrorRes,
       reqType: "new order",
-      xid: req.body.orderJSON.xid,
-      orderID: req.body.OrderID
+      xid: req.body.orderJSON.xid
     });
     console.log("invalid signature");
     return res.status(403).send(hybridErrorRes);
@@ -517,11 +515,10 @@ TSCRouter.post('/orders/new', function(req, res) {
 
 
 
-/**POST route for ArtGun shipment updates
+/**POST route for TSC shipment updates
 */
 TSCRouter.post('/shipments/update', function(req,res) {
   var resJSON = {};
-  authTSCReq(req.body);
   if (authTSCReq(req.body) == true) {
     var orderReceiptID = "";
     var orderPrimaryKey = "";    
@@ -534,23 +531,46 @@ TSCRouter.post('/shipments/update', function(req,res) {
           code: '404',
           message: 'the order with target xid does not exist'
         });
+      } else if (order) {
+        order.update({
+          OrderStatusID: "5 - Shipped"
+        }).then(function() {
+          return console.log('order updated');
+        })
+        orderReceiptID = order.EndpointResponseID;
+        orderPrimaryKey = order.id;
+        Shipment.create({
+          orderID: orderPrimaryKey,
+          status: JSON.parse(req.body.data).event.name,
+          tracking_number: JSON.parse(req.body.data).event.meta.packages[0].tracking_number,
+          body: req.body
+        }).then(function(shipment) {
+          resJSON.res = "success";
+          resJSON.time = shipment.createdAt;
+          resJSON.xid = JSON.parse(req.body.data).xid;
+          resJSON.receipt_id = orderReceiptID;
+          shipment.createCommunication({
+            orderID: order.id,
+            shipmentID: shipment.id,
+            xid: resJSON.xid,
+            endpoint: req.hostname + req.route.path,
+            reqOrigin: req.headers.origin,
+            status: 'new shipment update received',
+            reqBody: req.body,
+            resBody: resJSON,
+            reqType: 'shipment update'
+          });
+          console.log('shipment req reeceived and persisted' + resJSON);
+          res.status(200).send(resJSON);
+        });
       };
-      orderReceiptID = order.EndpointResponseID;
-      orderPrimaryKey = order.id;
-      Shipment.create({
-        orderID: orderPrimaryKey,
-        status: JSON.parse(req.body.data).event.name,
-        tracking_number: JSON.parse(req.body.data).event.meta.packages[0].tracking_number,
-        body: req.body
-      }).then(function(shipment) {
-        resJSON.res = "success";
-        resJSON.time = shipment.createdAt;
-        resJSON.xid = JSON.parse(req.body.data).xid;
-        resJSON.receipt_id = orderReceiptID;
-        console.log('shipment req reeceived and persisted' + resJSON);
-        res.status(200).send(resJSON);
-      });
     });  
+  } else if (authTSCReq(req.body) !== true) {
+    res.status(403).send({
+      "error": "403 - authentication failed, invalid signature - request not received",
+      "code": "1",
+      "message": "signature does not match"
+    });
   };
 });
 
@@ -561,8 +581,8 @@ TSCRouter.post('/shipments/update', function(req,res) {
 TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
   console.log('get route for order status hit');
   var authSig = sha1(hybridSecret + hybridKey + req.params.orderID);
-  var tscStatusCallRes = getTSCOrderStatus(req.params.orderID);
-  console.log('tsc status call res is - ' + tscStatusCallRes);
+  // var tscStatusCallRes = getTSCOrderStatus(req.params.orderID);
+  // console.log('tsc status call res is - ' + tscStatusCallRes);
   if (authSig != req.params.signature) {
     console.log('request not accepted - invalid credentials and signature');
     var hybridErrorRes = {
@@ -584,22 +604,20 @@ TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
           "message": "no order found matching target xid"
         }).status(404);
       };
-      responseJSON.tscStatusRes = tscStatusCallRes;
       responseJSON.isProcessed = order.isProcessed;
       responseJSON.OrderID = order.OrderID;
+      responseJSON.orderStatusID = order.OrderStatusID;
       responseJSON.ArtGunResponseBody = order.EndpointResponseBody;
       if (order.shipments[0]) {
         var shipJsonData = JSON.parse(order.shipments[0].body.data).event.meta.packages[0]; 
-        console.log(shipJsonData);
         responseJSON.isShipped = shipJsonData.status;
         responseJSON.trackingNumber = shipJsonData.tracking_number;
         responseJSON.billOfLading = shipJsonData.bol;
         responseJSON.shipmentUpdateBody = order.shipments[0].body;
-        console.log(JSON.stringify(shipJsonData));
         res.send(responseJSON).status(200);
       } else {res.send(responseJSON).status(200)};
     });  
-};
+  };
 });
 
 
@@ -608,7 +626,6 @@ TSCRouter.get('/orders/:orderID/status/:signature/', function(req, res) {
 TSCRouter.post('/orders/:orderID/cancel/', function(req, res) {
   console.log('cancel TSC order route hit');
   if (authHybridReq(req.body) == false) {
-    console.log(req.body);
     console.log('request not accepted - invalid credentials and signature');
     var hybridErrorRes = {
       "error": "403 - authentication failed, invalid signature - request not received",
@@ -619,8 +636,56 @@ TSCRouter.post('/orders/:orderID/cancel/', function(req, res) {
   } else if (authHybridReq(req.body) == true) {
     cancelTSCOrder(req.params.orderID);
     console.log("hybrid sig verified, order will be cancelled");
-    res.send('order will be cancelled');
+    res.send('order cancellation request received').status(200);
   };
+});
+
+
+
+TSCRouter.post('/orders/:xid/release/', function(req, res) {
+  console.log('order release route hit');
+  if (authTSCReq(req.body) == false) {
+    console.log('request not accepted - invalid credentials and signature');
+    var tscErrorRes = {
+      "error": "403 - authentication failed, invalid signature - request not received",
+      "code": "1",
+      "message": "signature does not match"
+    };
+    persistCommunication({
+      endpoint: req.route.path,
+      status: "not received",
+      reqBody: req.body,
+      resBody: tscErrorRes,
+      reqType: "order release",
+      xid: req.params.xid
+    });
+    return res.send(tscErrorRes).status(403);
+  } else if (authTSCReq(req.body) == true) {
+    Order.findOne({
+      where: {OrderID: req.params.xid}
+    }).then(function(order) {
+      var tscSuccessRes = {
+        res: "success",
+        time: Globalize.dateFormatter({ datetime: "medium"})(new Date()),
+        xid: req.params.xid,
+        receipt_id: order.EndpointResponseID
+      };
+      persistCommunication({
+        endpoint: req.route.path,
+        status: "release notification received",
+        reqBody: req.body,
+        resBody: tscSuccessRes,
+        reqType: "order release",
+        xid: req.params.xid,
+        orderID: order.id
+      });
+      order.update({
+        OrderStatusID: "4 - Released for pick and pack"
+      }).then(function() {
+        return res.status(200).send(tscSuccessRes);
+      });
+    })
+  }
 });
 
 TSCRouter.get('/dynowake/uptimecheck/', function (req, res) {
@@ -628,36 +693,51 @@ TSCRouter.get('/dynowake/uptimecheck/', function (req, res) {
 });
 
 
-// TSCRouter.post('/orders/cancel/confirm', function(req, res) {
-//   console.log('confirm cancel from TSC route hit');
-//   var resJSON = {};
-//   authTSCReq(req.body);
-//   if (authTSCReq(req.body) == true) {
-//     var orderReceiptID = "";
-//     var orderPrimaryKey = "";    
-//     Order.findOne({
-//       where: {OrderID: JSON.parse(req.body).xid} })
-//     .then(function(order){
-
-//       orderReceiptID = order.EndpointResponseID;
-//       orderPrimaryKey = order.id;
-//       console.log('heres the order receipt id... ' + orderReceiptID);
-//       Shipment.findOne({
-//         where: {orderID: order.id}
-//       }).then(function(shipment) {
-//         if (shipment) {
-
-//         }
-//         resJSON.res = "success";
-//         resJSON.time = shipment.createdAt;
-//         resJSON.xid = req.body.xid;
-//         resJSON.receipt_id = orderReceiptID;
-//         console.log('shipment req reeceived and persisted' + resJSON);
-//         res.status(200).send(resJSON);
-//       });
-//     });  
-//   };
-// });
+TSCRouter.post('/orders/:xid/cancel/confirm', function(req, res) {
+  console.log('order cancel confirm route hit');
+  if (authTSCReq(req.body) == false) {
+    console.log('request not accepted - invalid credentials and signature');
+    var tscErrorRes = {
+      "error": "403 - authentication failed, invalid signature - request not received",
+      "code": "1",
+      "message": "signature does not match"
+    };
+    persistCommunication({
+      endpoint: req.route.path,
+      status: "not received",
+      reqBody: req.body,
+      resBody: tscErrorRes,
+      reqType: "confirm cancelled",
+      xid: req.params.xid
+    });
+    return res.send(tscErrorRes).status(403);
+  } else if (authTSCReq(req.body) == true) {
+    Order.findOne({
+      where: {OrderID: req.params.xid}
+    }).then(function(order) {
+      var tscSuccessRes = {
+        res: "success",
+        time: Globalize.dateFormatter({ datetime: "medium"})(new Date()),
+        xid: req.params.xid,
+        receipt_id: order.EndpointResponseID
+      };
+      persistCommunication({
+        endpoint: req.route.path,
+        status: "cancel confirmation received",
+        reqBody: req.body,
+        resBody: tscSuccessRes,
+        reqType: "confirm cancelled",
+        xid: req.params.xid,
+        orderID: order.id
+      });
+      order.update({
+        OrderStatusID: "6 - Cancelled order"
+      }).then(function() {
+        return res.status(200).send(tscSuccessRes);
+      });
+    })
+  }
+});
 
 
 

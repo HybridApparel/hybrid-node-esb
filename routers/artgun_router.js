@@ -300,7 +300,7 @@ artGunRouter.post('/orders/new', function(req, res) {
   authHybridReq(req.body);
   if (authHybridReq(req.body) == true) {
     console.log("hybrid sig verified");
-    // orderReqBody.orderJSON.pack_url = "http://tranquil-fortress-90513.herokuapp.com/orders/" + orderReqBody.orderJSON.xid + "/packslip"
+    // orderReqBody.orderJSON.pack_url = "http://tranquil-fortress-90513.herokuapp.com/tsc/orders/" + orderReqBody.orderJSON.xid + "/packslip"
     persistNewOrder(orderReqBody);
     persistCommunication({
       endpoint: req.route.path,

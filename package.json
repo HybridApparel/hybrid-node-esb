@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@risingstack/trace": "^3.0.5",
     "body-parser": "^1.15.2",
     "bootstrap": "^3.3.7",
     "cldr-data": "^30.0.2",
