@@ -275,6 +275,35 @@ var getTSCOrderStatus = function(xid) {
   });
 };
 
+var orderShipPriority = function(hybridOrderJSON) {
+  var newHybridOrderJSON = hybridOrderJSON;
+  if (hybridOrderJSON.orderShipPriority == "MSI" && hybridOrderJSON.orderJSON.shipping_country == "US") {
+    newHybridOrderJSON.orderJSON.shipping_priority = "4008";
+    newHybridOrderJSON.orderJSON.shipping_carrier = "UPS";
+    return newHybridOrderJSON;
+  } else if (hybridOrderJSON.orderShipPriority == "MSI" && hybridOrderJSON.orderJSON.shipping_country !== "US") {
+    newHybridOrderJSON.orderJSON.shipping_carrier = "UPS";
+    newHybridOrderJSON.orderJSON.shipping_priority = "4105";
+    return newHybridOrderJSON;
+  } else if (hybridOrderJSON.orderShipPriority == "MSC" && hybridOrderJSON.orderJSON.shipping_country == "US") {
+    newHybridOrderJSON.orderJSON.shipping_carrier = "UPS";
+    newHybridOrderJSON.orderJSON.shipping_priority = "4006";
+    return newHybridOrderJSON;
+  } else if (hybridOrderJSON.orderShipPriority == "MSC" && hybridOrderJSON.orderJSON.shipping_country !== "US") {
+    newHybridOrderJSON.orderJSON.shipping_carrier = "UPS";
+    newHybridOrderJSON.orderJSON.shipping_priority = "4102";
+    return newHybridOrderJSON;
+  } else if (hybridOrderJSON.orderShipPriority == "MND" && hybridOrderJSON.orderJSON.shipping_country == "US") {
+    newHybridOrderJSON.orderJSON.shipping_carrier = "UPS";
+    newHybridOrderJSON.orderJSON.shipping_priority = "4003";
+    return newHybridOrderJSON;
+  } else if (hybridOrderJSON.orderShipPriority == "MND" && hybridOrderJSON.orderJSON.shipping_country !== "US") {
+    newHybridOrderJSON.orderJSON.shipping_carrier = "UPS";
+    newHybridOrderJSON.orderJSON.shipping_priority = "4101";
+    return newHybridOrderJSON;
+  };
+};
+
 
 TSCRouter.get('/orders/:xid/teststatus', function(req, res) {
   console.log('tests status route hit');  
@@ -470,6 +499,25 @@ TSCRouter.post('/orders/new', function(req, res) {
         });
       } else if (!order) {
         orderReqBody.pack_url = "http://tranquil-fortress-90513.herokuapp.com/tsc/orders/" + orderReqBody.xid + "/packslip";
+        if (req.body.orderShipPriority == "MSI" && req.body.orderJSON.shipping_country == "US") {
+          orderReqBody.orderJSON.shipping_priority = "4008";
+          orderReqBody.orderJSON.shipping_carrier = "UPS";
+        } else if (req.body.orderShipPriority == "MSI" && req.body.orderJSON.shipping_country !== "US") {
+          orderReqBody.orderJSON.shipping_carrier = "UPS";
+          orderReqBody.orderJSON.shipping_priority = "4105";
+        } else if (req.body.orderShipPriority == "MSC" && req.body.orderJSON.shipping_country == "US") {
+          orderReqBody.orderJSON.shipping_carrier = "UPS";
+          orderReqBody.orderJSON.shipping_priority = "4006";
+        } else if (req.body.orderShipPriority == "MSC" && req.body.orderJSON.shipping_country !== "US") {
+          orderReqBody.orderJSON.shipping_carrier = "UPS";
+          orderReqBody.orderJSON.shipping_priority = "4102";
+        } else if (req.body.orderShipPriority == "MND" && req.body.orderJSON.shipping_country == "US") {
+          orderReqBody.orderJSON.shipping_carrier = "UPS";
+          orderReqBody.orderJSON.shipping_priority = "4003";
+        } else if (req.body.orderShipPriority == "MND" && req.body.orderJSON.shipping_country !== "US") {
+          orderReqBody.orderJSON.shipping_carrier = "UPS";
+          orderReqBody.orderJSON.shipping_priority = "4101";
+        };
         persistCommunication({
           endpoint: req.route.path,
           status: "received",
