@@ -789,3 +789,24 @@ TSCRouter.post('/orders/:xid/cancel/confirm', function(req, res) {
 module.exports = TSCRouter;
 
 
+
+
+// src/
+//   models/
+//     helpers/
+//       logger.js
+//     orders.js
+//     shipments.js
+//   controllers
+
+
+
+
+// order
+
+
+
+
+
+
+
